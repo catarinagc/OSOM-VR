@@ -26,6 +26,7 @@ public class DesktopController : MonoBehaviour
     private CharacterController controller;
     private float verticalVelocity;
     public Transform initWalkPos;
+    private HotspotScript currentHotspot;
 
     void Awake()
     {
@@ -42,6 +43,7 @@ public class DesktopController : MonoBehaviour
     {
         HandleLook();
         HandleMovement();
+        HandleHotspotLook();
 
         if (Keyboard.current.gKey.wasPressedThisFrame)
         {
@@ -52,16 +54,52 @@ public class DesktopController : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            RaycastHit hit;
+            // Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+            // RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit))
+            // if (Physics.Raycast(ray, out hit))
+            // {
+            //     if (hit.collider.CompareTag("Hotspot"))
+            //     {
+            //         hit.collider.GetComponent<HotspotScript>().OnInteract();
+            //     }
+            // }
+            if (currentHotspot != null)
             {
-                if (hit.collider.CompareTag("Hotspot"))
-                {
-                    hit.collider.GetComponent<HotspotScript>().OnInteract();
-                }
+                currentHotspot.OnInteract();
             }
+        }
+    }
+
+    private void HandleHotspotLook()
+    {
+        Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit))
+        {
+            HotspotScript hotspot = hit.collider.GetComponent<HotspotScript>();
+
+            if (hotspot != null)
+            {
+                if (currentHotspot != hotspot)
+                {
+                    if (currentHotspot != null)
+                        currentHotspot.StopHover();
+
+                    currentHotspot = hotspot;
+                    currentHotspot.StartHover();
+                }
+
+                return;
+            }
+        }
+
+        // If we are not looking at any hotspot
+        if (currentHotspot != null)
+        {
+            currentHotspot.StopHover();
+            currentHotspot = null;
         }
     }
 
