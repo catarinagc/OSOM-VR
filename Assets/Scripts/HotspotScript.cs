@@ -6,7 +6,7 @@ public class HotspotScript : MonoBehaviour
 {
     [SerializeField] public Vector2 realWorldPosition;
     [SerializeField] GameObject hotspotImageObj;
-    [SerializeField] int hotspotID;
+    [SerializeField] public int hotspotID;
 
     [SerializeField] private GameObject textID;
 

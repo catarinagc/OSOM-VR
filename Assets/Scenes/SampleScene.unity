@@ -578,7 +578,7 @@ Transform:
   m_GameObject: {fileID: 98311778}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalPosition: {x: -0.88, y: 1, z: 38.03}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -596,7 +596,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b40fc1180b61a044883e17f0a264d0a0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: '::'
-  realWorldPosition: {x: 0, y: 0}
+  realWorldPosition: {x: -35232.746, y: -284040.6}
 --- !u!1 &128513415
 GameObject:
   m_ObjectHideFlags: 0
@@ -1793,7 +1793,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NewMonoBehaviourScript
   breakwaterOrigin: {fileID: 98311778}
-  modelScale: 1
+  modelScale: 0.2
+  hotspotPrefab: {fileID: 6683085343434848751, guid: 0dc6a06e26a68d44d86241f2e66a0436, type: 3}
 --- !u!1 &225847614
 GameObject:
   m_ObjectHideFlags: 0
@@ -7947,7 +7948,7 @@ MonoBehaviour:
   moveAction: {fileID: 1406748462}
   xrOrigin: {fileID: 1841310693}
   desktopRig: {fileID: 964311855}
-  initWalkPos: {fileID: 0}
+  initWalkPos: {fileID: 1624484044}
 --- !u!1 &931379610
 GameObject:
   m_ObjectHideFlags: 0
@@ -18340,12 +18341,28 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5305341448762018779, guid: 5a4d1370e57992746a2e27e2225a4094, type: 3}
+      propertyPath: hotspotID
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5305341448762018779, guid: 5a4d1370e57992746a2e27e2225a4094, type: 3}
       propertyPath: hotspotImageObj
       value: 
       objectReference: {fileID: 1499272842}
+    - target: {fileID: 5305341448762018779, guid: 5a4d1370e57992746a2e27e2225a4094, type: 3}
+      propertyPath: realWorldPosition.x
+      value: -35208.76
+      objectReference: {fileID: 0}
+    - target: {fileID: 5305341448762018779, guid: 5a4d1370e57992746a2e27e2225a4094, type: 3}
+      propertyPath: realWorldPosition.y
+      value: -283622.25
+      objectReference: {fileID: 0}
     - target: {fileID: 5597570955368472097, guid: 5a4d1370e57992746a2e27e2225a4094, type: 3}
       propertyPath: m_Name
       value: Hotspot
+      objectReference: {fileID: 0}
+    - target: {fileID: 5597570955368472097, guid: 5a4d1370e57992746a2e27e2225a4094, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

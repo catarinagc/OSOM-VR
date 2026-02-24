@@ -368,4 +368,4 @@ MonoBehaviour:
   realWorldPosition: {x: 0, y: 0}
   hotspotImageObj: {fileID: 6289131253207086622}
   hotspotID: 0
-  textID: {fileID: 0}
+  textID: {fileID: 6289131253207086622}
