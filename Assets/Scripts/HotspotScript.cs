@@ -5,10 +5,12 @@ using TMPro;
 public class HotspotScript : MonoBehaviour
 {
     [SerializeField] public Vector2 realWorldPosition;
-    [SerializeField] GameObject hotspotImageObj;
+    [SerializeField] public GameObject hotspotImageObj;
     [SerializeField] public int hotspotID;
 
     [SerializeField] private GameObject textID;
+
+    [SerializeField] private GameObject textID2;
 
     private bool isActive = false;
     private bool isHovering = false;
@@ -19,6 +21,7 @@ public class HotspotScript : MonoBehaviour
     void Start()
     {
         textID.GetComponent<TextMeshProUGUI>().text = hotspotID.ToString();
+        textID2.GetComponent<TextMeshProUGUI>().text = hotspotID.ToString();
         startPosition = transform.localPosition;
     }
 
@@ -50,15 +53,6 @@ public class HotspotScript : MonoBehaviour
 
     public void OnInteract()
     {
-        isActive = !isActive;
-        if (isActive)
-        {
-            Debug.Log("Hotspot Clicked");  
-            hotspotImageObj.SetActive(true);
-        }
-        else
-        {
-            hotspotImageObj.SetActive(false);
-        }
+        hotspotImageObj.SetActive(true);
     }
 }

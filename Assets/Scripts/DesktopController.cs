@@ -1,6 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.EventSystems;
 public class DesktopController : MonoBehaviour
 {
     [Header("Movement")]
@@ -28,6 +28,14 @@ public class DesktopController : MonoBehaviour
     public Transform initWalkPos;
     private HotspotScript currentHotspot;
 
+    public enum InteractionMode
+    {
+        World,
+        UI
+    }
+
+    public InteractionMode pointerMode;
+
     void Awake()
     {
         controller = GetComponent<CharacterController>();
@@ -37,10 +45,23 @@ public class DesktopController : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        pointerMode = InteractionMode.World;
     }
 
     void Update()
     {
+        
+        if(Keyboard.current.escapeKey.wasPressedThisFrame && pointerMode == InteractionMode.UI)
+        {
+            pointerMode = InteractionMode.World;
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+        
+        if (pointerMode == InteractionMode.UI)
+            return;
+        
         HandleLook();
         HandleMovement();
         HandleHotspotLook();
@@ -54,18 +75,11 @@ public class DesktopController : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
-            // RaycastHit hit;
-
-            // if (Physics.Raycast(ray, out hit))
-            // {
-            //     if (hit.collider.CompareTag("Hotspot"))
-            //     {
-            //         hit.collider.GetComponent<HotspotScript>().OnInteract();
-            //     }
-            // }
             if (currentHotspot != null)
             {
+                pointerMode = InteractionMode.UI;
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
                 currentHotspot.OnInteract();
             }
         }
@@ -153,16 +167,5 @@ public class DesktopController : MonoBehaviour
 
             controller.Move(finalMove * Time.deltaTime);
         }
-    }
-
-    public void toggleFly()
-    {
-
-    }
-
-
-    void clickInteract()
-    {
-
     }
 }

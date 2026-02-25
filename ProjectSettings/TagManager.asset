@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Anchor
   - Hotspot
+  - Image_UI
   layers:
   - Default
   - TransparentFX
