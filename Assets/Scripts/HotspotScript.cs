@@ -53,6 +53,7 @@ public class HotspotScript : MonoBehaviour
 
     public void OnInteract()
     {
+        hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen();
         hotspotImageObj.SetActive(true);
     }
 }
