@@ -8,10 +8,18 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] TMP_Text textPlaceholder1;
     [SerializeField] Image imagePlaceholder2;
     [SerializeField] TMP_Text textPlaceholder2;
+    [SerializeField] TMP_Text image_title;
+    [SerializeField] TMP_Text init_title;
 
     [SerializeField] GameObject imagesHolder;
 
     [SerializeField] GameObject fullscreenPlaceholder;
+    [SerializeField] GameObject initScreen;
+    [SerializeField] GameObject imageScreen;
+    public Animator panelAnimator;
+
+    private int hotspotID = 0;
+    private char troco_ID = ' ';
     public enum ViewDirection
     {
         F,
@@ -73,6 +81,8 @@ public class Image_UI_Manager : MonoBehaviour
         textPlaceholder2.text = "";
         imagePlaceholder2.sprite = null;
         useFirstSlot = true;
+        hotspotID = 0;
+        troco_ID = ' ';
     }
 
     public void ChangeViewDirection(ViewDirection direction)
@@ -100,10 +110,28 @@ public class Image_UI_Manager : MonoBehaviour
         fullscreenPlaceholder.SetActive(false);
     }
 
-    public void PrepareOpen()
+    public void PrepareOpen(int hotspotID, char troco_ID)
     {
+        this.hotspotID = hotspotID;
+        this.troco_ID = troco_ID;
+        init_title.text = "Portimão Poente - Troço " +troco_ID+ " - Ponto " + hotspotID.ToString();
+        initScreen.SetActive(true);
+        imageScreen.SetActive(false);
         fullscreenPlaceholder.SetActive(false);
         clearPlaceholders();
         ChangeViewDirection(ViewDirection.F);
     }
+
+    public void openImages()
+    {
+        image_title.text = init_title.text;
+        initScreen.SetActive(false);
+        imageScreen.SetActive(true);
+        panelAnimator.SetTrigger("Open");
+    }
 }
+
+    // public void Close()
+    // {
+    //     panelAnimator.SetTrigger("Close");
+    // }

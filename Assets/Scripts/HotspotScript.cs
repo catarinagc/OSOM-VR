@@ -7,6 +7,7 @@ public class HotspotScript : MonoBehaviour
     [SerializeField] public Vector2 realWorldPosition;
     [SerializeField] public GameObject hotspotImageObj;
     [SerializeField] public int hotspotID;
+    [SerializeField] public char troco_ID;
 
     [SerializeField] private GameObject textID;
 
@@ -53,7 +54,7 @@ public class HotspotScript : MonoBehaviour
 
     public void OnInteract()
     {
-        hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen();
+        hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID);
         hotspotImageObj.SetActive(true);
     }
 }

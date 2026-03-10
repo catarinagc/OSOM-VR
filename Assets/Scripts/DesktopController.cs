@@ -92,7 +92,7 @@ public class DesktopController : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit))
         {
-            HotspotScript hotspot = hit.collider.GetComponent<HotspotScript>();
+            HotspotScript hotspot = hit.collider.GetComponentInParent<HotspotScript>();
 
             if (hotspot != null)
             {

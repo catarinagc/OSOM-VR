@@ -71,6 +71,8 @@ public class HotspotManager : MonoBehaviour
         hs.realWorldPosition = new Vector2(realPos.x, realPos.y);
         hs.hotspotImageObj = imageUI;
 
+        //mais tarde meter tb o ID do troço a que pertence
+
         return newHotspot;
     }
 }
