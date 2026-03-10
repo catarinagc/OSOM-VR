@@ -1,6 +1,11 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
+using UnityEngine.InputSystem;
+using UnityEngine.XR;
+using UnityEngine.XR.Management;
 
 public class Image_UI_Manager : MonoBehaviour
 {
@@ -12,14 +17,23 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] TMP_Text init_title;
 
     [SerializeField] GameObject imagesHolder;
-
+    [SerializeField] GameObject imageOutside;
+    [SerializeField] InputActionAsset inputActions;
     [SerializeField] GameObject fullscreenPlaceholder;
     [SerializeField] GameObject initScreen;
     [SerializeField] GameObject imageScreen;
-    public Animator panelAnimator;
+    [SerializeField] UI_Manager UI_Manager;
 
+    private GameObject InstancedObj;
+    public Animator panelAnimator;
+    public Transform rightController;
+    private bool isDragging = false;
+    private InputAction aButton;
     private int hotspotID = 0;
     private char troco_ID = ' ';
+
+
+
     public enum ViewDirection
     {
         F,
@@ -34,7 +48,26 @@ public class Image_UI_Manager : MonoBehaviour
     void Start()
     {
         currentDir = ViewDirection.F;
+        aButton = inputActions.FindActionMap("XRI Right Interaction").FindAction("AButton");
+        aButton.Enable();
     }
+
+    //void Update()
+    //{
+        
+    //    if (isDragging)
+    //    {
+    //        if (aButton.WasPressedThisFrame())
+    //        {
+    //            isDragging = false;
+    //        }
+    //        else
+    //        {
+    //            InstancedObj.transform.position = rightController.position + rightController.forward /* * 0.5f*/;
+    //            InstancedObj.transform.rotation = rightController.rotation;
+    //        }
+    //    }
+    //}
 
     public void ShowItem(Sprite newSprite, string year)
     {
@@ -129,9 +162,22 @@ public class Image_UI_Manager : MonoBehaviour
         imageScreen.SetActive(true);
         panelAnimator.SetTrigger("Open");
     }
-}
 
-    // public void Close()
-    // {
-    //     panelAnimator.SetTrigger("Close");
-    // }
+    public void VR_Arrastar(Image image, string year)
+    {
+        InstancedObj = Instantiate(imageOutside);
+
+        InstancedObj.transform.position =
+            rightController.position + rightController.forward;
+        InstancedObj.transform.rotation = rightController.rotation;
+
+        isDragging = true;
+
+        InstancedObj.GetComponentInChildren<Image>().sprite = image.sprite;
+        //InstancedObj.GetComponentInChildren<TextMeshProUGUI>().text = year;
+        InstancedObj.GetComponent<Movable_UI>().rightController = rightController;
+        InstancedObj.GetComponent<Movable_UI>().inputActions = inputActions;
+
+        UI_Manager.CloseActiveUI();
+    }
+}

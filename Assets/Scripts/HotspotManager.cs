@@ -8,7 +8,7 @@ public class HotspotManager : MonoBehaviour
     Vector3 realOriginPos;
     [SerializeField] GameObject hotspotPrefab;
 
-    [SerializeField] GameObject imageUI;
+    [SerializeField] UI_Manager UI_Manager;
 
     void Start()
     {
@@ -69,7 +69,7 @@ public class HotspotManager : MonoBehaviour
         HotspotScript hs = newHotspot.GetComponent<HotspotScript>();
         hs.hotspotID = int.Parse(ID);
         hs.realWorldPosition = new Vector2(realPos.x, realPos.y);
-        hs.hotspotImageObj = imageUI;
+        hs.UI_Manager = UI_Manager;
 
         //mais tarde meter tb o ID do troço a que pertence
 

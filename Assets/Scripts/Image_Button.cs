@@ -35,7 +35,10 @@ public class Image_Button : MonoBehaviour
     }
     public void OnClick()
     {
-        UIManager.ShowItem(activeImage.sprite, yearText.text);
-        //UIManager.SetImageFullscreen(activeImage.sprite);
+        //PC
+        //UIManager.ShowItem(activeImage.sprite, yearText.text);
+
+        //VR
+        UIManager.VR_Arrastar(activeImage, yearText.text);
     }
 }

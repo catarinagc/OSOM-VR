@@ -5,7 +5,7 @@ using TMPro;
 public class HotspotScript : MonoBehaviour
 {
     [SerializeField] public Vector2 realWorldPosition;
-    [SerializeField] public GameObject hotspotImageObj;
+    [SerializeField] public UI_Manager UI_Manager;
     [SerializeField] public int hotspotID;
     [SerializeField] public char troco_ID;
 
@@ -54,7 +54,10 @@ public class HotspotScript : MonoBehaviour
 
     public void OnInteract()
     {
-        hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID);
-        hotspotImageObj.SetActive(true);
+        //hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID);
+        //hotspotImageObj.SetActive(true);
+
+        //mudar nome para UI_Manager
+        UI_Manager.openHotspotImageUI(hotspotID, troco_ID);
     }
 }
