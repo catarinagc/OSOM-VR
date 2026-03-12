@@ -23,6 +23,9 @@ public class UI_Manager : MonoBehaviour
     {
         activeUI.SetActive(false);
         activeUI = null;
-        VRController.stopInteraction();
+        if (VRController != null)
+        {
+            VRController.stopInteraction();
+        }
     }
 }

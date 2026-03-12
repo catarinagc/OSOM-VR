@@ -8,12 +8,29 @@ public class HotspotManager : MonoBehaviour
     Vector3 realOriginPos;
     [SerializeField] GameObject hotspotPrefab;
 
-    [SerializeField] UI_Manager UI_Manager;
+    //[SerializeField] UI_Manager UI_Manager;
+    private UI_Manager view_UI_manager;
+
+    void OnEnable()
+    {
+        XRModeSwitcher.OnModeSelected += OnModeChosen;
+    }
+
+    void OnDisable()
+    {
+        XRModeSwitcher.OnModeSelected -= OnModeChosen;
+    }
+
+    private void OnModeChosen(bool isVR)
+    {
+        Debug.Log("Mode selected! VR? " + isVR);
+
+        ReadCSV();
+    }
 
     void Start()
     {
         realOriginPos = breakwaterOrigin.GetComponent<originPointScript>().realWorldPosition;
-        ReadCSV();
     }
 
     void ReadCSV()
@@ -69,10 +86,16 @@ public class HotspotManager : MonoBehaviour
         HotspotScript hs = newHotspot.GetComponent<HotspotScript>();
         hs.hotspotID = int.Parse(ID);
         hs.realWorldPosition = new Vector2(realPos.x, realPos.y);
-        hs.UI_Manager = UI_Manager;
+        hs.UI_Manager = view_UI_manager;
 
         //mais tarde meter tb o ID do troço a que pertence
-
+        Debug.Log("2");
         return newHotspot;
+    }
+
+    public void SetUIManager(UI_Manager ui_Manager)
+    {
+        view_UI_manager = ui_Manager;
+        Debug.Log("1");
     }
 }

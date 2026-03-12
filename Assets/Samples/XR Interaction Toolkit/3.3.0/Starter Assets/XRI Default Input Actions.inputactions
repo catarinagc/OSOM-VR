@@ -976,6 +976,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "trigger",
+                    "type": "Button",
+                    "id": "dc03db17-e1b9-46d3-9442-817d5083dd39",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1284,6 +1293,17 @@
                     "processors": "ScaleVector2(x=0),StickDeadzone",
                     "groups": "",
                     "action": "Translate Manipulation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3026a890-0a2e-4ec4-9464-f3a87819a0ea",
+                    "path": "<XRController>{LeftHand}/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "trigger",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -2094,6 +2114,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "trigger",
+                    "type": "Button",
+                    "id": "1cb9cb77-19e2-4831-941b-50ba2a6d0a20",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -2523,6 +2552,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "YButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "5f9fb4e1-3611-413f-9a08-a24e2ab3fdfe",
+                    "path": "<XRController>{RightHand}/{TriggerButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "trigger",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

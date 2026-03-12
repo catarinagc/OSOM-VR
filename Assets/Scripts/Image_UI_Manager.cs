@@ -27,12 +27,27 @@ public class Image_UI_Manager : MonoBehaviour
     private GameObject InstancedObj;
     public Animator panelAnimator;
     public Transform rightController;
+    public Transform leftController;
     private bool isDragging = false;
     private InputAction aButton;
     private int hotspotID = 0;
     private char troco_ID = ' ';
+    private bool isVR = false;
 
+    void OnEnable()
+    {
+        XRModeSwitcher.OnModeSelected += OnModeChosen;
+    }
 
+    void OnDisable()
+    {
+        XRModeSwitcher.OnModeSelected -= OnModeChosen;
+    }
+
+    private void OnModeChosen(bool isVR)
+    {
+        this.isVR = isVR;
+    }
 
     public enum ViewDirection
     {
@@ -48,8 +63,11 @@ public class Image_UI_Manager : MonoBehaviour
     void Start()
     {
         currentDir = ViewDirection.F;
-        aButton = inputActions.FindActionMap("XRI Right Interaction").FindAction("AButton");
-        aButton.Enable();
+        if (isVR)
+        {
+            aButton = inputActions.FindActionMap("XRI Right Interaction").FindAction("AButton");
+            aButton.Enable();
+        }
     }
 
     //void Update()
@@ -176,8 +194,17 @@ public class Image_UI_Manager : MonoBehaviour
         InstancedObj.GetComponentInChildren<Image>().sprite = image.sprite;
         //InstancedObj.GetComponentInChildren<TextMeshProUGUI>().text = year;
         InstancedObj.GetComponent<Movable_UI>().rightController = rightController;
+        InstancedObj.GetComponent<Movable_UI>().leftController = leftController;
         InstancedObj.GetComponent<Movable_UI>().inputActions = inputActions;
 
         UI_Manager.CloseActiveUI();
+    }
+
+    public void imageInteract(Image image, string year)
+    {
+        if (isVR)
+            VR_Arrastar(image, year);
+        else
+            ShowItem(image.sprite, year);
     }
 }

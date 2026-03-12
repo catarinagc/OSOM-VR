@@ -37,8 +37,8 @@ public class Image_Button : MonoBehaviour
     {
         //PC
         //UIManager.ShowItem(activeImage.sprite, yearText.text);
-
+        UIManager.imageInteract(activeImage, yearText.text);
         //VR
-        UIManager.VR_Arrastar(activeImage, yearText.text);
+        //UIManager.VR_Arrastar(activeImage, yearText.text);
     }
 }
