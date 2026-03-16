@@ -23,6 +23,7 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] GameObject initScreen;
     [SerializeField] GameObject imageScreen;
     [SerializeField] UI_Manager UI_Manager;
+    [SerializeField] GameObject Controller_UI_Prefab;
 
     private GameObject InstancedObj;
     public Animator panelAnimator;
@@ -68,6 +69,12 @@ public class Image_UI_Manager : MonoBehaviour
             aButton = inputActions.FindActionMap("XRI Right Interaction").FindAction("AButton");
             aButton.Enable();
         }
+        //Controller_UI_Prefab.instantiate();
+
+        //not working correctly yet
+        InstancedObj = Instantiate(Controller_UI_Prefab);
+        InstancedObj.transform.SetParent(leftController, false);
+        InstancedObj.GetComponent<RadialSelection>().handTransform = rightController;
     }
 
     //void Update()
@@ -192,7 +199,7 @@ public class Image_UI_Manager : MonoBehaviour
         isDragging = true;
 
         InstancedObj.GetComponentInChildren<Image>().sprite = image.sprite;
-        //InstancedObj.GetComponentInChildren<TextMeshProUGUI>().text = year;
+        InstancedObj.GetComponentInChildren<TextMeshProUGUI>().text = year;
         InstancedObj.GetComponent<Movable_UI>().rightController = rightController;
         InstancedObj.GetComponent<Movable_UI>().leftController = leftController;
         InstancedObj.GetComponent<Movable_UI>().inputActions = inputActions;
