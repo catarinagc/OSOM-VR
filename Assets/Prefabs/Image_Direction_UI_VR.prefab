@@ -50,6 +50,9 @@ MonoBehaviour:
   radialPartCanvas: {fileID: 8784464309439676698}
   angleBetweenPart: 10
   handTransform: {fileID: 0}
+  inputActions: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
+  selectionThreshold: 0.5
+  maxSelectDistance: 100
   OnPartSelected:
     m_PersistentCalls:
       m_Calls: []

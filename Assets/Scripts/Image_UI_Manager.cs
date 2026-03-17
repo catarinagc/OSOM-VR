@@ -69,12 +69,6 @@ public class Image_UI_Manager : MonoBehaviour
             aButton = inputActions.FindActionMap("XRI Right Interaction").FindAction("AButton");
             aButton.Enable();
         }
-        //Controller_UI_Prefab.instantiate();
-
-        //not working correctly yet
-        InstancedObj = Instantiate(Controller_UI_Prefab);
-        InstancedObj.transform.SetParent(leftController, false);
-        InstancedObj.GetComponent<RadialSelection>().handTransform = rightController;
     }
 
     //void Update()
@@ -185,6 +179,13 @@ public class Image_UI_Manager : MonoBehaviour
         image_title.text = init_title.text;
         initScreen.SetActive(false);
         imageScreen.SetActive(true);
+        InstancedObj = Instantiate(Controller_UI_Prefab);
+        //default 3, pode depois mudar conforme hotspot
+        InstancedObj.GetComponent<RadialSelection>().numberOfradialPart = 3;
+        //
+        InstancedObj.transform.SetParent(leftController, false);
+        InstancedObj.GetComponent<RadialSelection>().handTransform = rightController;
+        InstancedObj.GetComponent<RadialSelection>().image_UI_Manager = this;
         panelAnimator.SetTrigger("Open");
     }
 

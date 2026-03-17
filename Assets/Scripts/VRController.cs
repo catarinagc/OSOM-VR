@@ -18,6 +18,7 @@ public class VRController : MonoBehaviour
     private InputAction yButton;
     private HotspotScript currentHotspot;
     public Transform rightController;
+    public GameObject leftController;
 
     public enum InteractionMode
     {
@@ -125,5 +126,7 @@ public class VRController : MonoBehaviour
     public void stopInteraction()
     {
         pointerMode = InteractionMode.World;
+        //check if radial menu is active, destroy, search for better solution
+        Destroy(leftController.GetComponentInChildren<RadialSelection>().gameObject);
     }
 }
