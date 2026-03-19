@@ -27,6 +27,7 @@ public class DesktopController : MonoBehaviour
     private float verticalVelocity;
     public Transform initWalkPos;
     private HotspotScript currentHotspot;
+    [SerializeField] UI_Manager UI_Manager;
 
     public enum InteractionMode
     {
@@ -57,6 +58,7 @@ public class DesktopController : MonoBehaviour
             pointerMode = InteractionMode.World;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
+            UI_Manager.CloseActiveUI();
         }
         
         if (pointerMode == InteractionMode.UI)

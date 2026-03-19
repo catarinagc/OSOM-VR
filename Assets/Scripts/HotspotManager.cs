@@ -89,7 +89,6 @@ public class HotspotManager : MonoBehaviour
         hs.UI_Manager = view_UI_manager;
 
         //mais tarde meter tb o ID do troço a que pertence
-        Debug.Log("2");
         return newHotspot;
     }
 

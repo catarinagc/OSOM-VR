@@ -35,18 +35,19 @@ public class Image_UI_Manager : MonoBehaviour
     private char troco_ID = ' ';
     private bool isVR = false;
 
-    void OnEnable()
-    {
-        XRModeSwitcher.OnModeSelected += OnModeChosen;
-    }
+    //void Awake()
+    //{
+    //    XRModeSwitcher.OnModeSelected += OnModeChosen;
+    //}
 
-    void OnDisable()
-    {
-        XRModeSwitcher.OnModeSelected -= OnModeChosen;
-    }
+    //void OnDestroy()
+    //{
+    //    XRModeSwitcher.OnModeSelected -= OnModeChosen;
+    //}
 
-    private void OnModeChosen(bool isVR)
+    public void OnModeChosen(bool isVR)
     {
+        Debug.Log("VR" + isVR);
         this.isVR = isVR;
     }
 
@@ -63,6 +64,7 @@ public class Image_UI_Manager : MonoBehaviour
 
     void Start()
     {
+        XRModeSwitcher.OnModeSelected += OnModeChosen;
         currentDir = ViewDirection.F;
         if (isVR)
         {
@@ -179,13 +181,16 @@ public class Image_UI_Manager : MonoBehaviour
         image_title.text = init_title.text;
         initScreen.SetActive(false);
         imageScreen.SetActive(true);
-        InstancedObj = Instantiate(Controller_UI_Prefab);
-        //default 3, pode depois mudar conforme hotspot
-        InstancedObj.GetComponent<RadialSelection>().numberOfradialPart = 3;
-        //
-        InstancedObj.transform.SetParent(leftController, false);
-        InstancedObj.GetComponent<RadialSelection>().handTransform = rightController;
-        InstancedObj.GetComponent<RadialSelection>().image_UI_Manager = this;
+        if (isVR)
+        {
+            InstancedObj = Instantiate(Controller_UI_Prefab);
+            //default 3, pode depois mudar conforme hotspot
+            InstancedObj.GetComponent<RadialSelection>().numberOfradialPart = 3;
+            //
+            InstancedObj.transform.SetParent(leftController, false);
+            InstancedObj.GetComponent<RadialSelection>().handTransform = rightController;
+            InstancedObj.GetComponent<RadialSelection>().image_UI_Manager = this;
+        }
         panelAnimator.SetTrigger("Open");
     }
 

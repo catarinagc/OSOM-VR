@@ -48,7 +48,7 @@ MonoBehaviour:
   numberOfradialPart: 3
   radialPartPrefab: {fileID: 7976213626450903120, guid: 7b5a33a10e45eb9459830c440d4b6c40, type: 3}
   radialPartCanvas: {fileID: 8784464309439676698}
-  angleBetweenPart: 10
+  angleBetweenPart: 5
   handTransform: {fileID: 0}
   inputActions: {fileID: -944628639613478452, guid: c348712bda248c246b8c49b3db54643f, type: 3}
   selectionThreshold: 0.5
@@ -56,6 +56,7 @@ MonoBehaviour:
   OnPartSelected:
     m_PersistentCalls:
       m_Calls: []
+  image_UI_Manager: {fileID: 0}
 --- !u!1 &2226431241569669065
 GameObject:
   m_ObjectHideFlags: 0
