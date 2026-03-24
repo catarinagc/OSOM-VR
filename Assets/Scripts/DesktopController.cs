@@ -60,7 +60,15 @@ public class DesktopController : MonoBehaviour
             Cursor.visible = false;
             UI_Manager.CloseActiveUI();
         }
-        
+
+        if (Keyboard.current.kKey.wasPressedThisFrame && pointerMode == InteractionMode.World)
+        {
+            pointerMode = InteractionMode.UI;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            UI_Manager.OpenOptionsMenu();
+        }
+
         if (pointerMode == InteractionMode.UI)
             return;
         

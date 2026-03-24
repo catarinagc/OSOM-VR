@@ -4,6 +4,7 @@ public class UI_Manager : MonoBehaviour
 {
     GameObject activeUI;
     [SerializeField] GameObject hotspotImageObj;
+    [SerializeField] GameObject optionsMenu;
     [SerializeField] VRController VRController;
     private bool isVR = false;
 
@@ -42,5 +43,11 @@ public class UI_Manager : MonoBehaviour
         {
             VRController.stopInteraction();
         }
+    }
+
+    public void OpenOptionsMenu()
+    {
+        activeUI = optionsMenu;
+        optionsMenu.SetActive(true);
     }
 }
