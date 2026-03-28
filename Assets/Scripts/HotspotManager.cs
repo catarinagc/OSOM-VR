@@ -1,13 +1,14 @@
 using UnityEngine;
 using System.IO;
 using System.Globalization;
+using System.Collections.Generic;
 public class HotspotManager : MonoBehaviour
 {
     [SerializeField] GameObject breakwaterOrigin;
     [SerializeField] float modelScale;
     Vector3 realOriginPos;
     [SerializeField] GameObject hotspotPrefab;
-
+    private List<HotspotScript> hotspots = new List<HotspotScript>();
     //[SerializeField] UI_Manager UI_Manager;
     private UI_Manager view_UI_manager;
 
@@ -62,6 +63,7 @@ public class HotspotManager : MonoBehaviour
 
             GameObject hotspot = CreateHotspot(id, new Vector2(x, y));
             ChangeHotspotPosition(hotspot);
+            AssignZone(hotspot);
         }
     }
 
@@ -88,13 +90,79 @@ public class HotspotManager : MonoBehaviour
         hs.realWorldPosition = new Vector2(realPos.x, realPos.y);
         hs.UI_Manager = view_UI_manager;
 
-        //mais tarde meter tb o ID do troço a que pertence
+        hotspots.Add(hs);
+
         return newHotspot;
+    }
+
+    void AssignZone(GameObject hotspot)
+    {
+        HotspotScript hs = hotspot.GetComponent<HotspotScript>();
+
+        float zPos = -(hotspot.transform.localPosition.z + hotspot.transform.parent.localPosition.z);
+
+        if (zPos < 14f)
+            hs.troco_ID = 'D';
+        else if (zPos < 51f)
+            hs.troco_ID = 'C';
+        else if (zPos < 83f)
+            hs.troco_ID = 'B';
+        else
+            hs.troco_ID = 'A';
     }
 
     public void SetUIManager(UI_Manager ui_Manager)
     {
         view_UI_manager = ui_Manager;
         Debug.Log("1");
+    }
+
+    public void ShowOnlyZoneHotspots(string zone)
+    {
+        switch (zone)
+        {
+            case "A":
+                HideHotspotsNotFromZone('A');
+                break;
+            case "B":
+                HideHotspotsNotFromZone('B');
+                break;
+            case "C":
+                HideHotspotsNotFromZone('C');
+                break;
+            case "D":
+                HideHotspotsNotFromZone('D');
+                break;
+            default:
+                ShowAllHotspots();
+                break;
+        }
+    }
+
+    private void HideHotspotsNotFromZone(char zoneID)
+    {
+        //HotspotScript[] hotspots = breakwaterOrigin.GetComponentsInChildren<HotspotScript>();
+
+        foreach (HotspotScript hotspot in hotspots)
+        {
+            if (hotspot.troco_ID != zoneID)
+            {
+                hotspot.gameObject.SetActive(false);
+            }
+            else
+            {
+                hotspot.gameObject.SetActive(true);
+            }
+        }
+    }
+
+    private void ShowAllHotspots()
+    {
+        //HotspotScript[] hotspots = breakwaterOrigin.GetComponentsInChildren<HotspotScript>();
+
+        foreach (HotspotScript hotspot in hotspots)
+        {
+            hotspot.gameObject.SetActive(true);
+        }
     }
 }

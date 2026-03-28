@@ -4,7 +4,9 @@ public class UI_Manager : MonoBehaviour
 {
     GameObject activeUI;
     [SerializeField] GameObject hotspotImageObj;
+    [SerializeField] GameObject menuObj;
     [SerializeField] VRController VRController;
+    [SerializeField] GameObject zoneMenuObj;
     private bool isVR = false;
 
     void OnEnable()
@@ -21,10 +23,6 @@ public class UI_Manager : MonoBehaviour
     {
         this.isVR = isVR;
     }
-    //public void setActiveUI(GameObject active)
-    //{
-    //    activeUI = active;
-    //}
 
     public void openHotspotImageUI(int hotspotID, char troco_ID)
     {
@@ -38,9 +36,20 @@ public class UI_Manager : MonoBehaviour
     {
         activeUI.SetActive(false);
         activeUI = null;
-        if (VRController != null)
-        {
+        if (VRController)
             VRController.stopInteraction();
-        }
+    }
+
+    public void OpenMenu()
+    {
+        activeUI = menuObj;
+        menuObj.SetActive(true);
+    }
+
+    public void OpenZoneMenu(string zoneSelected)
+    {
+        activeUI = zoneMenuObj;
+        zoneMenuObj.SetActive(true);
+        zoneMenuObj.GetComponent<zoneUIManager>().PrepareOpen(zoneSelected);
     }
 }

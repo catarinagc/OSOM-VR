@@ -28,6 +28,7 @@ public class DesktopController : MonoBehaviour
     public Transform initWalkPos;
     private HotspotScript currentHotspot;
     [SerializeField] UI_Manager UI_Manager;
+    [SerializeField] BreakwaterZoneManager breakwaterZoneManager;
 
     public enum InteractionMode
     {
@@ -42,7 +43,9 @@ public class DesktopController : MonoBehaviour
         controller = GetComponent<CharacterController>();
 
         moveAction.action.Enable();
-        if (lookAction != null) lookAction.action.Enable();
+
+        if (lookAction) 
+            lookAction.action.Enable();
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
@@ -59,6 +62,22 @@ public class DesktopController : MonoBehaviour
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
             UI_Manager.CloseActiveUI();
+        }
+
+        if(Keyboard.current.kKey.wasPressedThisFrame && pointerMode == InteractionMode.World)
+        {
+            pointerMode = InteractionMode.UI;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            UI_Manager.OpenMenu();
+        }
+
+        if(Keyboard.current.zKey.wasPressedThisFrame && pointerMode == InteractionMode.World && breakwaterZoneManager.GetHasSelection())
+        {
+            pointerMode = InteractionMode.UI;
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+            UI_Manager.OpenZoneMenu(breakwaterZoneManager.GetSelection());
         }
         
         if (pointerMode == InteractionMode.UI)
