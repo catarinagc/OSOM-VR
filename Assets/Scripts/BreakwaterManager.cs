@@ -21,7 +21,7 @@ public class BreakwaterManager : MonoBehaviour
         
     }
 
-    void prepareRiskLevel()
+    void PrepareRiskLevel()
     {
         foreach (Zone zone in Zones)
         {

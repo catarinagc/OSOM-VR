@@ -154,13 +154,15 @@ public class Image_UI_Manager : MonoBehaviour
 
     public void SetImageFullscreen(Image image)
     {
-        fullscreenPlaceholder.GetComponent<Image>().sprite = image.sprite;
+        Image childImage = fullscreenPlaceholder.GetComponentInChildren<Image>();
+        childImage.sprite = image.sprite;
         fullscreenPlaceholder.SetActive(true);
     }
 
     public void hideFullscreen()
     {
-        fullscreenPlaceholder.GetComponent<Image>().sprite = null;
+        Image childImage = fullscreenPlaceholder.GetComponentInChildren<Image>();
+        childImage.sprite = null;
         fullscreenPlaceholder.SetActive(false);
     }
 

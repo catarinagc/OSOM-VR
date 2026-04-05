@@ -101,11 +101,11 @@ public class HotspotManager : MonoBehaviour
 
         float zPos = -(hotspot.transform.localPosition.z + hotspot.transform.parent.localPosition.z);
 
-        if (zPos < 14f)
+        if (zPos < 70f)
             hs.troco_ID = 'D';
-        else if (zPos < 51f)
+        else if (zPos < 255f)
             hs.troco_ID = 'C';
-        else if (zPos < 83f)
+        else if (zPos < 415f)
             hs.troco_ID = 'B';
         else
             hs.troco_ID = 'A';
