@@ -31,4 +31,9 @@ public class UIZoomImage : MonoBehaviour, IScrollHandler
         desiredScale = Vector3.Min(initialScale * maxZoom, desiredScale);
         return desiredScale;
     }
+
+    public void OnCloseImage()
+    {
+        transform.localScale = initialScale;
+    }
 }

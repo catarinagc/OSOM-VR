@@ -164,6 +164,7 @@ public class Image_UI_Manager : MonoBehaviour
         Image childImage = fullscreenPlaceholder.GetComponentInChildren<Image>();
         childImage.sprite = null;
         fullscreenPlaceholder.SetActive(false);
+        childImage.GetComponent<UIZoomImage>().OnCloseImage();
     }
 
     public void PrepareOpen(int hotspotID, char troco_ID)
