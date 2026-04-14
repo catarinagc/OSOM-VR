@@ -66,17 +66,36 @@ public class HotspotManager : MonoBehaviour
             AssignZone(hotspot);
         }
     }
+    //original
+    // void ChangeHotspotPosition(GameObject hotspot)
+    // {
+    //     Vector3 realHotspotPos = hotspot.GetComponent<HotspotScript>().realWorldPosition;
+    //     float localX = realHotspotPos.x - realOriginPos.x;
+    //     float localY = realHotspotPos.y - realOriginPos.y;
+    //     localX *= modelScale;
+    //     localY *= modelScale;
+    //     Vector3 offset = new Vector3(localX, 0f, localY);
+    //     hotspot.transform.SetParent(breakwaterOrigin.transform);
+    //     hotspot.transform.localPosition = -offset;
+    // }
+
+    [SerializeField] float rotationOffsetDegrees; // tweak in inspector
 
     void ChangeHotspotPosition(GameObject hotspot)
     {
-        Vector3 realHotspotPos = hotspot.GetComponent<HotspotScript>().realWorldPosition;
-        float localX = realHotspotPos.x - realOriginPos.x;
-        float localY = realHotspotPos.y - realOriginPos.y;
-        localX *= modelScale;
-        localY *= modelScale;
-        Vector3 offset = new Vector3(localX, 0f, localY);
-        hotspot.transform.SetParent(breakwaterOrigin.transform);
-        hotspot.transform.localPosition = -offset;
+        HotspotScript hs = hotspot.GetComponent<HotspotScript>();
+
+        Vector3 localOffset = new Vector3(
+            -(hs.realWorldPosition.x - realOriginPos.x) * modelScale,
+            0f,
+            -(hs.realWorldPosition.y - realOriginPos.y) * modelScale
+        );
+
+        Quaternion correction = Quaternion.Euler(0f, rotationOffsetDegrees, 0f);
+        localOffset = correction * localOffset;
+
+        hotspot.transform.SetParent(breakwaterOrigin.transform, false);
+        hotspot.transform.localPosition = localOffset;
     }
 
     GameObject CreateHotspot(string ID, Vector2 realPos)
