@@ -77,8 +77,6 @@ public class BreakwaterManager : MonoBehaviour
 
 
         // com versao de ler json inicial
-        //Zones.Add(Build(json));
-        //Zones = new List<Zone>();
         Zones = BuildAll(json);
     }
 
@@ -93,6 +91,7 @@ public class BreakwaterManager : MonoBehaviour
             default: return Color.white;
         }
     }
+
     // Update is called once per frame
     void Update()
     {
@@ -119,12 +118,76 @@ public class BreakwaterManager : MonoBehaviour
             {
                 Caracteristics = new ZoneCharacteristics
                 {
-                    General = Map<GeneralZoneData>(jObject, GeneralZoneDataMap.Map)
+                    General = Map<GeneralZoneData>(jObject, GeneralZoneDataMap.Map),
+                    Superstructure = Map<SuperstructureData>(jObject, SuperstructureDataMap.Map),
+                    InnerCrestBerm = Map<InnerCrestBermData>(jObject, InnerCrestBermDataMap.Map),
+                    InteriorArmorLayer = Map<InteriorArmorLayerData>(jObject, InteriorArmorLayerDataMap.Map),
+                    OuterCrestBerm = Map<OuterCrestBermData>(jObject, OuterCrestBermDataMap.Map),
+                    ResistentArmorLayer = Map<ResistentArmorLayerData>(jObject, ResistentArmorLayerDataMap.Map),
+                    ToeBerm = Map<ToeBermData>(jObject, ToeBermDataMap.Map),
+                    Foundation = Map<FoundationData>(jObject, FoundationDataMap.Map)
                 }
             });
         }
-
         return zones;
+    }
+
+    public static Inspection BuildInspection(JObject jObject)
+    {
+        var inspection = new Inspection();
+
+        // YEAR
+        var date = jObject["Data"]?.ToString();
+        if (!string.IsNullOrEmpty(date))
+        {
+            var parts = date.Split('-');
+            if (parts.Length == 3)
+                inspection.Year = int.Parse(parts[2]);
+        }
+
+        inspection.ZoneId = jObject["Nome do Troço"]?.ToString();
+
+        inspection.General = Map<GeneralInspection>(jObject, GeneralInspectionMap.Map);
+
+        inspection.ResistentArmorLayer =
+            Map<ResistentArmorLayerInspection>(jObject, ResistentArmorLayerInspectionMap.Map);
+
+        //inspection.Superstructure =
+        //    Map<SuperstructureInspection>(jObject, SuperstructureInspectionMap.Map);
+
+        //inspection.InteriorArmorLayer =
+        //    Map<InteriorArmorLayerInspection>(jObject, InteriorArmorLayerInspectionMap.Map);
+
+        return inspection;
+    }
+
+    public static List<Inspection> BuildInspections(string json)
+    {
+        var jArray = JArray.Parse(json);
+        var inspections = new List<Inspection>();
+
+        foreach (JObject jObject in jArray)
+        {
+            inspections.Add(BuildInspection(jObject));
+        }
+
+        return inspections;
+    }
+
+    public static void AssignInspectionsToZones(List<Zone> zones, List<Inspection> inspections)
+    {
+        foreach (var zone in zones)
+        {
+            zone.Inspections = new List<Inspection>();
+
+            foreach (var inspection in inspections)
+            {
+                if (inspection.ZoneId == zone.Id)
+                {
+                    zone.Inspections.Add(inspection);
+                }
+            }
+        }
     }
 
     public static T Map<T>(JObject json, Dictionary<string, string> map) where T : new()

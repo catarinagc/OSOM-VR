@@ -13,7 +13,7 @@ public class SuperstructureData
 
     public string Z10;
 
-    public bool Deflector;
+    public string Deflector;
 
     public string CoroamentoLength;
 

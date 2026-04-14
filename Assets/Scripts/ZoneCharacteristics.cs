@@ -8,24 +8,15 @@ public class ZoneCharacteristics
 
     public SuperstructureData Superstructure;
 
-    public ResistentArmorLayerData ResistentArmorLayer;
+    public InnerCrestBermData InnerCrestBerm;
 
     public InteriorArmorLayerData InteriorArmorLayer;
 
-    //public UnderlayerData Underlayer;
+    public OuterCrestBermData OuterCrestBerm;
 
-    //public FilterLayerData FilterLayer;
+    public ResistentArmorLayerData ResistentArmorLayer;
 
-    //public CoreData Core;
+    public ToeBermData ToeBerm;
 
-    //public ToeData Toe;
-
-    //public BermData Berm;
-
-    //public CrestData Crest;
-
-    //falta Berma de Coroamento Interior
-    //      Berma de Coroamento Exterior
-    //      Banqueta do Pé do Talude
-    //      Fundação
+    public FoundationData Foundation;
 }
