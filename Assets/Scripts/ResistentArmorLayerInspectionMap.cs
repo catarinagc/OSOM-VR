@@ -7,14 +7,13 @@ public class ResistentArmorLayerInspectionMap
         { "QuedasM", "Falls" },
         { "FracturasM", "Fractures" },
         { "TaludeM", "Talude" },
-        { "", "Quantity" },
-        { "", "Description" },
-        { "", "Sound" },
-        { "", "NearWaterLine" },
-        { "", "Coroamento" },
-        { "", "MaiorAssentamento" },
-        { "", "Observation" },
-        { "", "GeneralOpinion" },
-        { "", "DamageLevel" }
+        { "DSM_QuantidadeM", "Quantity" },
+        { "DSM_DescriçãoM", "Description" },
+        { "DSM_SomM", "Sound" },
+        { "AM_LinhaÁguaM", "NearWaterLine" },
+        { "AM_CoroamentoM", "Coroamento" },
+        { "Maior_AssentamentoM", "MaiorAssentamento" },
+        { "ObservaçõesM", "Observation" },
+        { "OpiniãoM", "GeneralOpinion" }
     };
 }

@@ -5,10 +5,10 @@ public class ResistentArmorLayerDataMap
     public static readonly Dictionary<string, string> Map = new()
     {
         { "InclinacaoF", "I1" },
-        { "", "I1a" },
+        //{ "", "I1a" },
         { "CotaSuperior", "Z4" },
         { "CotaInferior", "Z3" },
-        { "", "Z12" },
+        // { "", "Z12" },
         {"TipoM", "Type1" },
         {"PesoM", "Weight1" },
         {"DisposM", "Disposicao1" },

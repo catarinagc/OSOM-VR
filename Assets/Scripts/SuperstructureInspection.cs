@@ -5,7 +5,6 @@ public class SuperstructureInspection
 {
     public string Fractures;
 
-    //Degradação Superficial dos Materiais
     public string Quantity;
 
     public string Description;

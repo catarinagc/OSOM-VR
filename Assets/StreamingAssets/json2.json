@@ -37,7 +37,7 @@
    "OpiniãoS": 20,
    "FracturasS": 1,
    "EAM (Estado atual Manto)": null,
-   "GrauMan": null,
+   "GrauMan": 0,
    "DesGrauMan": "",
    "EAS (Estado atual Superestrutura)": 0.25,
    "GrauSup": 1,

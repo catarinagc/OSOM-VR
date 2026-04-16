@@ -9,7 +9,6 @@ public class InteriorArmorLayerInspection
 
     public string Talude;
 
-    //Degradação Superficial dos Materiais
     public string Quantity;
 
     public string Description;

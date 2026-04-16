@@ -23,7 +23,7 @@ public class ResistentArmorLayerInspection
     
     public string Observation;
     
-    public int GeneralOpinion;
+    public string GeneralOpinion;
     
     public int DamageLevel;
 }
