@@ -4,7 +4,8 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Zone
 {
-    public string Id;
+    public int Id;
+    public string name;
     public int[] bounds;
     public List<HotspotScript> Hotspots;
     public List<Inspection> Inspections;
@@ -16,8 +17,49 @@ public class Zone
     public int interiorArmorLayerLevel;
     public int superStructureLayerLevel;
 
-    //Based on the year of the model it calculates the risk level of the zone
-    public void prepareRiskLevel(int modelYear)
+    private int FormulaEvolucao(int estadoAtual, int estadoAnterior) {
+        if ((estadoAtual == null) || (estadoAnterior == null)) return -1;
+        var soma = estadoAtual + estadoAnterior;
+        if (estadoAtual == 5)				return 5; // x -> 5
+        if (soma == 2 * estadoAtual)		return 0; // x -> x
+        if (soma == 3 && estadoAtual == 2)	return 1; // 1 -> 2
+        if (soma == 1)						return 1; // 0 -> 1 && 1 -> 0 !
+        if (soma == 7)						return 2; // 3 -> 4 && 4 -> 3 ! && 5 -> 2 !
+        if (soma == 5 && estadoAtual == 3)	return 2; // 2 -> 3
+        if (soma == 4 && estadoAtual == 3)	return 3; // 1 -> 3
+        if (soma == 2 && estadoAtual == 2)	return 3; // 0 -> 2
+        if (soma == 4 && estadoAtual == 4)	return 4; // 0 -> 4
+        if (soma == 5 && estadoAtual == 4)	return 4; // 1 -> 4
+        if (soma == 6 && estadoAtual == 4)	return 4; // 2 -> 4
+        if (soma == 3 && estadoAtual == 3)	return 4; // 0 -> 3
+        return 0;
+    }
+
+    private int FormulaRisco(int estado, int evolucao) {
+        if ((estado == null) || (evolucao == null)) return -1;
+        if (estado == 0 && evolucao == 0) return 0;
+        if (estado == 1 && evolucao == 0) return 0;
+        if (estado == 1 && evolucao == 1) return 0;
+        if (estado == 2 && evolucao == 0) return 0;
+        if (estado == 2 && evolucao == 1) return 1;
+        if (estado == 3 && evolucao == 0) return 1;
+        if (estado == 2 && evolucao == 2) return 1;
+        if (estado == 2 && evolucao == 3) return 2;
+        if (estado == 3 && evolucao == 1) return 2;
+        if (estado == 3 && evolucao == 2) return 2;
+        if (estado == 4 && evolucao == 0) return 2;
+        if (estado == 4 && evolucao == 1) return 2;
+        if (estado == 3 && evolucao == 3) return 3;
+        if (estado == 3 && evolucao == 4) return 3;
+        if (estado == 4 && evolucao == 2) return 3;
+        if (estado == 4 && evolucao == 3) return 3;
+        if (estado == 4 && evolucao == 4) return 3;
+        if (estado == 5 && evolucao == 5) return 4;
+        return 0;
+    }
+
+    //Based on OSOM the year of the model it calculates the risk level of the zone
+    public void PrepareRiskLevel(int modelYear)
     {
         int refInspectionYear = modelYear -5;
         foreach (Inspection inspection in Inspections)
@@ -28,9 +70,15 @@ public class Zone
                 referenceInspection = inspection;
         }
 
-        resistentArmorLayerLevel = CalculateResistantArmorLayerRiskLevel();
-        interiorArmorLayerLevel = CalculateInteriorArmorLayerRiskLevel();
-        superStructureLayerLevel = CalculateSuperstructureRiskLevel();
+        resistentArmorLayerLevel = FormulaRisco(lastInspection.ResistentArmorLayer.CalculateDamageLevel(), 
+            FormulaEvolucao(lastInspection.ResistentArmorLayer.CalculateDamageLevel(), referenceInspection.ResistentArmorLayer.CalculateDamageLevel()));
+        
+        interiorArmorLayerLevel = FormulaRisco(lastInspection.InteriorArmorLayer.CalculateDamageLevel(), 
+            FormulaEvolucao(lastInspection.InteriorArmorLayer.CalculateDamageLevel(), referenceInspection.InteriorArmorLayer.CalculateDamageLevel()));
+
+        superStructureLayerLevel = FormulaRisco(lastInspection.Superstructure.CalculateDamageLevel(), 
+            FormulaEvolucao(lastInspection.Superstructure.CalculateDamageLevel(), referenceInspection.Superstructure.CalculateDamageLevel()));
+        
         riskLevel = resistentArmorLayerLevel;
 
         if (interiorArmorLayerLevel > riskLevel)
@@ -38,134 +86,5 @@ public class Zone
 
         if (superStructureLayerLevel > riskLevel)
             riskLevel = superStructureLayerLevel;
-    }
-
-    private int CalculateResistantArmorLayerRiskLevel()
-    {
-        int currentLevel =
-            lastInspection.ResistentArmorLayer.DamageLevel;
-
-        int sumLevel =
-            currentLevel +
-            referenceInspection.ResistentArmorLayer.DamageLevel;
-
-        if (currentLevel == 5)
-            return 5;
-
-        if (sumLevel == 2 * currentLevel && currentLevel < 5)
-            return 0;
-
-        if (sumLevel == 3 && currentLevel == 2)
-            return 1;
-
-        if (sumLevel == 1)
-            return 1;
-
-        if (sumLevel == 7)
-            return 2;
-
-        if (sumLevel == 5 && currentLevel == 3)
-            return 2;
-
-        if (sumLevel == 4 && currentLevel == 3)
-            return 3;
-
-        if (sumLevel == 2 && currentLevel == 2)
-            return 3;
-
-        if (sumLevel == 4 && currentLevel == 4)
-            return 4;
-
-        if (sumLevel == 5 && currentLevel == 4)
-            return 4;
-
-        if (sumLevel == 6 && currentLevel == 4)
-            return 4;
-
-        if (sumLevel == 3 && currentLevel == 3)
-            return 4;
-
-        // default fallback
-        return 0;
-    }
-
-    private int CalculateInteriorArmorLayerRiskLevel()
-    {
-        int currentLevel =
-            lastInspection.InteriorArmorLayer.DamageLevel;
-
-        int referenceLevel =
-            referenceInspection.InteriorArmorLayer.DamageLevel;
-
-        int sumLevel = currentLevel + referenceLevel;
-
-        if (currentLevel == 5)
-            return 5;
-
-        if (sumLevel == 2 * currentLevel)
-            return 0;
-
-        if (sumLevel == 3 && currentLevel == 2)
-            return 1;
-
-        if (sumLevel == 1)
-            return 1;
-
-        if (sumLevel == 7)
-            return 2;
-
-        if (sumLevel == 5 && currentLevel == 3)
-            return 2;
-
-        if ((sumLevel == 4 && currentLevel == 3) ||
-            (sumLevel == 2 && currentLevel == 2))
-            return 3;
-
-        if ((sumLevel == 4 && currentLevel == 4) ||
-            (sumLevel == 5 && currentLevel == 4) ||
-            (sumLevel == 6 && currentLevel == 4) ||
-            (sumLevel == 3 && currentLevel == 3))
-            return 4;
-
-        return 0;
-    }
-
-    private int CalculateSuperstructureRiskLevel()
-    {
-        int currentLevel =
-            lastInspection.Superstructure.DamageLevel;
-
-        //confirmar
-        int sumLevel =
-            referenceInspection.Superstructure.DamageLevel;
-
-        // risk level 0
-        if (
-            (currentLevel == 0 && sumLevel == 0) ||
-            (currentLevel == 1 && sumLevel == 0) ||
-            (currentLevel == 1 && sumLevel == 1) ||
-            (currentLevel == 2 && sumLevel == 0)
-        )
-            return 0;
-
-        // risk level 1
-        if (
-            (currentLevel == 2 && sumLevel == 1) ||
-            (currentLevel == 3 && sumLevel == 0) ||
-            (currentLevel == 2 && sumLevel == 2)
-        )
-            return 1;
-
-        // risk level 2
-        if (
-            (currentLevel == 2 && sumLevel == 3) ||
-            (currentLevel == 3 && sumLevel == 1) ||
-            (currentLevel == 3 && sumLevel == 2) ||
-            (currentLevel == 4 && sumLevel == 0) ||
-            (currentLevel == 4 && sumLevel == 1)
-        )
-            return 2;
-
-        return 0;
     }
 }

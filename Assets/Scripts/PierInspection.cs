@@ -12,7 +12,7 @@ public class PierInspection
 
     public string Deslizamento;
 
-    public float Rotation;
+    public string Rotation;
 
     //Platform
     public string PlatformFracture;
@@ -25,5 +25,5 @@ public class PierInspection
 
     public string Observations;
 
-    public int GeneralOpinion;
+    public string GeneralOpinion;
 }

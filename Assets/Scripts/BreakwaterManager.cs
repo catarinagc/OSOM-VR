@@ -20,19 +20,16 @@ public class BreakwaterManager : MonoBehaviour
     private string selectedZoneId = null;
     Dictionary<string, Renderer> highlightRenderers;
 
-    //[SerializeField] string jsonFile;
+    [SerializeField] int codEstrutura;
 
     string path;
     string json;
-    string json2;
 
 
     void Awake()
     {
-        path = Path.Combine(Application.streamingAssetsPath, "json.json");
+        path = Path.Combine(Application.streamingAssetsPath, "osom_dados.json");
         json = File.ReadAllText(path);
-        path = Path.Combine(Application.streamingAssetsPath, "json2.json");
-        json2 = File.ReadAllText(path);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -40,27 +37,28 @@ public class BreakwaterManager : MonoBehaviour
     {
         // com versao de ler json inicial
         Zones = BuildAll(json);
-        List<Inspection> inspections = BuildInspections(json2);
+        List<Inspection> inspections = BuildInspections(json);
         AssignInspectionsToZones(Zones,inspections);
+        
         PrepareRiskLevel();
 
         highlightRenderers = new Dictionary<string, Renderer>();
 
         foreach (Zone zone in Zones)
         {
-            GameObject obj = GameObject.Find("Highlight_" + zone.Id);
+            GameObject obj = GameObject.Find("Highlight_" + zone.name);
             if (obj != null)
             {
-                highlightRenderers[zone.Id] = obj.GetComponent<Renderer>();
+                highlightRenderers[zone.name] = obj.GetComponent<Renderer>();
             }
         }
 
         foreach (Zone zone in Zones)
         {
-            if (!highlightRenderers.ContainsKey(zone.Id))
+            if (!highlightRenderers.ContainsKey(zone.name))
                 continue;
 
-            Renderer r = highlightRenderers[zone.Id];
+            Renderer r = highlightRenderers[zone.name];
 
             MaterialPropertyBlock mpb = new MaterialPropertyBlock();
             r.GetPropertyBlock(mpb);
@@ -69,14 +67,7 @@ public class BreakwaterManager : MonoBehaviour
 
             r.SetPropertyBlock(mpb);
         }
-        // if (showHighlight)
-        // {
-        //     HighlightFolder.SetActive(true);
-        // }
-        // else
-        // {
-        //     HighlightFolder.SetActive(false);
-        // }
+
         ApplyHighlights();
     }
 
@@ -84,12 +75,12 @@ public class BreakwaterManager : MonoBehaviour
     {
         foreach (Zone zone in Zones)
         {
-            if (!highlightRenderers.ContainsKey(zone.Id))
+            if (!highlightRenderers.ContainsKey(zone.name))
                 continue;
 
-            GameObject obj = highlightRenderers[zone.Id].gameObject;
+            GameObject obj = highlightRenderers[zone.name].gameObject;
 
-            bool isSelected = selectedZoneId == zone.Id;
+            bool isSelected = selectedZoneId == zone.name;
 
             if (selectedZoneId != null)
             {
@@ -150,22 +141,32 @@ public class BreakwaterManager : MonoBehaviour
     {
         foreach (Zone zone in Zones)
         {
-            zone.prepareRiskLevel(modelInspectionYear);
+            zone.PrepareRiskLevel(modelInspectionYear);
             Debug.Log("Risk Level " + zone.riskLevel.ToString());
         }
     }
 
-    public static List<Zone> BuildAll(string json)
+    public List<Zone> BuildAll(string json)
     {
-        var jArray = JArray.Parse(json);
+        var root = JObject.Parse(json);
+        var trocos = root["trocos"] as JObject;
 
         var zones = new List<Zone>();
 
-        foreach (JObject jObject in jArray)
+        foreach (var prop in trocos.Properties())
         {
+            JObject jObject = (JObject)prop.Value;
+
+            // filter for codEstrutura
+            int cod = int.Parse(jObject["codEstrutura"]?.ToString() ?? "0");
+
+            if (cod != codEstrutura)
+                continue;
+
             zones.Add(new Zone
             {
-                Id = jObject["Nome do Troço"]?.ToString(),
+                Id = int.Parse(jObject["codTroco"]?.ToString() ?? "0"),
+                name = jObject["nomeTroco"]?.ToString(),
                 Caracteristics = new ZoneCharacteristics
                 {
                     General = Map<GeneralZoneData>(jObject, GeneralZoneDataMap.Map),
@@ -179,7 +180,31 @@ public class BreakwaterManager : MonoBehaviour
                 }
             });
         }
+
         return zones;
+    }
+
+    public List<Inspection> BuildInspections(string json)
+    {
+        var root = JObject.Parse(json);
+        var trocos = root["observacoes"] as JObject;
+        var inspections = new List<Inspection>();
+
+        foreach (var prop in trocos.Properties())
+        {
+            JObject jObject = (JObject)prop.Value;
+            
+            // FILTER by codEstrutura
+            int cod = int.Parse(jObject["codEstrutura"]?.ToString() ?? "0");
+
+            if (cod != codEstrutura)
+                continue;
+
+            var inspection = BuildInspection(jObject);
+            inspections.Add(inspection);
+        }
+
+        return inspections;
     }
 
     public static Inspection BuildInspection(JObject jObject)
@@ -194,51 +219,12 @@ public class BreakwaterManager : MonoBehaviour
             Pier = new PierInspection()
         };
 
-        // YEAR
-        inspection.Year = ParseYear(jObject["Data"]);
-        // var date = jObject["Data"]?.ToString();
-        // if (!string.IsNullOrEmpty(date))
-        // {
-        //     var parts = date.Split('-');
-        //     if (parts.Length == 3)
-        //         inspection.Year = int.Parse(parts[2]);
-        // }
-        // Debug.Log("Year: " + inspection.Year.ToString());
+        inspection.Year = ParseYear(jObject["data"]);
 
-        // var obsArray = jObject["observacoes"] as JArray;
-
-        // string observation = null;
-
-        // if (obsArray != null)
-        // {
-        //     foreach (var item in obsArray)
-        //     {
-        //         var value = item.ToString();
-
-        //         if (!string.IsNullOrWhiteSpace(value))
-        //         {
-        //             observation = value;
-        //             break;
-        //         }
-        //     }
-        // }
-
-        // inspection.ResistentArmorLayer.Observation = observation;
-
-
-        inspection.ZoneId = jObject["Nome do Troço"]?.ToString();
-        //Debug.Log("inspection zone " + inspection.ZoneId.ToString());
-
+        Debug.Log("Year: " + inspection.Year);
+        inspection.ZoneId = int.Parse(jObject["codTroco"]?.ToString() ?? "0");
+        
         inspection.General = Map<GeneralInspection>(jObject, GeneralInspectionMap.Map);
-
-        inspection.ResistentArmorLayer.DamageLevel =
-            ParseDamageLevel(jObject["GrauMan"]);
-
-        inspection.Superstructure.DamageLevel =
-            ParseDamageLevel(jObject["GrauSup"]);
-
-        inspection.InteriorArmorLayer.DamageLevel =
-            ParseDamageLevel(jObject["GrauTar"]);
 
         inspection.ResistentArmorLayer =
             Map<ResistentArmorLayerInspection>(jObject, ResistentArmorLayerInspectionMap.Map);
@@ -249,6 +235,12 @@ public class BreakwaterManager : MonoBehaviour
         inspection.InteriorArmorLayer =
             Map<InteriorArmorLayerInspection>(jObject, InteriorArmorLayerInspectionMap.Map);
         
+        inspection.Underwater = 
+            Map<UnderwaterInspection>(jObject, UnderwaterInspectionMap.Map);
+
+        inspection.Pier =
+            Map<PierInspection>(jObject, PierInspectionMap.Map);
+
         return inspection;
     }
 
@@ -261,9 +253,9 @@ public class BreakwaterManager : MonoBehaviour
         if (string.IsNullOrWhiteSpace(str))
             return 0;
 
-        // "01-01-2018"
+        // "2018-01-01"
         var parts = str.Split('-');
-        if (parts.Length == 3 && int.TryParse(parts[2], out int year))
+        if (parts.Length == 3 && int.TryParse(parts[0], out int year))
             return year;
 
         return 0;
@@ -283,19 +275,6 @@ public class BreakwaterManager : MonoBehaviour
             return value;
 
         return 0;
-    }
-
-    public static List<Inspection> BuildInspections(string json)
-    {
-        var jArray = JArray.Parse(json);
-        var inspections = new List<Inspection>();
-
-        foreach (JObject jObject in jArray)
-        {
-            inspections.Add(BuildInspection(jObject));
-        }
-
-        return inspections;
     }
 
     public static void AssignInspectionsToZones(List<Zone> zones, List<Inspection> inspections)

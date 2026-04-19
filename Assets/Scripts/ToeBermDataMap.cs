@@ -8,9 +8,8 @@ public class ToeBermDataMap
         { "CotaSuperiorPe", "Z2" },
         { "CotaInferiorPe", "Z1" },
         { "LarguraP", "L4" },
-        { "TipoBanqPeTalude", "Z10" },
-        // {"PesoBanqPeTalude", "Type" },
-        // {"PesoBanqPeTalude", "Weight" },
+        {"TipoBanqPeTalude", "Type" },
+        {"PesoBanqPeTalude", "Weight" },
         {"DisposBanqPeTalude", "Disposicao" },
         {"NaturezaBanqPeTalude", "Nature" },
         {"PesoEspBanqPeTalude", "SpecificWeight" }

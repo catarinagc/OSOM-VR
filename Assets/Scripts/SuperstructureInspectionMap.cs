@@ -6,11 +6,11 @@ public class SuperstructureInspectionMap
     {
         { "FracturasS", "Fractures" },
         { "DSM_QuantidadeS", "Quantity" },
-        { "DSM_DescriçãoS", "Description" },
+        { "DSM_DescricaoS", "Description" },
         { "AssentamentosS", "Assentamento" },
         { "DerrubamentosS", "Derrubamento" },
         { "DeslizamentosS", "Deslizamento" },
-        { "ObservaçõesS", "Observations" },
-        { "", "GeneralOpinion" }
+        { "ObservacoesS", "Observations" },
+        { "OpiniaoS", "GeneralOpinion" }
     };
 }

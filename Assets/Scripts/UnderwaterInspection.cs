@@ -12,7 +12,6 @@ public class UnderwaterInspection
 
     public string ArmorLayerQuantity;
 
-    //Banqueta do Pé do Talude
     public string TaludeFalls;
     
     public string TaludeFractures;

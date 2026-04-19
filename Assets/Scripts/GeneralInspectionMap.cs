@@ -4,8 +4,8 @@ public class GeneralInspectionMap
 {
     public static readonly Dictionary<string, string> Map = new()
     {
-        { "Relevância", "Relevant" },
-        { "Motivo da Relevância", "Motive" },
-        { "", "Notes" }
+        { "Relevancia", "Relevant" },
+        { "MotivodaRelevancia", "Motive" },
+        { "NotasGerais", "Notes" }
     };
 }

@@ -5,19 +5,19 @@ public class InteriorArmorLayerDataMap
     public static readonly Dictionary<string, string> Map = new()
     {
         { "InclinacaoT", "I2" },
-        // { "", "I2a" },
+        { "InclinacaoTSub", "I2a" },
         { "CotaSuperiorTardoz", "Z7" },
         { "CotaInferiorTardoz", "Z8" },
-        //{ "", "Z13" },
+        { "CotaIntT", "Z13" },
         {"TipoT", "Type1" },
         {"PesoT", "Weight1" },
         {"DisposT", "Disposicao1" },
         {"NaturezaT", "Nature1" },
-        {"PesoEspT", "SpecificWeight1" }
-        // {"", "Type2" },
-        // {"", "Weight2" },
-        // {"", "Disposicao2" },
-        // {"", "Nature2" },
-        // {"", "SpecificWeight2" }
+        {"PesoEspT", "SpecificWeight1" },
+        {"TipoTSub", "Type2" },
+        {"PesoTSub", "Weight2" },
+        {"DisposTSub", "Disposicao2" },
+        {"NaturezaTSub", "Nature2" },
+        {"PesoEspTSub", "SpecificWeight2" }
     };
 }

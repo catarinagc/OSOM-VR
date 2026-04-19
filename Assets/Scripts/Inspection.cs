@@ -7,7 +7,7 @@ public class Inspection
     // inspection.Date = new System.DateTime(2025, 11, 27);
     //string dateString = "2025-11-27";
     //DateTime inspectionDate = DateTime.Parse(dateString);
-    public string ZoneId;
+    public int ZoneId;
     public int Year;
 
     public GeneralInspection General;

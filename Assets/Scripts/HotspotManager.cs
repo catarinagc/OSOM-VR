@@ -66,6 +66,21 @@ public class HotspotManager : MonoBehaviour
             AssignZone(hotspot);
         }
     }
+
+    Vector2 LatLonToMetersSimple(Vector2 latLon, Vector2 originLatLon)
+    {
+        float latToMeters = 111320f;
+        float lonToMeters = 111320f * Mathf.Cos(originLatLon.y * Mathf.Deg2Rad);
+
+        float dLat = latLon.y - originLatLon.y;
+        float dLon = latLon.x - originLatLon.x;
+
+        float x = dLon * lonToMeters; // east-west
+        float y = dLat * latToMeters; // north-south
+
+        return new Vector2(x, y);
+    }
+
     //original
     // void ChangeHotspotPosition(GameObject hotspot)
     // {
