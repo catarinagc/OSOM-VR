@@ -2,6 +2,8 @@ using UnityEngine;
 using System.IO;
 using System.Globalization;
 using System.Collections.Generic;
+using System.Collections;
+using UnityEngine.Networking;
 public class HotspotManager : MonoBehaviour
 {
     [SerializeField] GameObject breakwaterOrigin;
@@ -34,19 +36,71 @@ public class HotspotManager : MonoBehaviour
         realOriginPos = breakwaterOrigin.GetComponent<originPointScript>().realWorldPosition;
     }
 
+    // void ReadCSV()
+    // {
+    //     string path = Path.Combine(Application.dataPath, "HotspotData/Hotspot_Data.csv");
+
+    //     if (!File.Exists(path))
+    //     {
+    //         Debug.LogError("CSV file not found: " + path);
+    //         return;
+    //     }
+
+    //     string[] lines = File.ReadAllLines(path);
+
+    //     // Start from line index 2
+    //     for (int i = 2; i < lines.Length; i++)
+    //     {
+    //         if (string.IsNullOrWhiteSpace(lines[i]))
+    //             continue;
+
+    //         string[] columns = lines[i].Split(',');
+
+    //         string id = columns[0];
+
+    //         float x = float.Parse(columns[1], CultureInfo.InvariantCulture);
+    //         float y = float.Parse(columns[2], CultureInfo.InvariantCulture);
+
+    //         //Debug.Log($"ID: {id} | X: {x} | Y: {y}");
+
+    //         GameObject hotspot = CreateHotspot(id, new Vector2(x, y));
+    //         ChangeHotspotPosition(hotspot);
+    //         AssignZone(hotspot);
+    //     }
+    // }
     void ReadCSV()
     {
-        string path = Path.Combine(Application.dataPath, "HotspotData/Hotspot_Data.csv");
+        string path = Path.Combine(Application.streamingAssetsPath, "Hotspot_Data.csv");
 
+    #if UNITY_ANDROID && !UNITY_EDITOR
+        StartCoroutine(ReadCSVAndroid(path));
+    #else
+        ReadCSVDesktop(path);
+    #endif
+    }
+
+    void ReadCSVDesktop(string path)
+    {
         if (!File.Exists(path))
         {
-            Debug.LogError("CSV file not found: " + path);
+            Debug.LogError("CSV not found: " + path);
             return;
         }
 
-        string[] lines = File.ReadAllLines(path);
+        ProcessCSV(File.ReadAllLines(path));
+    }
 
-        // Start from line index 2
+    IEnumerator ReadCSVAndroid(string path)
+    {
+        UnityWebRequest req = UnityWebRequest.Get(path);
+        yield return req.SendWebRequest();
+
+        string[] lines = req.downloadHandler.text.Split('\n');
+        ProcessCSV(lines);
+    }
+
+    void ProcessCSV(string[] lines)
+    {
         for (int i = 2; i < lines.Length; i++)
         {
             if (string.IsNullOrWhiteSpace(lines[i]))
@@ -58,8 +112,6 @@ public class HotspotManager : MonoBehaviour
 
             float x = float.Parse(columns[1], CultureInfo.InvariantCulture);
             float y = float.Parse(columns[2], CultureInfo.InvariantCulture);
-
-            //Debug.Log($"ID: {id} | X: {x} | Y: {y}");
 
             GameObject hotspot = CreateHotspot(id, new Vector2(x, y));
             ChangeHotspotPosition(hotspot);

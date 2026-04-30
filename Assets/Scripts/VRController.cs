@@ -19,6 +19,7 @@ public class VRController : MonoBehaviour
     private HotspotScript currentHotspot;
     public Transform rightController;
     public GameObject leftController;
+    public Screenshot screenshot;
 
     public enum InteractionMode
     {
@@ -61,8 +62,9 @@ public class VRController : MonoBehaviour
         if (aButton.WasPressedThisFrame())
         {
             //toggleFly();
-            UI_Manager.OpenMenu();
-            pointerMode = InteractionMode.UI;
+            // UI_Manager.OpenMenu();
+            // pointerMode = InteractionMode.UI;
+            screenshot.TakeScreenshotVR();
         }
 
         if (bButton.WasPressedThisFrame())
