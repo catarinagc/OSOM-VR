@@ -22,6 +22,10 @@ public class BreakwaterManager : MonoBehaviour
 
     [SerializeField] int codEstrutura;
 
+    int heightHighlightChange;
+    [SerializeField] ControllerManager controller;
+    bool useCubesRuntime;
+
     string path;
     string json;
 
@@ -35,7 +39,7 @@ public class BreakwaterManager : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        // com versao de ler json inicial
+        heightHighlightChange = 25;
         Zones = BuildAll(json);
         List<Inspection> inspections = BuildInspections(json);
         AssignInspectionsToZones(Zones,inspections);
@@ -67,29 +71,137 @@ public class BreakwaterManager : MonoBehaviour
 
             r.SetPropertyBlock(mpb);
         }
-
+        SetupShaderColors();
         ApplyHighlights();
+        UpdateHighlightMode();
+    }
+
+    void SetupShaderColors()
+    {
+        if (overlayRenderer == null) return;
+
+        MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+        overlayRenderer.GetPropertyBlock(mpb);
+
+        foreach (Zone zone in Zones)
+        {
+            Color c = RiskToColor(zone.riskLevel);
+
+            switch (zone.name)
+            {
+                case "D": mpb.SetColor("_colorA", c); break;
+                case "C": mpb.SetColor("_colorB", c); break;
+                case "B": mpb.SetColor("_colorC", c); break;
+                case "A": mpb.SetColor("_colorD", c); break;
+            }
+        }
+
+        overlayRenderer.SetPropertyBlock(mpb);
+    }
+
+    bool lastCubesState = false;
+
+    void Update()
+    {
+        float height = controller.GetHeight();
+
+        bool newState = height >= heightHighlightChange;
+
+        if (newState != lastCubesState)
+        {
+            useCubesRuntime = newState;
+            UpdateHighlightMode();
+            lastCubesState = newState;
+        }
+
+        //UpdateShaderSelection();
+    }
+
+    public void SetHeightThreshold(float value)
+    {
+        heightHighlightChange = Mathf.RoundToInt(value);
+        Debug.Log(heightHighlightChange);
+    }
+
+    void UpdateHighlightMode()
+    {
+        ShowHighlightCubes(useCubesRuntime);
+        ShowHighlightShader(!useCubesRuntime);
+    }
+    void ShowHighlightCubes(bool state)
+    {
+        foreach (var kvp in highlightRenderers)
+        {
+            if (kvp.Value != null)
+            {
+                kvp.Value.gameObject.SetActive(state && showHighlight);
+            }
+        }
+
+        if (useCubesRuntime)
+        {
+            foreach (Zone zone in Zones)
+            {
+                if (!highlightRenderers.ContainsKey(zone.name))
+                    continue;
+
+                GameObject obj = highlightRenderers[zone.name].gameObject;
+
+                bool isSelected = selectedZoneId == zone.name;
+
+                // ONLY handle selection logic here
+                obj.SetActive(isSelected || selectedZoneId == null);
+            }
+        }
     }
 
     void ApplyHighlights()
     {
-        foreach (Zone zone in Zones)
+        UpdateShaderSelection();
+        if (useCubesRuntime)
         {
-            if (!highlightRenderers.ContainsKey(zone.name))
-                continue;
-
-            GameObject obj = highlightRenderers[zone.name].gameObject;
-
-            bool isSelected = selectedZoneId == zone.name;
-
-            if (selectedZoneId != null)
+            foreach (Zone zone in Zones)
             {
-                obj.SetActive(isSelected);
+                if (!highlightRenderers.ContainsKey(zone.name))
+                    continue;
+
+                GameObject obj = highlightRenderers[zone.name].gameObject;
+
+                bool isSelected = selectedZoneId == zone.name;
+
+                obj.SetActive(isSelected || selectedZoneId == null);
             }
-            else
-            {
-                obj.SetActive(showHighlight);
-            }
+        }
+    }
+
+    void ShowHighlightShader(bool state)
+    {
+        if (overlayRenderer == null)
+            return;
+
+        overlayRenderer.material.SetFloat("_strenght", state ? 0.3f : 0f);
+    }
+
+    void UpdateShaderSelection()
+    {
+        if (overlayRenderer == null)
+            return;
+
+        int index = GetZoneIndex(selectedZoneId);
+
+        Debug.Log("hello " + index);
+        overlayRenderer.material.SetInt("_selectedZone", index);
+    }
+
+    private int GetZoneIndex(string zoneName)
+    {
+        switch (zoneName)
+        {
+            case "A": return 0;
+            case "B": return 1;
+            case "C": return 2;
+            case "D": return 3;
+            default: return -1;
         }
     }
 
@@ -131,12 +243,6 @@ public class BreakwaterManager : MonoBehaviour
         }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     void PrepareRiskLevel()
     {
         foreach (Zone zone in Zones)
@@ -145,6 +251,7 @@ public class BreakwaterManager : MonoBehaviour
             Debug.Log("Risk Level " + zone.riskLevel.ToString());
         }
     }
+
 
     public List<Zone> BuildAll(string json)
     {
@@ -315,7 +422,7 @@ public class BreakwaterManager : MonoBehaviour
                 continue;
             }
 
-            // EVERYTHING becomes string
+            // everything becomes string
             var value = token.ToString();
 
             field.SetValue(obj, value);
@@ -323,5 +430,15 @@ public class BreakwaterManager : MonoBehaviour
         }
         Debug.Log($"[MAP END] Finished mapping {typeof(T).Name}");
         return obj;
+    }
+
+    public Zone GetZone(string zoneName)
+    {
+        foreach (var zone in Zones)
+        {
+            if (zone.name == zoneName)
+                return zone;
+        }
+        return null;
     }
 }

@@ -4,6 +4,13 @@ using System.Collections.Generic;
 [System.Serializable]
 public class Zone
 {
+    public class LayerUIData
+    {
+        public string Level;
+        public string Evol;
+        public string RefState;
+        public string LastState;
+    }
     public int Id;
     public string name;
     public int[] bounds;
@@ -14,8 +21,20 @@ public class Zone
     public Inspection referenceInspection;
     public int riskLevel;
     public int resistentArmorLayerLevel;
+    public string resistentArmorLayerLevelText;
+    public string resistentArmorLayerLevelTextSimple;
     public int interiorArmorLayerLevel;
+    public string interiorArmorLayerLevelText;
+    public string interiorArmorLayerLevelTextSimple;
     public int superStructureLayerLevel;
+    public string superStructureLayerLevelText;
+    public string superStructureLayerLevelTextSimple;
+    public int resistentArmorLayerEvol;
+    public string resistentArmorLayerEvolText;
+    public int interiorArmorLayerEvol;
+    public string interiorArmorLayerEvolText;
+    public int superStructureLayerEvol;
+    public string superStructureLayerEvolText;
 
     private int FormulaEvolucao(int estadoAtual, int estadoAnterior) {
         if ((estadoAtual == null) || (estadoAnterior == null)) return -1;
@@ -70,14 +89,14 @@ public class Zone
                 referenceInspection = inspection;
         }
 
-        resistentArmorLayerLevel = FormulaRisco(lastInspection.ResistentArmorLayer.CalculateDamageLevel(), 
-            FormulaEvolucao(lastInspection.ResistentArmorLayer.CalculateDamageLevel(), referenceInspection.ResistentArmorLayer.CalculateDamageLevel()));
+        resistentArmorLayerEvol = FormulaEvolucao(lastInspection.ResistentArmorLayer.CalculateDamageLevel(), referenceInspection.ResistentArmorLayer.CalculateDamageLevel());
+        resistentArmorLayerLevel = FormulaRisco(lastInspection.ResistentArmorLayer.CalculateDamageLevel(), resistentArmorLayerEvol);
         
-        interiorArmorLayerLevel = FormulaRisco(lastInspection.InteriorArmorLayer.CalculateDamageLevel(), 
-            FormulaEvolucao(lastInspection.InteriorArmorLayer.CalculateDamageLevel(), referenceInspection.InteriorArmorLayer.CalculateDamageLevel()));
+        interiorArmorLayerEvol = FormulaEvolucao(lastInspection.InteriorArmorLayer.CalculateDamageLevel(), referenceInspection.InteriorArmorLayer.CalculateDamageLevel());
+        interiorArmorLayerLevel = FormulaRisco(lastInspection.InteriorArmorLayer.CalculateDamageLevel(), interiorArmorLayerEvol);
 
-        superStructureLayerLevel = FormulaRisco(lastInspection.Superstructure.CalculateDamageLevel(), 
-            FormulaEvolucao(lastInspection.Superstructure.CalculateDamageLevel(), referenceInspection.Superstructure.CalculateDamageLevel()));
+        superStructureLayerEvol = FormulaEvolucao(lastInspection.Superstructure.CalculateDamageLevel(), referenceInspection.Superstructure.CalculateDamageLevel());
+        superStructureLayerLevel = FormulaRisco(lastInspection.Superstructure.CalculateDamageLevel(), superStructureLayerEvol);
         
         riskLevel = resistentArmorLayerLevel;
 
@@ -86,5 +105,99 @@ public class Zone
 
         if (superStructureLayerLevel > riskLevel)
             riskLevel = superStructureLayerLevel;
+        
+        PrepareLevelTexts();
+    }
+
+    public void PrepareLevelTexts()
+    {
+        string[] descriptionSimple = {"Sem risco aparente",
+            "Baixo risco (observação atenta)",
+            "Risco moderado (reparação aconselhável)",
+            "Alto risco (reparação urgente)",
+            "Destruição"};
+
+        string[] description = {"Sem risco aparente",
+            "Baixo",
+            "Moderado",
+            "Alto",
+            "Destruição"};
+
+        string[] evolDescription = {"Não se detectou qualquer evolução; as condições permanecem inalteráveis",
+            "Evolução muito ligeira; pode ser considerada insignificante",
+            "Evolução ligeira; Processa-se a velocidade reduzida, mas existe e é visível",
+            "Evolução acentuada; muitas diferenças relativamente a observações anteriores",
+            "Evolução muito acentuada; diferenças significativas relativamente a observações anteriores",
+            "Foi atingida a destruição do elememto"};
+
+        
+        resistentArmorLayerLevelText = description[resistentArmorLayerLevel];
+        resistentArmorLayerLevelTextSimple = descriptionSimple[resistentArmorLayerLevel];
+        resistentArmorLayerEvolText = evolDescription[resistentArmorLayerEvol];
+
+        interiorArmorLayerLevelText = description[interiorArmorLayerLevel];
+        interiorArmorLayerLevelTextSimple = descriptionSimple[interiorArmorLayerLevel];
+        interiorArmorLayerEvolText = evolDescription[interiorArmorLayerEvol];
+
+        superStructureLayerLevelText = description[superStructureLayerLevel];
+        superStructureLayerLevelTextSimple = descriptionSimple[superStructureLayerLevel];
+        superStructureLayerEvolText = evolDescription[superStructureLayerEvol];
+    }
+
+    public Dictionary<string, string> GetUIData()
+    {
+        return new Dictionary<string, string>
+        {
+            { "Title", $"Portimão Poente ({name})" },
+            { "Manto", $"Manto Resistente: {resistentArmorLayerLevelTextSimple}" },
+            { "Tardoz", $"Tardoz: {interiorArmorLayerLevelTextSimple}" },
+            { "Coroamento", $"Coroamento: {superStructureLayerLevelTextSimple}" },
+            { "LastInspection", $"Última inspeção: {lastInspection?.Year}" },
+            { "ReferenceInspection", $"Inspeção de Referência: {referenceInspection?.Year}" }
+        };
+    }
+
+    public Dictionary<string, LayerUIData> GetRiskLevelUIData()
+    {
+        return new Dictionary<string, LayerUIData>
+        {
+            ["Manto"] = new LayerUIData
+            {
+                Level = $"Manto Resistente [Grau {resistentArmorLayerLevel}]: {resistentArmorLayerLevelText}",
+                Evol = $"Manto Resistente [Grau {resistentArmorLayerEvol}]: {resistentArmorLayerEvolText}",
+                RefState = $"Manto Resistente {referenceInspection.ResistentArmorLayer.getLevelString()} [Grau {referenceInspection.ResistentArmorLayer.DamageLevel}]",
+                LastState = $"Manto Resistente {lastInspection.ResistentArmorLayer.getLevelString()} [Grau {lastInspection.ResistentArmorLayer.DamageLevel}]"
+            },
+
+            ["Coroamento"] = new LayerUIData
+            {
+                Level = $"Coroamento [Grau {superStructureLayerLevel}]: {superStructureLayerLevelText}",
+                Evol = $"Coroamento [Grau {superStructureLayerEvol}]: {superStructureLayerEvolText}",
+                RefState = $"Coroamento {referenceInspection.Superstructure.getLevelString()} [Grau {referenceInspection.Superstructure.DamageLevel}]",
+                LastState = $"Coroamento {lastInspection.Superstructure.getLevelString()} [Grau {lastInspection.Superstructure.DamageLevel}]"
+            },
+
+            ["Tardoz"] = new LayerUIData
+            {
+                Level = $"Tardoz [Grau {interiorArmorLayerLevel}]: {interiorArmorLayerLevelText}",
+                Evol = $"Tardoz [Grau {interiorArmorLayerEvol}]: {interiorArmorLayerEvolText}",
+                RefState = $"Tardoz {referenceInspection.InteriorArmorLayer.getLevelString()} [Grau {referenceInspection.InteriorArmorLayer.DamageLevel}]",
+                LastState = $"Tardoz {lastInspection.InteriorArmorLayer.getLevelString()} [Grau {lastInspection.InteriorArmorLayer.DamageLevel}]"
+            }
+        };
+    }
+
+    public Inspection GetInspectionFromYear(int year)
+    {
+        foreach (Inspection insp in Inspections)
+        {
+            if (insp.Year == year)
+            {
+                return insp;
+            }
+        }
+
+        //in case year not found
+        return lastInspection;
     }
 }

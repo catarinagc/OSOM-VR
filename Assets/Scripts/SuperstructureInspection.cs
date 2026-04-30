@@ -5,15 +5,25 @@ public class SuperstructureInspection
 {
     public string Fractures;
 
+    public string FracturesText;
+
     public string Quantity;
+
+    public string QuantityText;
 
     public string Description;
 
     public string Assentamento;
 
+    public string AssentamentoText;
+
     public string Derrubamento;
 
+    public string DerrubamentoText;
+
     public string Deslizamento;
+
+    public string DeslizamentoText;
 
     public string Observations;
 
@@ -31,7 +41,9 @@ public class SuperstructureInspection
 		+	0.05 * int.Parse(GeneralOpinion)
 		) / 20;
 
-        return Enquadra(val);
+        DamageLevel = Enquadra(val);
+        PrepareTexts();
+        return DamageLevel;
     }
 
     private int Enquadra(double level)
@@ -46,5 +58,78 @@ public class SuperstructureInspection
 
         // fallback if level is higher than all values
         return numEnquadra.Length - 1;
+    }
+
+    public string getLevelString()
+    {
+        string[] stateDescription =
+        {
+            "em bom estado",
+            "em bom estado mas com sinais pontuais de degradação ligeira",
+            "ligeiramente degradado", 
+            "degradado",			
+            "muito degradado",		
+            "em ruína"
+        };
+
+        return stateDescription[DamageLevel];
+    }
+
+    private int GetSafeIndex(string value, int length)
+    {
+        if (!int.TryParse(value, out int i))
+            return 0;
+
+        if (i < 0 || i >= length)
+            return 0;
+
+        return i;
+    }
+
+    private string GetTextWithLabel(string value, string[] map)
+    {
+        int i = GetSafeIndex(value, map.Length);
+
+        return $"{map[i]}";
+    }
+
+    public void PrepareTexts()
+    {
+        FracturesText = GetTextWithLabel(Fractures, new[]
+        {
+            "Nenhumas",
+            "Poucas",
+            "Significativas",
+            "Muitas"
+        });
+
+        QuantityText = GetTextWithLabel(Quantity, new[]
+        {
+            "Em bom estado",
+            "Alguma corrosão",
+            "Muita corrosão"
+        });
+
+        AssentamentoText = GetTextWithLabel(Assentamento, new[]
+        {
+            "Não há assentamento",
+            "Assentamento ≤ 0.5m",
+            "Assentamento > 0.5m"
+        });
+
+        DerrubamentoText = GetTextWithLabel(Derrubamento, new[]
+        {
+            "Não há derrubamento",
+            "Derrubamento ≤ 0.5m",
+            "Derrubamento > 0.5m"
+        });
+
+        DeslizamentoText = GetTextWithLabel(Deslizamento, new[]
+        {
+            "Não há deslizamento",
+            "Deslizamento ≤ 0.5m",
+            "Deslizamento > 0.5m"
+        });
+
     }
 }

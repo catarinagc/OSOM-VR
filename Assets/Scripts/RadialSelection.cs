@@ -136,8 +136,10 @@ public class RadialSelection : MonoBehaviour
             var tmpText = spawnRadialPart.GetComponentInChildren<TMP_Text>();
             if (tmpText != null)
             {
-                // Make text face forward along the menu plane
-                tmpText.transform.LookAt(tmpText.transform.position + Camera.main.transform.forward, Camera.main.transform.up);
+                Transform t = tmpText.transform;
+
+                // Align text "up" with controller's up
+                t.rotation = Quaternion.LookRotation(radialPartCanvas.forward, radialPartCanvas.up);
             }
             spawnRadialPart.GetComponent<Image>().fillAmount = 1 / (float)numberOfradialPart - (angleBetweenPart/360);
             if(i < view_directions.Length)

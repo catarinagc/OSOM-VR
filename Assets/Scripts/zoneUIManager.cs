@@ -1,23 +1,60 @@
 using UnityEngine;
 using TMPro;
+using System.Collections.Generic;
 public class zoneUIManager : MonoBehaviour
 {
-    [SerializeField] TMP_Text title_text;
+    [System.Serializable]
+    public class ZoneUIField
+    {
+        public string key;      // identifier (e.g. "Manto", "Tardoz")
+        public TMP_Text text;
+    }
+
+    [SerializeField] UI_Manager ui_manager;
+    [SerializeField] List<ZoneUIField> fields;
     private string default_title_text;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    private Zone currentZone;
+
+    void Awake()
     {
         default_title_text = "Portimão Poente ";
     }
 
-    // Update is called once per frame
-    void Update()
+    public void PrepareOpen(Zone zone)
     {
-        
+        currentZone = zone;
+
+        var data = zone.GetUIData();
+
+        foreach (var field in fields)
+        {
+            if (data.ContainsKey(field.key))
+            {
+                field.text.text = data[field.key];
+            }
+            else
+            {
+                field.text.text = "-";
+            }
+        }
     }
 
-    public void PrepareOpen(string zoneSelected)
+    public void OpenRiskMenu()
     {
-        title_text.text = default_title_text + "(" + zoneSelected + ")";
+        ui_manager.OpenRiskMenu(currentZone);
+        currentZone = null;
+    }
+
+    public void OpenZoneInfoMenu()
+    {
+        ui_manager.OpenZoneInfoMenu(currentZone);
+        currentZone = null;
+    }
+
+    public void OpenZoneInspectionMenu()
+    {
+        ui_manager.OpenZoneInspectionMenu(currentZone);
+        currentZone = null;
     }
 }

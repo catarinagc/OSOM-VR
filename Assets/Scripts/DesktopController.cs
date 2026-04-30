@@ -77,7 +77,7 @@ public class DesktopController : MonoBehaviour
             pointerMode = InteractionMode.UI;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
-            UI_Manager.OpenZoneMenu(breakwaterZoneManager.GetSelection());
+            UI_Manager.OpenZoneMenu();
         }
         
         if (pointerMode == InteractionMode.UI)
@@ -104,6 +104,11 @@ public class DesktopController : MonoBehaviour
                 currentHotspot.OnInteract();
             }
         }
+    }
+
+    public float GetHeight()
+    {
+        return gameObject.transform.position.y;
     }
 
     private void HandleHotspotLook()

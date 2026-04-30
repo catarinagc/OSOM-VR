@@ -44,7 +44,7 @@ public class VRController : MonoBehaviour
     }
 
     // Update is called once per frame
-    //TODO meter bot�es para interact bem feitos, estes s�o placeholders
+    //TODO meter botoes para interact bem feitos, estes sao placeholders
     void Update()
     {
         if (yButton.WasPressedThisFrame() && pointerMode == InteractionMode.UI)
@@ -60,7 +60,9 @@ public class VRController : MonoBehaviour
 
         if (aButton.WasPressedThisFrame())
         {
-            toggleFly();
+            //toggleFly();
+            UI_Manager.OpenMenu();
+            pointerMode = InteractionMode.UI;
         }
 
         if (bButton.WasPressedThisFrame())
@@ -73,6 +75,11 @@ public class VRController : MonoBehaviour
                 currentHotspot.OnInteract();
             }
         }
+    }
+
+    public float GetHeight()
+    {
+        return gameObject.transform.position.y;
     }
 
     public void toggleFly()

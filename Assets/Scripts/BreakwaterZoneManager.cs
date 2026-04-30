@@ -34,6 +34,11 @@ public class BreakwaterZoneManager : MonoBehaviour
         return currentSelection;
     }
 
+    public Zone GetSelectionZone()
+    {
+        return breakwaterManager.GetZone(currentSelection);
+    }
+
     public void ChangeBreakwaterZone(string newZone)
     {
         currentSelection = newZone;

@@ -7,6 +7,11 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject menuObj;
     [SerializeField] VRController VRController;
     [SerializeField] GameObject zoneMenuObj;
+    [SerializeField] GameObject riskMenuObj;
+    [SerializeField] GameObject zoneInfoMenuObj;
+    [SerializeField] GameObject zoneInspectionMenuObj;
+    [SerializeField] GameObject breakwaterMenu;
+    [SerializeField] BreakwaterZoneManager breakwaterZoneManager;
     private bool isVR = false;
 
     void OnEnable()
@@ -46,10 +51,39 @@ public class UI_Manager : MonoBehaviour
         menuObj.SetActive(true);
     }
 
-    public void OpenZoneMenu(string zoneSelected)
+    public void OpenZoneMenu()
     {
-        activeUI = zoneMenuObj;
-        zoneMenuObj.SetActive(true);
-        zoneMenuObj.GetComponent<zoneUIManager>().PrepareOpen(zoneSelected);
+        if (breakwaterZoneManager.GetHasSelection())
+        {
+            if(activeUI)
+                activeUI.SetActive(false);
+            activeUI = zoneMenuObj;
+            zoneMenuObj.SetActive(true);
+            zoneMenuObj.GetComponent<zoneUIManager>().PrepareOpen(breakwaterZoneManager.GetSelectionZone());
+        }
+    }
+
+    public void OpenRiskMenu(Zone zone)
+    {
+        zoneMenuObj.SetActive(false);
+        activeUI = riskMenuObj;
+        riskMenuObj.SetActive(true);
+        riskMenuObj.GetComponent<RiskMenuUI_Manager>().PrepareOpen(zone);
+    }
+
+    public void OpenZoneInfoMenu(Zone zone)
+    {
+        zoneMenuObj.SetActive(false);
+        activeUI = zoneInfoMenuObj;
+        zoneInfoMenuObj.SetActive(true);
+        zoneInfoMenuObj.GetComponent<ZoneInfoUI_Manager>().PrepareOpen(zone);
+    }
+
+    public void OpenZoneInspectionMenu(Zone zone)
+    {
+        zoneMenuObj.SetActive(false);
+        activeUI = zoneInspectionMenuObj;
+        zoneInspectionMenuObj.SetActive(true);
+        zoneInspectionMenuObj.GetComponent<ZoneInspectionsUI_Manager>().PrepareOpen(zone);
     }
 }
