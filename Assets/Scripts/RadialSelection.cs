@@ -10,7 +10,7 @@ using TMPro;
 
 public class RadialSelection : MonoBehaviour
 {
-    [Range(2,10)]
+    [Range(2, 10)]
     public int numberOfradialPart;
     public GameObject radialPartPrefab;
     public Transform radialPartCanvas;
@@ -72,9 +72,16 @@ public class RadialSelection : MonoBehaviour
             Vector3 localPoint = radialPartCanvas.InverseTransformPoint(hitPoint); // relative to canvas
 
             // Calculate angle from center
-            float angle = Vector3.SignedAngle(radialPartCanvas.up, localPoint, -radialPartCanvas.forward);
+            //tinha problemas na build
+            //float angle = Vector3.SignedAngle(radialPartCanvas.up, localPoint, -radialPartCanvas.forward);
+            //testar esta solucao
+            float angle = Mathf.Atan2(localPoint.x, localPoint.y) * Mathf.Rad2Deg;
+            if (angle < 0) angle += 360;
 
             float distanceFromCenter = localPoint.magnitude;
+            //
+
+            currentSelectedRadialPart = (int)(angle * numberOfradialPart / 360);
 
             if (distanceFromCenter <= maxSelectDistance)
             {
@@ -125,7 +132,7 @@ public class RadialSelection : MonoBehaviour
 
         for (int i = 0; i < numberOfradialPart; i++)
         {
-            float angle = - i * 360 / numberOfradialPart - angleBetweenPart / 2;
+            float angle = -i * 360 / numberOfradialPart - angleBetweenPart / 2;
             Vector3 radialPartEulerAngle = new Vector3(0, 0, angle);
 
             GameObject spawnRadialPart = Instantiate(radialPartPrefab, radialPartCanvas);
@@ -141,12 +148,12 @@ public class RadialSelection : MonoBehaviour
                 // Align text "up" with controller's up
                 t.rotation = Quaternion.LookRotation(radialPartCanvas.forward, radialPartCanvas.up);
             }
-            spawnRadialPart.GetComponent<Image>().fillAmount = 1 / (float)numberOfradialPart - (angleBetweenPart/360);
-            if(i < view_directions.Length)
+            spawnRadialPart.GetComponent<Image>().fillAmount = 1 / (float)numberOfradialPart - (angleBetweenPart / 360);
+            if (i < view_directions.Length)
                 spawnRadialPart.GetComponentInChildren<TMP_Text>().text = view_directions[i];
             else
-                spawnRadialPart.GetComponentInChildren<TMP_Text>().text = "L " + (i - view_directions.Length +1).ToString();
-                
+                spawnRadialPart.GetComponentInChildren<TMP_Text>().text = "L " + (i - view_directions.Length + 1).ToString();
+
             spawnedParts.Add(spawnRadialPart);
         }
     }

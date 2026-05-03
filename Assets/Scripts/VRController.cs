@@ -51,7 +51,7 @@ public class VRController : MonoBehaviour
         if (yButton.WasPressedThisFrame() && pointerMode == InteractionMode.UI)
         {
             pointerMode = InteractionMode.World;
-            UI_Manager.CloseActiveUI();
+            UI_Manager.CloseActiveUIs();
         }
 
         if (pointerMode == InteractionMode.UI)

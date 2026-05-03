@@ -55,38 +55,52 @@ public class DesktopController : MonoBehaviour
 
     void Update()
     {
-        
-        if(Keyboard.current.escapeKey.wasPressedThisFrame && pointerMode == InteractionMode.UI)
+        if (Mouse.current.rightButton.isPressed)
         {
-            pointerMode = InteractionMode.World;
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
-            UI_Manager.CloseActiveUI();
         }
-
-        if(Keyboard.current.kKey.wasPressedThisFrame && pointerMode == InteractionMode.World)
+        else
         {
-            pointerMode = InteractionMode.UI;
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible = true;
+        }
+
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            // If clicking UI, ignore world interaction
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
+
+            if (currentHotspot)
+            {
+                currentHotspot.OnInteract();
+            }
+        }
+        
+        if(Keyboard.current.escapeKey.wasPressedThisFrame)
+        {
+            UI_Manager.CloseActiveUIs();
+        }
+
+        if(Keyboard.current.kKey.wasPressedThisFrame)
+        {
             UI_Manager.OpenMenu();
         }
 
-        if(Keyboard.current.zKey.wasPressedThisFrame && pointerMode == InteractionMode.World && breakwaterZoneManager.GetHasSelection())
+        if(Keyboard.current.zKey.wasPressedThisFrame && breakwaterZoneManager.GetHasSelection())
         {
-            pointerMode = InteractionMode.UI;
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
             UI_Manager.OpenZoneMenu();
         }
-        
-        if (pointerMode == InteractionMode.UI)
-            return;
-        
-        HandleLook();
+
         HandleMovement();
         HandleHotspotLook();
 
+        if (Mouse.current.rightButton.isPressed)
+        {
+            HandleLook();
+        }
+    
         if (Keyboard.current.gKey.wasPressedThisFrame)
         {
             changePosWalking();
@@ -94,16 +108,16 @@ public class DesktopController : MonoBehaviour
             verticalVelocity = 0; // Reset momentum when switching
         }
 
-        if (Mouse.current.leftButton.wasPressedThisFrame)
-        {
-            if (currentHotspot != null)
-            {
-                pointerMode = InteractionMode.UI;
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-                currentHotspot.OnInteract();
-            }
-        }
+        // if (Mouse.current.leftButton.wasPressedThisFrame)
+        // {
+        //     if (currentHotspot != null)
+        //     {
+        //         // pointerMode = InteractionMode.UI;
+        //         // Cursor.lockState = CursorLockMode.None;
+        //         // Cursor.visible = true;
+        //         currentHotspot.OnInteract();
+        //     }
+        // }
     }
 
     public float GetHeight()
@@ -113,7 +127,9 @@ public class DesktopController : MonoBehaviour
 
     private void HandleHotspotLook()
     {
-        Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        //Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
+        Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+        Ray ray = camera.ScreenPointToRay(screenCenter);
         RaycastHit hit;
 
         if (Physics.Raycast(ray, out hit))

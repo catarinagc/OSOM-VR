@@ -213,7 +213,7 @@ public class Image_UI_Manager : MonoBehaviour
         InstancedObj.GetComponent<Movable_UI>().leftController = leftController;
         InstancedObj.GetComponent<Movable_UI>().inputActions = inputActions;
 
-        UI_Manager.CloseActiveUI();
+        UI_Manager.CloseActiveUIs();
     }
 
     public void imageInteract(Image image, string year)

@@ -1,8 +1,8 @@
 using UnityEngine;
-
+using System.Collections.Generic;
 public class UI_Manager : MonoBehaviour
 {
-    GameObject activeUI;
+    private List<GameObject> activeUIs;
     [SerializeField] GameObject hotspotImageObj;
     [SerializeField] GameObject menuObj;
     [SerializeField] VRController VRController;
@@ -14,6 +14,10 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] BreakwaterZoneManager breakwaterZoneManager;
     private bool isVR = false;
 
+    void Awake()
+    {
+        activeUIs = new List<GameObject>();
+    }
     void OnEnable()
     {
         XRModeSwitcher.OnModeSelected += OnModeChosen;
@@ -33,21 +37,40 @@ public class UI_Manager : MonoBehaviour
     {
         hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID);
         hotspotImageObj.GetComponent<Image_UI_Manager>().OnModeChosen(isVR);
-        activeUI = hotspotImageObj;
+        CloseActiveUIs();
+        activeUIs.Add(hotspotImageObj);
         hotspotImageObj.SetActive(true);
     }
 
-    public void CloseActiveUI()
+    public void CloseActiveUIs()
     {
-        activeUI.SetActive(false);
-        activeUI = null;
+        if (activeUIs == null || activeUIs.Count == 0)
+            return;
+        
+        foreach (GameObject ui in activeUIs)
+        {
+            ui.SetActive(false);
+        }
+
+        activeUIs.Clear();
+
         if (VRController)
             VRController.stopInteraction();
     }
 
+    private void CloseSpecificUI(GameObject openUI)
+    {
+        if (activeUIs.Contains(openUI))
+        {
+            openUI.SetActive(false);
+            activeUIs.Remove(openUI);
+        }
+    }
+
     public void OpenMenu()
     {
-        activeUI = menuObj;
+        CloseActiveUIs();
+        activeUIs.Add(menuObj);
         menuObj.SetActive(true);
     }
 
@@ -55,9 +78,8 @@ public class UI_Manager : MonoBehaviour
     {
         if (breakwaterZoneManager.GetHasSelection())
         {
-            if(activeUI)
-                activeUI.SetActive(false);
-            activeUI = zoneMenuObj;
+            CloseActiveUIs();
+            activeUIs.Add(zoneMenuObj);
             zoneMenuObj.SetActive(true);
             zoneMenuObj.GetComponent<zoneUIManager>().PrepareOpen(breakwaterZoneManager.GetSelectionZone());
         }
@@ -65,24 +87,24 @@ public class UI_Manager : MonoBehaviour
 
     public void OpenRiskMenu(Zone zone)
     {
-        zoneMenuObj.SetActive(false);
-        activeUI = riskMenuObj;
+        CloseActiveUIs();
+        activeUIs.Add(riskMenuObj);
         riskMenuObj.SetActive(true);
         riskMenuObj.GetComponent<RiskMenuUI_Manager>().PrepareOpen(zone);
     }
 
     public void OpenZoneInfoMenu(Zone zone)
     {
-        zoneMenuObj.SetActive(false);
-        activeUI = zoneInfoMenuObj;
+        CloseActiveUIs();
+        activeUIs.Add(zoneInfoMenuObj);
         zoneInfoMenuObj.SetActive(true);
         zoneInfoMenuObj.GetComponent<ZoneInfoUI_Manager>().PrepareOpen(zone);
     }
 
     public void OpenZoneInspectionMenu(Zone zone)
     {
-        zoneMenuObj.SetActive(false);
-        activeUI = zoneInspectionMenuObj;
+        CloseActiveUIs();
+        activeUIs.Add(zoneInspectionMenuObj);
         zoneInspectionMenuObj.SetActive(true);
         zoneInspectionMenuObj.GetComponent<ZoneInspectionsUI_Manager>().PrepareOpen(zone);
     }
