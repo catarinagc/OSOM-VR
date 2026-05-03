@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Reflection;
 using System.IO;
-
+using System.Collections;
 
 public class BreakwaterManager : MonoBehaviour
 {
     private Vector3 OriginWalkingPoint;
+
     private Vector3 RefHotspotPoint;
     [SerializeField] GameObject modelPrefab;
 
@@ -29,21 +30,19 @@ public class BreakwaterManager : MonoBehaviour
     string path;
     string json;
 
-
     void Awake()
     {
         path = Path.Combine(Application.streamingAssetsPath, "osom_dados.json");
-        json = File.ReadAllText(path);
+        StartCoroutine(LoadJson());
     }
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    void Initialize()
     {
         heightHighlightChange = 25;
         Zones = BuildAll(json);
         List<Inspection> inspections = BuildInspections(json);
-        AssignInspectionsToZones(Zones,inspections);
-        
+        AssignInspectionsToZones(Zones, inspections);
+
         PrepareRiskLevel();
 
         highlightRenderers = new Dictionary<string, Renderer>();
@@ -75,6 +74,46 @@ public class BreakwaterManager : MonoBehaviour
         ApplyHighlights();
         UpdateHighlightMode();
     }
+
+    // // Start is called once before the first execution of Update after the MonoBehaviour is created
+    // void Start()
+    // {
+    //     heightHighlightChange = 25;
+    //     Zones = BuildAll(json);
+    //     List<Inspection> inspections = BuildInspections(json);
+    //     AssignInspectionsToZones(Zones,inspections);
+        
+    //     PrepareRiskLevel();
+
+    //     highlightRenderers = new Dictionary<string, Renderer>();
+
+    //     foreach (Zone zone in Zones)
+    //     {
+    //         GameObject obj = GameObject.Find("Highlight_" + zone.name);
+    //         if (obj != null)
+    //         {
+    //             highlightRenderers[zone.name] = obj.GetComponent<Renderer>();
+    //         }
+    //     }
+
+    //     foreach (Zone zone in Zones)
+    //     {
+    //         if (!highlightRenderers.ContainsKey(zone.name))
+    //             continue;
+
+    //         Renderer r = highlightRenderers[zone.name];
+
+    //         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
+    //         r.GetPropertyBlock(mpb);
+
+    //         mpb.SetColor("_Color", RiskToColor(zone.riskLevel));
+
+    //         r.SetPropertyBlock(mpb);
+    //     }
+    //     SetupShaderColors();
+    //     ApplyHighlights();
+    //     UpdateHighlightMode();
+    // }
 
     void SetupShaderColors()
     {
@@ -252,6 +291,30 @@ public class BreakwaterManager : MonoBehaviour
         }
     }
 
+    IEnumerator LoadJson()
+    {
+        string uri = Path.Combine(Application.streamingAssetsPath, "osom_dados.json");
+
+        if (!uri.Contains("://"))
+            uri = "file://" + uri;
+
+        using (UnityEngine.Networking.UnityWebRequest request = UnityEngine.Networking.UnityWebRequest.Get(uri))
+        {
+            yield return request.SendWebRequest();
+
+            if (request.result != UnityEngine.Networking.UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("JSON load failed: " + request.error);
+                yield break;
+            }
+
+            json = request.downloadHandler.text;
+
+            Debug.Log("JSON loaded, size: " + json.Length);
+
+            Initialize(); // your setup
+        }
+    }
 
     public List<Zone> BuildAll(string json)
     {
