@@ -110,6 +110,7 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
         dropdown.SetValueWithoutNotify(selectedIndex);
 
         dropdown.RefreshShownValue();
+
     }
 
     private void OpenInspectionData()

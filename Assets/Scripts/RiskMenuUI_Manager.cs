@@ -7,7 +7,6 @@ public class RiskMenuUI_Manager : MonoBehaviour
     public class RiskLevelUIGroup
     {
         public string key;
-
         public TMP_Text level;
         public TMP_Text evol;
         public TMP_Text refState;
@@ -15,26 +14,10 @@ public class RiskMenuUI_Manager : MonoBehaviour
     }
 
     [SerializeField] TMP_Text title_text;
-
-    // //last state
-    // [SerializeField] TMP_Text manto_last_state;
-    // [SerializeField] TMP_Text coroamento_last_state;
-    // [SerializeField] TMP_Text tardoz_last_state;
-
-    // //ref state
-    // [SerializeField] TMP_Text manto_ref_state;
-    // [SerializeField] TMP_Text coroamento_ref_state;
-    // [SerializeField] TMP_Text tardoz_ref_state;
-
-    // //evolucao
-    // [SerializeField] TMP_Text manto_evol;
-    // [SerializeField] TMP_Text coroamento_evol;
-    // [SerializeField] TMP_Text tardoz_evol;
-
-    // //risk level
-    // [SerializeField] TMP_Text manto_level;
-    // [SerializeField] TMP_Text coroamento_level;
-    // [SerializeField] TMP_Text tardoz_level;
+    [SerializeField] TMP_Text last_state_text;
+    [SerializeField] TMP_Text ref_state_text;
+    [SerializeField] TMP_Text evol_text;
+    [SerializeField] TMP_Text risk_text;
     
     [SerializeField] List<RiskLevelUIGroup> riskTexts;
 
@@ -45,36 +28,13 @@ public class RiskMenuUI_Manager : MonoBehaviour
         default_title_text = "Portimão Poente ";
     }
     
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
-
-    // public void PrepareOpen(Zone zone)
-    // {
-    //     title_text.text = default_title_text + "(" + zone.name + ")";
-    //     //risk level
-    //     manto_level.text = "Manto Resistente [Grau " + zone.resistentArmorLayerLevel + "]: " + zone.resistentArmorLayerLevelText;
-    //     coroamento_level.text = "Coroamento [Grau " + zone.superStructureLayerLevel + "]: " + zone.superStructureLayerLevelText;
-    //     tardoz_level.text = "Tardoz [Grau " + zone.interiorArmorLayerLevel + "]: " + zone.interiorArmorLayerLevelText;
-    //     //evolDescription
-    //     manto_evol.text = "Manto Resistente [Grau " + zone.resistentArmorLayerEvol + "]: " + zone.resistentArmorLayerEvolText;
-    //     coroamento_evol.text = "Coroamento [Grau " + zone.superStructureLayerEvol + "]: " + zone.superStructureLayerEvolText;
-    //     tardoz_evol.text = "Tardoz [Grau " + zone.interiorArmorLayerLevel + "]: " + zone.interiorArmorLayerEvolText;
-    //     //estado ref
-    //     manto_ref_state.text = "Manto Resistente " + zone.referenceInspection.ResistentArmorLayer.getLevelString() + " [Grau " + zone.referenceInspection.ResistentArmorLayer.DamageLevel + " ]";
-    //     coroamento_ref_state.text = "Coroamento " + zone.referenceInspection.Superstructure.getLevelString() + " [Grau " + zone.referenceInspection.Superstructure.DamageLevel + " ]";
-    //     tardoz_ref_state.text = "Tardoz " + zone.referenceInspection.InteriorArmorLayer.getLevelString() + " [Grau " + zone.referenceInspection.InteriorArmorLayer.DamageLevel + " ]";
-    //     //estado estadoAtual
-    //     manto_last_state.text = "Manto Resistente " + zone.lastInspection.ResistentArmorLayer.getLevelString() + " [Grau " + zone.lastInspection.ResistentArmorLayer.DamageLevel + " ]";
-    //     coroamento_last_state.text = "Coroamento " + zone.lastInspection.Superstructure.getLevelString() + " [Grau " + zone.lastInspection.Superstructure.DamageLevel + " ]";
-    //     tardoz_last_state.text = "Tardoz " + zone.lastInspection.InteriorArmorLayer.getLevelString() + " [Grau " + zone.lastInspection.InteriorArmorLayer.DamageLevel + " ]";
-    // }
-
     public void PrepareOpen(Zone zone)
     {
-        title_text.text = $"{default_title_text} ({zone.Id})";
+        title_text.text = $"{default_title_text} ({zone.name})";
+        last_state_text.text = "Estado em " + zone.lastInspection.Year;
+        ref_state_text.text = "Estado em " + zone.referenceInspection.Year;
+        evol_text.text = "Evolução de " + zone.referenceInspection.Year + " a " + zone.lastInspection.Year;
+        risk_text.text = "Risco em " + zone.lastInspection.Year;
 
         var data = zone.GetRiskLevelUIData();
 

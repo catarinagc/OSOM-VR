@@ -16,6 +16,8 @@ public class VRController : MonoBehaviour
     private InputAction aButton;
     private InputAction bButton;
     private InputAction yButton;
+    private InputAction xButton;
+    private InputAction rightPress;
     private HotspotScript currentHotspot;
     public Transform rightController;
     public GameObject leftController;
@@ -31,10 +33,13 @@ public class VRController : MonoBehaviour
     {
         aButton = inputActions.FindActionMap("XRI Right Interaction").FindAction("AButton");
         bButton = inputActions.FindActionMap("XRI Right Interaction").FindAction("BButton");
-        yButton = inputActions.FindActionMap("XRI Right Interaction").FindAction("YButton");
+        rightPress = inputActions.FindActionMap("XRI Right Interaction").FindAction("UI Press");
+        yButton = inputActions.FindActionMap("XRI Left Interaction").FindAction("YButton");
+        xButton = inputActions.FindActionMap("XRI Left Interaction").FindAction("XButton");
         aButton.Enable();
         bButton.Enable();
         yButton.Enable();
+        xButton.Enable();
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -48,34 +53,36 @@ public class VRController : MonoBehaviour
     //TODO meter botoes para interact bem feitos, estes sao placeholders
     void Update()
     {
-        if (yButton.WasPressedThisFrame() && pointerMode == InteractionMode.UI)
+        if (yButton.WasPressedThisFrame())
         {
-            pointerMode = InteractionMode.World;
+            // pointerMode = InteractionMode.World;
             UI_Manager.CloseActiveUIs();
         }
 
-        if (pointerMode == InteractionMode.UI)
-            return;
+        // if (pointerMode == InteractionMode.UI)
+        //     return;
 
         HandleHotspotLook();
 
         if (aButton.WasPressedThisFrame())
         {
-            //toggleFly();
-            // UI_Manager.OpenMenu();
-            // pointerMode = InteractionMode.UI;
             screenshot.TakeScreenshotVR();
+        }
+
+        if (xButton.WasPressedThisFrame())
+        {
+            UI_Manager.OpenMenu();
         }
 
         if (bButton.WasPressedThisFrame())
         {
-            if (currentHotspot != null)
-            {
-                pointerMode = InteractionMode.UI;
-                //cursor.lockstate = cursorlockmode.none;
-                //cursor.visible = true;
+            toggleFly();
+        }
+
+        if (rightPress.WasPressedThisFrame())
+        {
+            if (currentHotspot)
                 currentHotspot.OnInteract();
-            }
         }
     }
 
@@ -134,8 +141,11 @@ public class VRController : MonoBehaviour
 
     public void stopInteraction()
     {
-        pointerMode = InteractionMode.World;
-        //check if radial menu is active, destroy, search for better solution
-        Destroy(leftController.GetComponentInChildren<RadialSelection>().gameObject);
+        var radial = leftController.GetComponentInChildren<RadialSelection>();
+
+        if (radial == null)
+            return;
+
+        Destroy(radial.gameObject);
     }
 }

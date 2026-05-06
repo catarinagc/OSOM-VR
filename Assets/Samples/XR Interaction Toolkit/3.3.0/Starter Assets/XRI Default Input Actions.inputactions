@@ -985,6 +985,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "XButton",
+                    "type": "Button",
+                    "id": "c6b26c14-ef47-494a-b2ab-289fe025e48f",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "YButton",
+                    "type": "Button",
+                    "id": "45ac9f4d-48eb-4750-bfec-a6674dcb7f87",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1304,6 +1322,28 @@
                     "processors": "",
                     "groups": "",
                     "action": "trigger",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f68f6032-5102-4c91-9981-1deec9aacc60",
+                    "path": "<XRController>{LeftHand}/{SecondaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "XButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1503b709-9d0b-405b-b347-91a5b3ee5c0d",
+                    "path": "<XRController>{LeftHand}/{PrimaryButton}",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "YButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -2107,15 +2147,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "YButton",
-                    "type": "Button",
-                    "id": "27d1a2ad-7163-44d3-ba2e-653f859254c0",
-                    "expectedControlType": "",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "trigger",
                     "type": "Button",
                     "id": "1cb9cb77-19e2-4831-941b-50ba2a6d0a20",
@@ -2541,17 +2572,6 @@
                     "processors": "",
                     "groups": "",
                     "action": "BButton",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
-                    "id": "8b6e832c-d19d-4186-9ce2-d0fc62ba8829",
-                    "path": "<XRController>{LeftHand}/{PrimaryButton}",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "",
-                    "action": "YButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },

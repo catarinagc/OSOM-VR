@@ -9,7 +9,9 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject zoneMenuObj;
     [SerializeField] GameObject riskMenuObj;
     [SerializeField] GameObject zoneInfoMenuObj;
+    [SerializeField] GameObject zoneInfoSelectorObj;
     [SerializeField] GameObject zoneInspectionMenuObj;
+    [SerializeField] GameObject zoneInspectionSelectorObj;
     [SerializeField] GameObject breakwaterMenu;
     [SerializeField] BreakwaterZoneManager breakwaterZoneManager;
     private bool isVR = false;
@@ -98,6 +100,11 @@ public class UI_Manager : MonoBehaviour
         CloseActiveUIs();
         activeUIs.Add(zoneInfoMenuObj);
         zoneInfoMenuObj.SetActive(true);
+        if (isVR)
+        {      
+            activeUIs.Add(zoneInfoSelectorObj);
+            zoneInfoSelectorObj.SetActive(true);
+        }
         zoneInfoMenuObj.GetComponent<ZoneInfoUI_Manager>().PrepareOpen(zone);
     }
 
@@ -106,6 +113,11 @@ public class UI_Manager : MonoBehaviour
         CloseActiveUIs();
         activeUIs.Add(zoneInspectionMenuObj);
         zoneInspectionMenuObj.SetActive(true);
+        if (isVR)
+        {
+            activeUIs.Add(zoneInspectionSelectorObj);
+            zoneInspectionSelectorObj.SetActive(true);
+        }
         zoneInspectionMenuObj.GetComponent<ZoneInspectionsUI_Manager>().PrepareOpen(zone);
     }
 }
