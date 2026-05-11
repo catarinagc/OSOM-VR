@@ -33,20 +33,6 @@ public class Movable_UI : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (isDragging)
-        {
-            if (bButton.WasPressedThisFrame())
-            {
-                isDragging = false;
-            }
-            else
-            {
-                gameObject.transform.position = rightController.position + rightController.forward /* * 0.5f*/;
-                gameObject.transform.rotation = rightController.rotation;
-            }
-        }
-
         bool leftHover = moveButton.GetComponent<RectTransform>().rect.Contains(
             moveButton.transform.InverseTransformPoint(leftController.position));
         bool rightHover = moveButton.GetComponent<RectTransform>().rect.Contains(
@@ -78,8 +64,8 @@ public class Movable_UI : MonoBehaviour
 
     }
 
-    public void OnClick()
-    {
-        isDragging = true;
-    }
+    // public void OnClick()
+    // {
+    //     isDragging = true;
+    // }
 }

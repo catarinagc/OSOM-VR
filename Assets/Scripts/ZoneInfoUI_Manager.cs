@@ -11,6 +11,7 @@ public class ZoneInfoUI_Manager : MonoBehaviour
     public class UIField
     {
         public string fieldName;
+        public TMP_Text labelText;
         public TMP_Text text;
     }
 
@@ -44,7 +45,9 @@ public class ZoneInfoUI_Manager : MonoBehaviour
                 valueStr = value != null ? value.ToString() : "-";
             }
 
-            fieldUI.text.text = $"{label}: {valueStr}";
+            //fieldUI.text.text = $"{label}: {valueStr}";
+            fieldUI.labelText.text = label;
+            fieldUI.text.text = valueStr;
         }
     }
 
@@ -61,68 +64,67 @@ public class ZoneInfoUI_Manager : MonoBehaviour
 
         BindObjectToUI(zone.Caracteristics.General, generalFields, infoGeral);
         BindObjectToUI(zone.Caracteristics.Superstructure, superstructureFields, infoC);
-        BindObjectToUI(zone.Caracteristics.InnerCrestBerm, innerCrestFields, infoMR);
+        BindObjectToUI(zone.Caracteristics.InnerCrestBerm, innerCrestFields, infoBCI);
         BindObjectToUI(zone.Caracteristics.InteriorArmorLayer, interiorArmorFields, infoT);
         BindObjectToUI(zone.Caracteristics.OuterCrestBerm, outerCrestFields, infoBC);
-        BindObjectToUI(zone.Caracteristics.ResistentArmorLayer, resistentArmorFields, infoBCI);
+        BindObjectToUI(zone.Caracteristics.ResistentArmorLayer, resistentArmorFields, infoMR);
         BindObjectToUI(zone.Caracteristics.ToeBerm, toeBermFields, infoP);
         BindObjectToUI(zone.Caracteristics.Foundation, foundationFields, infoF);
     }
 
     string[] infoGeral = new string[]
     {
-        "Levantamento", "CoordenadaM1", "CoordenadaP1", "CoordenadaM2",
-        "CoordenadaP2", "Zona", "Comprimento", "Largura",
-        "ProfundidadeMaxima", "ProfundidadeMinima"
+        "Ano de Levantamento", "Coordenada X1", "Coordenada Y1", "Coordenada X2",
+        "Coordenada Y2", "Zona", "Comprimento (m)", "Largura (m)",
+        "Profundidade Máxima (m)", "Profundidade Mínima (m)"
     };
 
     string[] infoC = new string[]
     {
-        "Tipo", "CotadeFundacao", "CotadePIMC", "LarguradeCoroamento",
-        "CotadeCoroamento", "Deflector", "LarguraPass", "CotaDente",
-        "CotaPass", "TipoC", "PesoC", "DisposC",
-        "NaturezaC", "PesoEspC"
+        "Tipo", "Z5 - Cota de Fundação (m)", "Z6 - Cota do passadiço (m)", "L2 - Largura do passadiço (m)",
+        "Z10 - Cota do muro cortina (m)", "Deflector", "(L1+L2+L3)- Largura do Coroamento (m)", "Cota de fundação do dente (m)",
+        "Cota do passeio (m)", "Tipo", "Peso", "Disposição",
+        "Natureza", "Peso Específico"
     };
 
     string[] infoMR = new string[]
     {
-        "Inclinacao", "InclinacaoSub", "CotaSuperior", "CotaInferior",
-        "CotaIntM", "TipoM", "PesoM", "DisposM",
-        "NaturezaM", "PesoEspM", "TipoMSub", "PesoMSub",
-        "DisposMSub", "NaturezaMSub", "PesoEspMSub"
+        "i1 - Inclinação", "i1a - Inclinação", "Z4 - Cota Máxima (m)", "Z3 - Cota Mínima (m)", "Z12 - Cota Intermédia (m)",
+        "Tipo 1", "Peso 1", "Disposição 1", "Natureza 1", "Peso Específico 1",
+        "Tipo 2", "Peso 2", "Disposição 2", "Natureza 2", "Peso Específico 2"
     };
 
     string[] infoT = new string[]
     {
-        "InclinacaoT", "InclinacaoTSub", "CotaSuperiorTardoz", "CotaInferiorTardoz",
-        "CotaIntT", "TipoT", "PesoT", "DisposT",
-        "NaturezaT", "PesoEspT", "TipoTSub", "PesoTSub",
-        "DisposTSub", "NaturezaTSub", "PesoEspTSub"
+        "i2 - Inclinação", "i2a - Inclinação", "Z7 - Cota Máxima (m)", "Z8 - Cota Mínima (m)",
+        "Z13 - Cota Intermédia (m)", "Tipo 1", "Peso 1", "Disposição 1",
+        "Natureza 1", "Peso Específico 1", "Tipo 2", "Peso 2",
+        "Disposição 2", "Natureza 2", "Peso Específico 2"
     };
 
     string[] infoBC = new string[]
     {
-        "CotaBC", "LarguraBC", "TipoBermaExt", "PesoBermaExt",
-        "DisposBermaExt", "NaturezaBermaExt", "PesoEspBermaExt"
+        "Z4 - Cota (m)", "L3 - Largura (m)", "Tipo", "Peso",
+        "Disposição", "Natureza", "Peso Específico"
     };
 
     string[] infoBCI = new string[]
     {
-        "CotaBCI", "LarguraBCI", "TipoBermaInt", "PesoBermaInt",
-        "DisposBermaInt", "NaturezaBermaInt", "PesoEspBermaInt"
+        "Z7 - Cota (m)", "L1 - Largura (m)", "Tipo", "Peso",
+        "Disposição", "Natureza", "Peso Específico"
     };
 
     string[] infoP = new string[]
     {
-        "InclinacaoP", "CotaSuperiorPe", "CotaInferiorPe", "LarguraP",
-        "TipoBanqPeTalude", "PesoBanqPeTalude", "DisposBanqPeTalude",
-        "NaturezaBanqPeTalude", "PesoEspBanqPeTalude"
+        "i3 - Inclinação", "Z2 - Cota Máxima (m)", "Z1 - Cota Mínima (m)", "L4 - Largura (m)",
+        "Tipo", "Peso", "Disposição",
+        "Natureza", "Peso Específico"
     };
 
     string[] infoF = new string[]
     {
-        "FundacaoCota", "FundacaoCotaInf", "FundacaoLargura",
-        "InclinacaoF", "TipoF", "PesoF", "DisposF",
-        "NaturezaF", "PesoEspF"
+        "Z1 - Cota superior (m)", "Z11 - Cota inferior (m)", "L5 - Largura (m)",
+        "Inclinação", "Tipo", "Peso", "Disposição",
+        "Natureza", "Peso Específico"
     };
 }

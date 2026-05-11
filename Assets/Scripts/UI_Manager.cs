@@ -8,6 +8,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] VRController VRController;
     [SerializeField] GameObject zoneMenuObj;
     [SerializeField] GameObject riskMenuObj;
+    [SerializeField] GameObject zoneRiskSelectorObj;
     [SerializeField] GameObject zoneInfoMenuObj;
     [SerializeField] GameObject zoneInfoSelectorObj;
     [SerializeField] GameObject zoneInspectionMenuObj;
@@ -92,6 +93,11 @@ public class UI_Manager : MonoBehaviour
         CloseActiveUIs();
         activeUIs.Add(riskMenuObj);
         riskMenuObj.SetActive(true);
+        if (isVR)
+        {      
+            activeUIs.Add(zoneRiskSelectorObj);
+            zoneRiskSelectorObj.SetActive(true);
+        }
         riskMenuObj.GetComponent<RiskMenuUI_Manager>().PrepareOpen(zone);
     }
 

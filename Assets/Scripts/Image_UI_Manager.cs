@@ -9,26 +9,30 @@ using UnityEngine.XR.Management;
 
 public class Image_UI_Manager : MonoBehaviour
 {
-    [SerializeField] Image imagePlaceholder1;
-    [SerializeField] TMP_Text textPlaceholder1;
-    [SerializeField] Image imagePlaceholder2;
-    [SerializeField] TMP_Text textPlaceholder2;
     [SerializeField] TMP_Text image_title;
-    [SerializeField] TMP_Text init_title;
-
     [SerializeField] GameObject imagesHolder;
-    [SerializeField] GameObject imageOutside;
-    [SerializeField] InputActionAsset inputActions;
     [SerializeField] GameObject fullscreenPlaceholder;
-    [SerializeField] GameObject initScreen;
     [SerializeField] GameObject imageScreen;
     [SerializeField] UI_Manager UI_Manager;
-    [SerializeField] GameObject Controller_UI_Prefab;
-
-    private GameObject InstancedObj;
     public Animator panelAnimator;
+
+    [Header("Placeholder 1")]
+    [SerializeField] Image imagePlaceholder1;
+    [SerializeField] TMP_Text textPlaceholder1;
+    [SerializeField] GameObject imageIconPlaceholder1;
+
+    [Header("Placeholder 2")]
+    [SerializeField] Image imagePlaceholder2;
+    [SerializeField] TMP_Text textPlaceholder2;
+    [SerializeField] GameObject imageIconPlaceholder2;
+    
+    [Header("VR only")]
+    [SerializeField] GameObject imageOutside;
+    [SerializeField] GameObject Controller_UI_Prefab;
+    private GameObject InstancedObj;
     public Transform rightController;
     public Transform leftController;
+
     private bool isDragging = false;
     private InputAction aButton;
     private int hotspotID = 0;
@@ -66,29 +70,8 @@ public class Image_UI_Manager : MonoBehaviour
     {
         XRModeSwitcher.OnModeSelected += OnModeChosen;
         currentDir = ViewDirection.F;
-        if (isVR)
-        {
-            aButton = inputActions.FindActionMap("XRI Right Interaction").FindAction("AButton");
-            aButton.Enable();
-        }
     }
 
-    //void Update()
-    //{
-        
-    //    if (isDragging)
-    //    {
-    //        if (aButton.WasPressedThisFrame())
-    //        {
-    //            isDragging = false;
-    //        }
-    //        else
-    //        {
-    //            InstancedObj.transform.position = rightController.position + rightController.forward /* * 0.5f*/;
-    //            InstancedObj.transform.rotation = rightController.rotation;
-    //        }
-    //    }
-    //}
 
     public void ShowItem(Sprite newSprite, string year)
     {
@@ -99,11 +82,13 @@ public class Image_UI_Manager : MonoBehaviour
         {
             imagePlaceholder1.sprite = newSprite;
             textPlaceholder1.text = year;
+            imageIconPlaceholder1.SetActive(true);
         }
         else
         {
             imagePlaceholder2.sprite = newSprite;
             textPlaceholder2.text = year;
+            imageIconPlaceholder2.SetActive(true);
         }
 
         useFirstSlot = !useFirstSlot;
@@ -115,12 +100,14 @@ public class Image_UI_Manager : MonoBehaviour
         {
             textPlaceholder1.text = "";
             imagePlaceholder1.sprite = null;
+            imageIconPlaceholder1.SetActive(false);
             useFirstSlot = true;
         }
         else
         {
             textPlaceholder2.text = "";
             imagePlaceholder2.sprite = null;
+            imageIconPlaceholder2.SetActive(false);
             if (useFirstSlot)
             {
                 useFirstSlot = false;
@@ -171,18 +158,15 @@ public class Image_UI_Manager : MonoBehaviour
     {
         this.hotspotID = hotspotID;
         this.troco_ID = troco_ID;
-        init_title.text = "Portimão Poente - Troço " +troco_ID+ " - Ponto " + hotspotID.ToString();
-        initScreen.SetActive(true);
-        imageScreen.SetActive(false);
-        fullscreenPlaceholder.SetActive(false);
         clearPlaceholders();
+        fullscreenPlaceholder.SetActive(false);
         ChangeViewDirection(ViewDirection.F);
+        openImages();
     }
 
     public void openImages()
     {
-        image_title.text = init_title.text;
-        initScreen.SetActive(false);
+        image_title.text = "Portimão Poente - Troço " +troco_ID+ " - Ponto " + hotspotID.ToString();
         imageScreen.SetActive(true);
         if (isVR)
         {
@@ -203,15 +187,11 @@ public class Image_UI_Manager : MonoBehaviour
 
         InstancedObj.transform.position =
             rightController.position + rightController.forward;
-        InstancedObj.transform.rotation = rightController.rotation;
-
-        isDragging = true;
-
-        InstancedObj.GetComponentInChildren<Image>().sprite = image.sprite;
+        
+        Transform target = InstancedObj.transform.Find("Spatial Panel Scroll/Content/OSOMImage");
+        Image img = target.GetComponent<Image>();
+        img.sprite = image.sprite;
         InstancedObj.GetComponentInChildren<TextMeshProUGUI>().text = year;
-        InstancedObj.GetComponent<Movable_UI>().rightController = rightController;
-        InstancedObj.GetComponent<Movable_UI>().leftController = leftController;
-        InstancedObj.GetComponent<Movable_UI>().inputActions = inputActions;
 
         UI_Manager.CloseActiveUIs();
     }

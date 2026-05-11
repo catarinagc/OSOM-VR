@@ -14,4 +14,13 @@ public class ButtonTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         TooltipScript.Instance.Hide();
     }
+
+    private void OnDisable()
+    {
+        // Hide tooltip if this object gets disabled while hovered
+        if (TooltipScript.Instance != null)
+        {
+            TooltipScript.Instance.Hide();
+        }
+    }
 }
