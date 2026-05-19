@@ -10,6 +10,7 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
     public class UIField
     {
         public string fieldName;
+        public TMP_Text labelText;
         public TMP_Text text;
     }
 
@@ -69,7 +70,8 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
                 valueStr = value != null ? value.ToString() : "-";
             }
 
-            fieldUI.text.text = $"{label}: {valueStr}";
+            fieldUI.labelText.text = label;
+            fieldUI.text.text = valueStr;
         }
     }
     
@@ -78,11 +80,11 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
         default_title_text = "Portimão Poente ";
     }
 
-    public void PrepareOpen(Zone zone)
+    public void PrepareOpen(Zone zone, int year)
     {
         title_text.text = default_title_text + "(" + zone.name + ")";
         currentZone = zone;
-        yearSelected = zone.lastInspection.Year;
+        yearSelected = year;
         PrepareDropdown();
         OpenInspectionData();
     }
@@ -99,7 +101,7 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
             int year = currentZone.Inspections[i].Year;
             options.Add(year.ToString());
 
-            if (year == currentZone.lastInspection.Year)
+            if (year == yearSelected)
             {
                 selectedIndex = i;
             }
@@ -118,9 +120,15 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
         Debug.Log(yearSelected);
         Inspection inspection = currentZone.GetInspectionFromYear(yearSelected);
 
+        inspection.ResistentArmorLayer.PrepareTexts();
+        inspection.Superstructure.PrepareTexts();
+        inspection.InteriorArmorLayer.PrepareTexts();
+        inspection.Underwater.PrepareTexts();
+        inspection.Pier.PrepareTexts();
+
         BindObjectToUI(inspection.General, generalFields, inspGeral);
-        BindObjectToUI(inspection.Superstructure, superstructureFields, inspSup);
         BindObjectToUI(inspection.ResistentArmorLayer, resistentArmorFields, inspResArmor);
+        BindObjectToUI(inspection.Superstructure, superstructureFields, inspSup);
         BindObjectToUI(inspection.InteriorArmorLayer, interiorArmorFields, inspIntArmor);
         BindObjectToUI(inspection.Underwater, underwaterields, inspSub);
         BindObjectToUI(inspection.Pier,pierFields, inspPier);
@@ -131,19 +139,19 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
         "Relevante", "Motivo da Relevância", "Notas Gerais"
     };
 
-    string[] inspSup = new string[]
+    string[] inspResArmor = new string[]
     {
         "Quedas", "Fraturas", "Talude", 
         "Quantidade", "Descrição", "Som",
         "Junto à linha de água (m)", "Coroamento (m)", "Maior assentamento", 
-        "Obeservações", "Opinião Geral"
+        "Obeservações", "Opinião Geral", "Estado"
     };
 
-    string[] inspResArmor = new string[]
+    string[] inspSup = new string[]
     {
         "Fraturas",
         "Quantidade", "Descrição", "Assentamento", "Derrubamento", "Deslizamento",
-        "Obeservações", "Opinião Geral"
+        "Obeservações", "Opinião Geral", "Estado"
     };
 
     string[] inspIntArmor = new string[]
@@ -151,14 +159,14 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
         "Quedas", "Fraturas", "Talude",
         "Quantidade", "Descrição", "Som",
         "Junto à linha de água (m)", "Coroamento (m)", "Maior assentamento", 
-        "Obeservações", "Opinião Geral"
+        "Obeservações", "Opinião Geral", "Estado"
     };
 
     string[] inspSub = new string[]
     {
-        "Quedas", "Fraturas", "Talude", "Degradação Superficial dos Materiais: Quantidade",
-        "Quedas", "Fraturas", "Talude", "Degradação Superficial dos Materiais: Quantidade",
-        "Quedas", "Fraturas", "Talude", "Degradação Superficial dos Materiais: Quantidade",
+        "Quedas", "Fraturas", "Talude", "Quantidade",
+        "Quedas", "Fraturas", "Talude", "Quantidade",
+        "Quedas", "Fraturas", "Talude", "Quantidade",
         "Obeservações", "Opinião Geral"
     };
 

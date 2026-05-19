@@ -59,5 +59,6 @@ public class HotspotScript : MonoBehaviour
 
         //mudar nome para UI_Manager
         UI_Manager.openHotspotImageUI(hotspotID, troco_ID);
+        Debug.Log("hello " + hotspotID + troco_ID);
     }
 }

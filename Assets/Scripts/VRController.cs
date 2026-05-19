@@ -22,6 +22,8 @@ public class VRController : MonoBehaviour
     public Transform rightController;
     public GameObject leftController;
     public Screenshot screenshot;
+    [SerializeField] private float maxHeight = 3.0f;
+    [SerializeField] private Transform xrOrigin;
 
     public enum InteractionMode
     {
@@ -86,24 +88,68 @@ public class VRController : MonoBehaviour
         }
     }
 
+    // void LateUpdate()
+    // {
+    //     if (xrOrigin == null) return;
+
+    //     Vector3 pos = xrOrigin.position;
+
+    //     if (pos.y > maxHeight)
+    //     {
+    //         pos.y = maxHeight;
+    //         xrOrigin.position = pos;
+    //     }
+    // }
+
     public float GetHeight()
     {
         return gameObject.transform.position.y;
     }
+
+    // public void toggleFly()
+    // {
+    //     if (currentMode == MovementMode.Flying)
+    //     {
+    //         moveProvider.enableFly = false;
+    //         transform.position = initWalkPos.position;
+    //         transform.rotation = initWalkPos.rotation;  
+    //         currentMode = MovementMode.Walking;
+    //     }
+    //     else
+    //     {
+    //         moveProvider.enableFly = true;
+    //         currentMode = MovementMode.Flying;
+    //     }
+    // }
 
     public void toggleFly()
     {
         if (currentMode == MovementMode.Flying)
         {
             moveProvider.enableFly = false;
-            transform.position = initWalkPos.position;
-            transform.rotation = initWalkPos.rotation;  
+
             currentMode = MovementMode.Walking;
+
+            SnapToGround();
         }
         else
         {
             moveProvider.enableFly = true;
+
             currentMode = MovementMode.Flying;
+        }
+    }
+
+    private void SnapToGround()
+    {
+        float raycastOriginHeight = 10f; // cast from above in case we're clipping
+        Vector3 rayOrigin = xrOrigin.position + Vector3.up * raycastOriginHeight;
+
+        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, 100f))
+        {
+            Vector3 snappedPos = xrOrigin.position;
+            snappedPos.y = hit.point.y;
+            xrOrigin.position = snappedPos;
         }
     }
 

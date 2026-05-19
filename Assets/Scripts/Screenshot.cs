@@ -26,6 +26,8 @@ public class Screenshot : MonoBehaviour
         }
     }
 
+
+
     // public void TakeScreenshotVR()
     // {
     //     // int width = 1920;
@@ -79,7 +81,19 @@ public class Screenshot : MonoBehaviour
 
     public void TakeScreenshotVR()
     {
-        StartCoroutine(CaptureAndSave());
+        //StartCoroutine(CaptureAndSave());
+        // sem build
+        string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        string directory = Path.Combine(pictures, "OSOM_Screenhots");
+
+        if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
+
+        string filename = "screenshot_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png";
+        string path = Path.Combine(directory, filename);
+
+        ScreenCapture.CaptureScreenshot(path);
+        Debug.Log("Saving to: " + path);
     }
 
     IEnumerator CaptureAndSave()

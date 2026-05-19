@@ -15,6 +15,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject zoneInspectionSelectorObj;
     [SerializeField] GameObject breakwaterMenu;
     [SerializeField] BreakwaterZoneManager breakwaterZoneManager;
+    [SerializeField] Transform spawnPoint;
     private bool isVR = false;
 
     void Awake()
@@ -38,9 +39,9 @@ public class UI_Manager : MonoBehaviour
 
     public void openHotspotImageUI(int hotspotID, char troco_ID)
     {
-        hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID);
-        hotspotImageObj.GetComponent<Image_UI_Manager>().OnModeChosen(isVR);
         CloseActiveUIs();
+        hotspotImageObj.GetComponent<Image_UI_Manager>().OnModeChosen(isVR);
+        hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID);
         activeUIs.Add(hotspotImageObj);
         hotspotImageObj.SetActive(true);
     }
@@ -92,12 +93,13 @@ public class UI_Manager : MonoBehaviour
     {
         CloseActiveUIs();
         activeUIs.Add(riskMenuObj);
-        riskMenuObj.SetActive(true);
         if (isVR)
         {      
             activeUIs.Add(zoneRiskSelectorObj);
             zoneRiskSelectorObj.SetActive(true);
+            riskMenuObj.GetComponent<SnapMenuToPlayer>().OpenMenu();
         }
+        riskMenuObj.SetActive(true);
         riskMenuObj.GetComponent<RiskMenuUI_Manager>().PrepareOpen(zone);
     }
 
@@ -105,12 +107,17 @@ public class UI_Manager : MonoBehaviour
     {
         CloseActiveUIs();
         activeUIs.Add(zoneInfoMenuObj);
-        zoneInfoMenuObj.SetActive(true);
         if (isVR)
         {      
             activeUIs.Add(zoneInfoSelectorObj);
             zoneInfoSelectorObj.SetActive(true);
+            zoneInfoMenuObj.transform.SetParent(spawnPoint, false);
+            zoneInfoMenuObj.transform.localPosition = Vector3.zero;
+            zoneInfoMenuObj.transform.localRotation = Quaternion.identity;
+            //zoneInfoMenuObj.SetActive(true);
+            zoneInfoMenuObj.GetComponent<SnapMenuToPlayer>().OpenMenu();
         }
+        zoneInfoMenuObj.SetActive(true);
         zoneInfoMenuObj.GetComponent<ZoneInfoUI_Manager>().PrepareOpen(zone);
     }
 
@@ -123,7 +130,22 @@ public class UI_Manager : MonoBehaviour
         {
             activeUIs.Add(zoneInspectionSelectorObj);
             zoneInspectionSelectorObj.SetActive(true);
+            zoneInspectionMenuObj.GetComponent<SnapMenuToPlayer>().OpenMenu();
         }
-        zoneInspectionMenuObj.GetComponent<ZoneInspectionsUI_Manager>().PrepareOpen(zone);
+        zoneInspectionMenuObj.GetComponent<ZoneInspectionsUI_Manager>().PrepareOpen(zone, zone.lastInspection.Year);
+    }
+
+    public void OpenZoneInspectionRefMenu(Zone zone)
+    {
+        CloseActiveUIs();
+        activeUIs.Add(zoneInspectionMenuObj);
+        zoneInspectionMenuObj.SetActive(true);
+        if (isVR)
+        {
+            activeUIs.Add(zoneInspectionSelectorObj);
+            zoneInspectionSelectorObj.SetActive(true);
+            zoneInspectionMenuObj.GetComponent<SnapMenuToPlayer>().OpenMenu();
+        }
+        zoneInspectionMenuObj.GetComponent<ZoneInspectionsUI_Manager>().PrepareOpen(zone, zone.referenceInspection.Year);
     }
 }

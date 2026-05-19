@@ -38,6 +38,7 @@ public class PierInspection
     public string Observations;
 
     public string GeneralOpinion;
+    public string GeneralOpinionText;
 
 
     void Start()
@@ -111,5 +112,29 @@ public class PierInspection
             "2cm < Abertura ≤ 5cm",
             "Abertura > 5cm"
         });
+
+        GeneralOpinionText = GetTextWithThreshold(GeneralOpinion, new[]
+        {
+            (5,  "Grau 0"),
+            (20,  "Grau 1"),
+            (55, "Grau 2"),
+            (105, "Grau 3"),
+            (155, "Grau 4"),
+            (190, "Grau 5")
+        });
+    }
+
+    private string GetTextWithThreshold(string value, (int threshold, string label)[] map)
+    {
+        if (!int.TryParse(value, out int val))
+            return "-";
+
+        foreach (var (threshold, label) in map)
+        {
+            if (val <= threshold)
+                return label;
+        }
+
+        return map[map.Length - 1].label; // fallback to highest grade
     }
 }

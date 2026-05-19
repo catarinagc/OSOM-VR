@@ -57,4 +57,10 @@ public class zoneUIManager : MonoBehaviour
         ui_manager.OpenZoneInspectionMenu(currentZone);
         currentZone = null;
     }
+
+    public void OpenZoneInspectionRefMenu()
+    {
+        ui_manager.OpenZoneInspectionRefMenu(currentZone);  
+        currentZone = null;
+    }
 }

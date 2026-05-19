@@ -153,7 +153,7 @@ public class Zone
             { "Tardoz", $"Tardoz: {interiorArmorLayerLevelTextSimple}" },
             { "Coroamento", $"Coroamento: {superStructureLayerLevelTextSimple}" },
             { "LastInspection", $"Última inspeção: {lastInspection?.Year}" },
-            { "ReferenceInspection", $"Inspeção de Referência: {referenceInspection?.Year}" }
+            { "ReferenceInspection", $"Inspeção Referência: {referenceInspection?.Year}" }
         };
     }
 
@@ -165,24 +165,24 @@ public class Zone
             {
                 Level = $"Manto Resistente [Grau {resistentArmorLayerLevel}]: {resistentArmorLayerLevelText}",
                 Evol = $"Manto Resistente [Grau {resistentArmorLayerEvol}]: {resistentArmorLayerEvolText}",
-                RefState = $"Manto Resistente {referenceInspection.ResistentArmorLayer.getLevelString()} [Grau {referenceInspection.ResistentArmorLayer.DamageLevel}]",
-                LastState = $"Manto Resistente {lastInspection.ResistentArmorLayer.getLevelString()} [Grau {lastInspection.ResistentArmorLayer.DamageLevel}]"
+                RefState = $"Manto Resistente [Grau {referenceInspection.ResistentArmorLayer.DamageLevel}]: {referenceInspection.ResistentArmorLayer.getLevelString()}",
+                LastState = $"Manto Resistente [Grau {lastInspection.ResistentArmorLayer.DamageLevel}]: {lastInspection.ResistentArmorLayer.getLevelString()}"
             },
 
             ["Coroamento"] = new LayerUIData
             {
                 Level = $"Coroamento [Grau {superStructureLayerLevel}]: {superStructureLayerLevelText}",
                 Evol = $"Coroamento [Grau {superStructureLayerEvol}]: {superStructureLayerEvolText}",
-                RefState = $"Coroamento {referenceInspection.Superstructure.getLevelString()} [Grau {referenceInspection.Superstructure.DamageLevel}]",
-                LastState = $"Coroamento {lastInspection.Superstructure.getLevelString()} [Grau {lastInspection.Superstructure.DamageLevel}]"
+                RefState = $"Coroamento [Grau {referenceInspection.Superstructure.DamageLevel}]: {referenceInspection.Superstructure.getLevelString()}",
+                LastState = $"Coroamento [Grau {lastInspection.Superstructure.DamageLevel}]: {lastInspection.Superstructure.getLevelString()}"
             },
 
             ["Tardoz"] = new LayerUIData
             {
                 Level = $"Tardoz [Grau {interiorArmorLayerLevel}]: {interiorArmorLayerLevelText}",
                 Evol = $"Tardoz [Grau {interiorArmorLayerEvol}]: {interiorArmorLayerEvolText}",
-                RefState = $"Tardoz {referenceInspection.InteriorArmorLayer.getLevelString()} [Grau {referenceInspection.InteriorArmorLayer.DamageLevel}]",
-                LastState = $"Tardoz {lastInspection.InteriorArmorLayer.getLevelString()} [Grau {lastInspection.InteriorArmorLayer.DamageLevel}]"
+                RefState = $"Tardoz [Grau {referenceInspection.InteriorArmorLayer.DamageLevel}]: {referenceInspection.InteriorArmorLayer.getLevelString()}",
+                LastState = $"Tardoz [Grau {lastInspection.InteriorArmorLayer.DamageLevel}]: {lastInspection.InteriorArmorLayer.getLevelString()}"
             }
         };
     }

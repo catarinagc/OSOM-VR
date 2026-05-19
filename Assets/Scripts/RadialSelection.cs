@@ -32,24 +32,40 @@ public class RadialSelection : MonoBehaviour
     {
         triggerButton = inputActions.FindActionMap("XRI Right Interaction").FindAction("trigger");
         triggerButton.Enable();
-        SpawnRadialPart();
+        //SpawnRadialPart();
     }
 
     // Update is called once per frame
     void Update()
     {
         //GetSelectedRadialPart();
+        // if (triggerButton.WasPressedThisFrame())
+        // {
+        //     //Debug.Log(spawnedParts[currentSelectedRadialPart].GetComponentInChildren<TMP_Text>().text);
+        //     string str = spawnedParts[currentSelectedRadialPart].GetComponentInChildren<TMP_Text>().text;
+        //     if (System.Enum.TryParse(str, out Image_UI_Manager.ViewDirection result))
+        //     {
+        //         image_UI_Manager.ChangeViewDirection(result);
+        //     }
+        //     else
+        //     {
+        //         Debug.LogWarning("Unknown view direction string: " + str);
+        //     }
+        // }
         if (triggerButton.WasPressedThisFrame())
         {
-            //Debug.Log(spawnedParts[currentSelectedRadialPart].GetComponentInChildren<TMP_Text>().text);
-            string str = spawnedParts[currentSelectedRadialPart].GetComponentInChildren<TMP_Text>().text;
+            if (currentSelectedRadialPart < 0 ||
+                currentSelectedRadialPart >= spawnedParts.Count)
+            {
+                return;
+            }
+
+            string str = spawnedParts[currentSelectedRadialPart]
+                .GetComponentInChildren<TMP_Text>().text;
+
             if (System.Enum.TryParse(str, out Image_UI_Manager.ViewDirection result))
             {
                 image_UI_Manager.ChangeViewDirection(result);
-            }
-            else
-            {
-                Debug.LogWarning("Unknown view direction string: " + str);
             }
         }
         UpdatePointerSelection();
@@ -81,12 +97,14 @@ public class RadialSelection : MonoBehaviour
             float distanceFromCenter = localPoint.magnitude;
             //
 
-            currentSelectedRadialPart = (int)(angle * numberOfradialPart / 360);
+            //currentSelectedRadialPart = (int)(angle * numberOfradialPart / 360);
+            currentSelectedRadialPart = (int)(angle * numberOfradialPart / 360f);
 
             if (distanceFromCenter <= maxSelectDistance)
             {
                 if (angle < 0) angle += 360;
-                currentSelectedRadialPart = (int)angle * numberOfradialPart / 360;
+                //currentSelectedRadialPart = (int)angle * numberOfradialPart / 360;
+                currentSelectedRadialPart = (int)(angle * numberOfradialPart / 360f);
             }
             else
             {
@@ -118,7 +136,7 @@ public class RadialSelection : MonoBehaviour
             }
         }
     }
-
+    
     public void SpawnRadialPart()
     {
         radialPartCanvas.gameObject.SetActive(true);

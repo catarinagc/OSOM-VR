@@ -39,8 +39,10 @@ public class InteriorArmorLayerInspection
     public string Observations;
 
     public string GeneralOpinion;
+    public string GeneralOpinionText;
 
     public int DamageLevel;
+    public string DamageLevelText;
 
     public int CalculateDamageLevel()
     {
@@ -78,12 +80,12 @@ public class InteriorArmorLayerInspection
     {
         string[] stateDescription =
         {
-            "em bom estado",
-            "em bom estado mas com sinais pontuais de degradação ligeira",
-            "ligeiramente degradado", 
-            "degradado",			
-            "muito degradado",		
-            "em ruína"
+            "Em bom estado",
+            "Em bom estado mas com sinais pontuais de degradação ligeira",
+            "Ligeiramente degradado", 
+            "Degradado",			
+            "Muito degradado",		
+            "Em ruína"
         };
 
         return stateDescription[DamageLevel];
@@ -157,6 +159,39 @@ public class InteriorArmorLayerInspection
             "0.5m < Assentamento ≤ 1.0m",
             "Assentamento > 1.0m"
         });
+
+        GeneralOpinionText = GetTextWithThreshold(GeneralOpinion, new[]
+        {
+            (35,  "Grau 0"),
+            (85,  "Grau 1"),
+            (135, "Grau 2"),
+            (200, "Grau 3"),
+            (255, "Grau 4"),
+            (280, "Grau 5")
+        });
+
+        DamageLevelText = GetTextWithLabel(DamageLevel.ToString(), new[]
+        {
+            "Grau 0: Tardoz em bom estado",
+            "Grau 1: Tardoz em bom estado mas com sinais pontuais de degradação ligeira",
+            "Grau 2: Tardoz ligeiramente degradado", 
+            "Grau 3: Tardoz degradado",		
+            "Grau 4: Tardoz muito degradado",	
+            "Grau 5: Tardoz em ruína"
+        });
     }
 
+    private string GetTextWithThreshold(string value, (int threshold, string label)[] map)
+    {
+        if (!int.TryParse(value, out int val))
+            return "-";
+
+        foreach (var (threshold, label) in map)
+        {
+            if (val <= threshold)
+                return label;
+        }
+
+        return map[map.Length - 1].label; // fallback to highest grade
+    }
 }

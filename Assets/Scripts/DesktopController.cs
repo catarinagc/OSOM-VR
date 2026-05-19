@@ -83,7 +83,7 @@ public class DesktopController : MonoBehaviour
             UI_Manager.CloseActiveUIs();
         }
 
-        if(Keyboard.current.kKey.wasPressedThisFrame)
+        if(Keyboard.current.mKey.wasPressedThisFrame)
         {
             UI_Manager.OpenMenu();
         }
@@ -101,11 +101,19 @@ public class DesktopController : MonoBehaviour
             HandleLook();
         }
     
-        if (Keyboard.current.gKey.wasPressedThisFrame)
+        if (Keyboard.current.fKey.wasPressedThisFrame)
         {
-            changePosWalking();
-            currentMode = (currentMode == MovementMode.Walking) ? MovementMode.Flying : MovementMode.Walking;
-            verticalVelocity = 0; // Reset momentum when switching
+            if (currentMode == MovementMode.Flying)
+            {
+                currentMode = MovementMode.Walking;
+                verticalVelocity = 0;
+                SnapToGround();
+            }
+            else
+            {
+                currentMode = MovementMode.Flying;
+                verticalVelocity = 0;
+            }
         }
 
         // if (Mouse.current.leftButton.wasPressedThisFrame)
@@ -159,10 +167,26 @@ public class DesktopController : MonoBehaviour
         }
     }
 
-    private void changePosWalking()
+    // private void changePosWalking()
+    // {
+    //     transform.position = initWalkPos.position;
+    //     transform.rotation = initWalkPos.rotation;
+    // }
+
+    [SerializeField] private float groundSnapRayOriginHeight = 2f;
+
+    private void SnapToGround()
     {
-        transform.position = initWalkPos.position;
-        transform.rotation = initWalkPos.rotation;
+        Vector3 rayOrigin = transform.position + Vector3.up * groundSnapRayOriginHeight;
+
+        if (Physics.Raycast(rayOrigin, Vector3.down, out RaycastHit hit, 100f))
+        {
+            controller.enabled = false;
+            Vector3 snappedPos = transform.position;
+            snappedPos.y = hit.point.y;
+            transform.position = snappedPos;
+            controller.enabled = true;
+        }
     }
 
     private void HandleLook()
@@ -188,8 +212,14 @@ public class DesktopController : MonoBehaviour
         if (currentMode == MovementMode.Flying)
         {
             // FLYING: Move exactly where the camera points
-            moveDirection = (camTransform.forward * input.y) + (camTransform.right * input.x);
-            controller.Move(moveDirection * flySpeed * Time.deltaTime);
+            // moveDirection = (camTransform.forward * input.y) + (camTransform.right * input.x);
+            // controller.Move(moveDirection * flySpeed * Time.deltaTime);
+            Vector3 move = (camTransform.forward * input.y) + (camTransform.right * input.x);
+            Vector3 proposed = transform.position + (move * flySpeed * Time.deltaTime);
+
+            // only apply Y if under max height
+            controller.Move(move * flySpeed * Time.deltaTime);
+
         }
         else
         {

@@ -57,6 +57,8 @@ public class UnderwaterInspection
 
     public string GeneralOpinion;
 
+    public string GeneralOpinionText;
+
 
     void Start()
     {
@@ -180,5 +182,29 @@ public class UnderwaterInspection
             "Alguma corrosão",
             "Muita corrosão"
         });
+
+        GeneralOpinionText = GetTextWithThreshold(GeneralOpinion, new[]
+        {
+            (30,  "Grau 0"),
+            (75,  "Grau 1"),
+            (115, "Grau 2"),
+            (170, "Grau 3"),
+            (230, "Grau 4"),
+            (275, "Grau 5")
+        });
+    }
+
+    private string GetTextWithThreshold(string value, (int threshold, string label)[] map)
+    {
+        if (!int.TryParse(value, out int val))
+            return "-";
+
+        foreach (var (threshold, label) in map)
+        {
+            if (val <= threshold)
+                return label;
+        }
+
+        return map[map.Length - 1].label; // fallback to highest grade
     }
 }
