@@ -60,13 +60,16 @@ public class RadialSelection : MonoBehaviour
                 return;
             }
 
-            string str = spawnedParts[currentSelectedRadialPart]
+            string dir = spawnedParts[currentSelectedRadialPart]
                 .GetComponentInChildren<TMP_Text>().text;
 
-            if (System.Enum.TryParse(str, out Image_UI_Manager.ViewDirection result))
-            {
-                image_UI_Manager.ChangeViewDirection(result);
-            }
+            image_UI_Manager.ShowDirection(dir);
+
+            // if (System.Enum.TryParse(str, out Image_UI_Manager.ViewDirection result))
+            // {
+            //     image_UI_Manager.ChangeViewDirection(result);
+            // }
+
         }
         UpdatePointerSelection();
     }
@@ -168,7 +171,7 @@ public class RadialSelection : MonoBehaviour
             }
             spawnRadialPart.GetComponent<Image>().fillAmount = 1 / (float)numberOfradialPart - (angleBetweenPart / 360);
             if (i < view_directions.Length)
-                spawnRadialPart.GetComponentInChildren<TMP_Text>().text = view_directions[i];
+                spawnRadialPart.GetComponentInChildren<TMP_Text>().text = view_directions[i].ToString();
             else
                 spawnRadialPart.GetComponentInChildren<TMP_Text>().text = "L " + (i - view_directions.Length + 1).ToString();
 

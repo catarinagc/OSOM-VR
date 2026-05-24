@@ -13,6 +13,7 @@ public class HotspotManager : MonoBehaviour
     private List<HotspotScript> hotspots = new List<HotspotScript>();
     //[SerializeField] UI_Manager UI_Manager;
     private UI_Manager view_UI_manager;
+    private string spritesRoot;
 
     void OnEnable()
     {
@@ -29,12 +30,68 @@ public class HotspotManager : MonoBehaviour
         Debug.Log("Mode selected! VR? " + isVR);
 
         ReadCSV();
+        LoadAllSprites();
     }
 
     void Start()
     {
         realOriginPos = breakwaterOrigin.GetComponent<originPointScript>().realWorldPosition;
     }
+
+    void LoadAllSprites()
+    {
+        string fullPath = Path.Combine(Application.dataPath, "Resources/Hotspot_Images");
+        
+        foreach (string yearFolder in Directory.GetDirectories(fullPath))
+        {
+            string folderName = Path.GetFileName(yearFolder);
+            var parts = folderName.Split('-');
+            string year = parts[0];
+
+            Sprite[] sprites = Resources.LoadAll<Sprite>($"Hotspot_Images/{folderName}");
+
+            foreach (Sprite sprite in sprites)
+            {
+                string fileName = sprite.name;
+                int imageId = -1;
+                string imageDir = string.Empty;
+
+                for (int i = 0; i < fileName.Length; i++)
+                {
+                    if (!char.IsDigit(fileName[i]))
+                    {
+                        if (int.TryParse(fileName[..i], out int parsed))
+                            imageId = parsed;
+
+                        imageDir = fileName[i..];
+                        break;
+                    }
+                }
+               
+
+                //int imageId = int.Parse(fileName[..^1]);
+                //char imageDir = fileName[^1];
+                Debug.Log($"fileName: {fileName} | imageId: {imageId} | imageDir: {imageDir}");
+                Debug.Log($"hotspots count: {hotspots.Count}");
+                HotspotScript hotspot = hotspots.Find(h => h.hotspotID == imageId);
+
+                if (hotspot)
+                {
+                    Debug.Log("FOUND");
+                    hotspot.AddImage(new InspectionImage
+                    {
+                        sprite = sprite,
+                        hotspotID = imageId,
+                        dir = imageDir,
+                        year = year
+                    });
+                }
+            }
+
+            Debug.Log($"Loaded {sprites.Length} sprites for {year}");
+        }
+    }
+
 
     // void ReadCSV()
     // {
@@ -250,5 +307,12 @@ public class HotspotManager : MonoBehaviour
         {
             hotspot.gameObject.SetActive(true);
         }
+    }
+
+    private void AddImagesToHotspots()
+    {
+        //ler os varios folders dos anos das images
+        //identificar o ID 16F - 16
+        //colocar na lista desse hotspot a imagem com a dirercao associada
     }
 }

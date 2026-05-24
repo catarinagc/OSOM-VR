@@ -55,26 +55,46 @@ public class DesktopController : MonoBehaviour
 
     void Update()
     {
-        if (Mouse.current.rightButton.isPressed)
+        if (Mouse.current.rightButton.wasPressedThisFrame)
         {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
+            if (Cursor.lockState == CursorLockMode.None)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
         }
-        else
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
+
+        // if (Mouse.current.leftButton.wasPressedThisFrame)
+        // {
+        //     // If clicking UI, ignore world interaction
+        //     if (EventSystem.current.IsPointerOverGameObject())
+        //         return;
+
+        //     if (currentHotspot)
+        //     {
+        //         currentHotspot.OnInteract();
+        //     }
+        // }
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            // If clicking UI, ignore world interaction
             if (EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            if (currentHotspot)
+            // Re-cast from screen center to confirm, don't rely on cursor position
+            Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
+            Ray ray = camera.ScreenPointToRay(screenCenter);
+
+            if (Physics.Raycast(ray, out RaycastHit hit))
             {
-                currentHotspot.OnInteract();
+                HotspotScript hotspot = hit.collider.GetComponentInParent<HotspotScript>();
+                if (hotspot != null)
+                    hotspot.OnInteract();
             }
         }
         
@@ -83,7 +103,7 @@ public class DesktopController : MonoBehaviour
             UI_Manager.CloseActiveUIs();
         }
 
-        if(Keyboard.current.mKey.wasPressedThisFrame)
+        if(Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             UI_Manager.OpenMenu();
         }
@@ -96,7 +116,7 @@ public class DesktopController : MonoBehaviour
         HandleMovement();
         HandleHotspotLook();
 
-        if (Mouse.current.rightButton.isPressed)
+        if (Cursor.lockState == CursorLockMode.Locked)
         {
             HandleLook();
         }
@@ -211,9 +231,6 @@ public class DesktopController : MonoBehaviour
 
         if (currentMode == MovementMode.Flying)
         {
-            // FLYING: Move exactly where the camera points
-            // moveDirection = (camTransform.forward * input.y) + (camTransform.right * input.x);
-            // controller.Move(moveDirection * flySpeed * Time.deltaTime);
             Vector3 move = (camTransform.forward * input.y) + (camTransform.right * input.x);
             Vector3 proposed = transform.position + (move * flySpeed * Time.deltaTime);
 
@@ -223,7 +240,6 @@ public class DesktopController : MonoBehaviour
         }
         else
         {
-            // WALKING: Move only on the XZ plane (ignore camera tilt for direction)
             Vector3 forward = transform.forward;
             Vector3 right = transform.right;
             moveDirection = (forward * input.y) + (right * input.x);

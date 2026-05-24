@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.XR;
 using UnityEngine.XR.Management;
 using System.Collections;
+using System.Collections.Generic;
 public class Image_UI_Manager : MonoBehaviour
 {
     [SerializeField] TMP_Text image_title;
@@ -23,35 +24,30 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] Image imagePlaceholder1_Shadow;
     [SerializeField] TMP_Text textPlaceholder1;
     [SerializeField] GameObject imageIconPlaceholder1;
+    private Image interactedImage1;
 
     [Header("Placeholder 2")]
     [SerializeField] Image imagePlaceholder2;
     [SerializeField] Image imagePlaceholder2_Shadow;
     [SerializeField] TMP_Text textPlaceholder2;
     [SerializeField] GameObject imageIconPlaceholder2;
+    private Image interactedImage2;
     
     [Header("VR only")]
     [SerializeField] GameObject imageOutside;
     [SerializeField] GameObject Controller_UI_Prefab;
+    [SerializeField] Transform imageContainer;
     private GameObject InstancedObj;
     public Transform rightController;
     public Transform leftController;
-
+    [SerializeField] private GameObject imagePrefab;
+    private Dictionary<string, List<GameObject>> imagesByDirection = new();
+    private List<InspectionImage> currentImages;
     private bool isDragging = false;
     private InputAction aButton;
     private int hotspotID = 0;
     private char troco_ID = ' ';
     private bool isVR = false;
-
-    //void Awake()
-    //{
-    //    XRModeSwitcher.OnModeSelected += OnModeChosen;
-    //}
-
-    //void OnDestroy()
-    //{
-    //    XRModeSwitcher.OnModeSelected -= OnModeChosen;
-    //}
 
     public void OnModeChosen(bool isVR)
     {
@@ -59,43 +55,36 @@ public class Image_UI_Manager : MonoBehaviour
         this.isVR = isVR;
     }
 
-    public enum ViewDirection
-    {
-        F,
-        L,
-        T
-    }
-
-    private ViewDirection currentDir;
+    private string currentDir = "";
 
     private bool useFirstSlot = true;
 
     void Start()
     {
         XRModeSwitcher.OnModeSelected += OnModeChosen;
-        currentDir = ViewDirection.F;
     }
 
-
-    public void ShowItem(Sprite newSprite, string year)
+    public void ShowItem(Image image, string year)
     {
         if (textPlaceholder1.text == year || textPlaceholder2.text == year)
             return;
 
         if (useFirstSlot)
         {
-            imagePlaceholder1.sprite = newSprite;
-            //imagePlaceholder1.gameObject.SetActive(true);
-            //imagePlaceholder1_Shadow.gameObject.SetActive(false);
+            imagePlaceholder1.sprite = image.sprite;
+            imagePlaceholder1.color = new Color(1f, 1f, 1f, 1f);
             textPlaceholder1.text = year;
+            interactedImage1 = image;
+            interactedImage1.color = new Color(1f, 1f, 1f, 0.47f);
             imageIconPlaceholder1.SetActive(true);
         }
         else
         {
-            imagePlaceholder2.sprite = newSprite;
-            //imagePlaceholder2.gameObject.SetActive(true);
-            //imagePlaceholder2_Shadow.gameObject.SetActive(false);
+            imagePlaceholder2.sprite = image.sprite;
+            imagePlaceholder2.color = new Color(1f, 1f, 1f, 1f);
             textPlaceholder2.text = year;
+            interactedImage2 = image;
+            interactedImage2.color = new Color(1f, 1f, 1f, 0.47f);
             imageIconPlaceholder2.SetActive(true);
         }
 
@@ -107,25 +96,23 @@ public class Image_UI_Manager : MonoBehaviour
         if (isFirstSlot)
         {
             textPlaceholder1.text = "";
-            //imagePlaceholder1.sprite = null;
-            //imagePlaceholder1.gameObject.SetActive(false);
-            //imagePlaceholder1_Shadow.gameObject.SetActive(true);
             imagePlaceholder1.sprite = UIMask;
+            imagePlaceholder1.color = new Color(1f, 1f, 1f, 0.47f);
+            interactedImage1.color = new Color(1f, 1f, 1f, 1f);
+            interactedImage1 = null;
             imageIconPlaceholder1.SetActive(false);
             useFirstSlot = true;
         }
         else
         {
             textPlaceholder2.text = "";
-            //imagePlaceholder2.sprite = null;
-            //imagePlaceholder2.gameObject.SetActive(false);
             imagePlaceholder2.sprite = UIMask;
-            //imagePlaceholder2_Shadow.gameObject.SetActive(true);
+            imagePlaceholder2.color = new Color(1f, 1f, 1f, 0.47f);
+            interactedImage2.color = new Color(1f, 1f, 1f, 1f);
+            interactedImage2 = null;
             imageIconPlaceholder2.SetActive(false);
             if (useFirstSlot)
-            {
                 useFirstSlot = false;
-            }
         }
     }
 
@@ -141,27 +128,33 @@ public class Image_UI_Manager : MonoBehaviour
             imageIconPlaceholder2.SetActive(false);
             useFirstSlot = true;
         }
-        // hotspotID = 0;
-        // troco_ID = ' ';
     }
 
     private void ResetHotspotData()
     {
         hotspotID = 0;
         troco_ID = ' ';
+        currentImages = null;
     }
 
-    public void ChangeViewDirection(ViewDirection direction)
+    public void ShowDirection(string dir)
     {
-        if (currentDir == direction)
+        if (currentDir == dir)
             return;
         
         clearPlaceholders();
-        foreach (Transform child in imagesHolder.transform)
+
+        if (currentDir != "")
         {
-            child.GetComponent<Image_Button>().ChangeActiveImage(direction);
+            // Hide current
+            if (imagesByDirection.ContainsKey(currentDir))
+                imagesByDirection[currentDir].ForEach(o => o.SetActive(false)); 
         }
-        currentDir = direction;
+
+        // Show new
+        currentDir = dir;
+        if (imagesByDirection.ContainsKey(dir))
+            imagesByDirection[dir].ForEach(o => o.SetActive(true));
     }
 
     public void SetImageFullscreen(Image image)
@@ -179,14 +172,30 @@ public class Image_UI_Manager : MonoBehaviour
         childImage.GetComponent<UIZoomImage>().OnCloseImage();
     }
 
-    public void PrepareOpen(int hotspotID, char troco_ID)
+    public void PrepareOpen(int hotspotID, char troco_ID, List<InspectionImage> images)
     {
         clearPlaceholders();
         this.hotspotID = hotspotID;
         this.troco_ID = troco_ID;
+
+        foreach (InspectionImage image in images)
+        {
+            if (!imagesByDirection.ContainsKey(image.dir))
+                imagesByDirection[image.dir] = new List<GameObject>();
+
+            GameObject obj = Instantiate(imagePrefab, imageContainer);
+            obj.GetComponentInChildren<TMP_Text>().text = image.year;
+            obj.GetComponentInChildren<Image>().sprite = image.sprite;
+            obj.GetComponent<Image_Button>().UIManager = this;
+            obj.SetActive(false);
+            imagesByDirection[image.dir].Add(obj);
+        }
+
+        ShowDirection("F");
+
         if (!isVR)
             fullscreenPlaceholder.SetActive(false);
-        ChangeViewDirection(ViewDirection.F);
+
         openImages();
     }
 
@@ -196,14 +205,9 @@ public class Image_UI_Manager : MonoBehaviour
         imageScreen.SetActive(true);
         if (isVR)
         {
-            // if (InstancedObj != null)
-            // {
-            //     Destroy(InstancedObj);
-            // }
             InstancedObj = Instantiate(Controller_UI_Prefab);
             //default 3, pode depois mudar conforme hotspot
             InstancedObj.GetComponent<RadialSelection>().numberOfradialPart = 3;
-            //
             InstancedObj.transform.SetParent(leftController, false);
             InstancedObj.GetComponent<RadialSelection>().handTransform = rightController;
             InstancedObj.GetComponent<RadialSelection>().image_UI_Manager = this;
@@ -211,59 +215,16 @@ public class Image_UI_Manager : MonoBehaviour
         }
         panelAnimator.SetTrigger("Open");
     }
-    // public void openImages()
-    // {
-    //     image_title.text =
-    //         "Portimão Poente - Troço " + troco_ID +
-    //         " - Ponto " + hotspotID.ToString();
-
-    //     imageScreen.SetActive(true);
-
-    //     if (isVR)
-    //     {
-    //         if (InstancedObj != null)
-    //             Destroy(InstancedObj);
-
-    //         InstancedObj = Instantiate(Controller_UI_Prefab);
-
-    //         RadialSelection radial =
-    //             InstancedObj.GetComponent<RadialSelection>();
-
-    //         radial.numberOfradialPart = 3;
-
-    //         InstancedObj.transform.SetParent(leftController, false);
-
-    //         radial.handTransform = rightController;
-    //         radial.image_UI_Manager = this;
-
-    //         StartCoroutine(SpawnRadialNextFrame(radial));
-    //     }
-
-    //     panelAnimator.SetTrigger("Open");
-    // }
-
-    // IEnumerator SpawnRadialNextFrame(RadialSelection radial)
-    // {
-    //     yield return null;
-
-    //     Canvas.ForceUpdateCanvases();
-
-    //     radial.SpawnRadialPart();
-    // }
 
     public void VR_Arrastar(Image image, string year)
     {
         InstancedObj = Instantiate(imageOutside);
 
-        // InstancedObj.transform.position =
-        //     rightController.position + rightController.forward;
-        // InstancedObj.transform.position =
-        //     rightController.position * 0.3f + rightController.forward;
         Vector3 spawnPos =
             rightController.position +
             rightController.forward;
 
-        spawnPos.y -= 0.2f; // adjust up/down manually
+        spawnPos.y -= 0.2f; // adjust down
         InstancedObj.transform.position = spawnPos;
         
         Transform target = InstancedObj.transform.Find("Spatial Panel Scroll/Content/OSOMImage");
@@ -274,7 +235,7 @@ public class Image_UI_Manager : MonoBehaviour
         //Increase sharpness distance (lower mip bias = sharper farther away)
         if (img.sprite != null && img.sprite.texture != null)
         {
-            img.sprite.texture.mipMapBias = -1f; // try -0.5 to -2 depending on feel
+            img.sprite.texture.mipMapBias = -1f;
         }
         UI_Manager.CloseActiveUIs();
     }
@@ -284,6 +245,14 @@ public class Image_UI_Manager : MonoBehaviour
         if (isVR)
             VR_Arrastar(image, year);
         else
-            ShowItem(image.sprite, year);
+            ShowItem(image, year);
+    }
+
+    public void Close()
+    {
+        foreach (var list in imagesByDirection.Values)
+            list.ForEach(o => Destroy(o));
+
+        imagesByDirection.Clear();
     }
 }

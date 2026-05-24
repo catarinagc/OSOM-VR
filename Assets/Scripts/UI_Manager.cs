@@ -22,6 +22,7 @@ public class UI_Manager : MonoBehaviour
     {
         activeUIs = new List<GameObject>();
     }
+
     void OnEnable()
     {
         XRModeSwitcher.OnModeSelected += OnModeChosen;
@@ -37,11 +38,12 @@ public class UI_Manager : MonoBehaviour
         this.isVR = isVR;
     }
 
-    public void openHotspotImageUI(int hotspotID, char troco_ID)
+    public void openHotspotImageUI(int hotspotID, char troco_ID, List<InspectionImage> images)
     {
         CloseActiveUIs();
         hotspotImageObj.GetComponent<Image_UI_Manager>().OnModeChosen(isVR);
-        hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID);
+        Debug.Log($"images null? {images == null} | count: {images?.Count}");
+        hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID, images);
         activeUIs.Add(hotspotImageObj);
         hotspotImageObj.SetActive(true);
     }
@@ -53,6 +55,8 @@ public class UI_Manager : MonoBehaviour
         
         foreach (GameObject ui in activeUIs)
         {
+            if (ui == hotspotImageObj)
+                ui.GetComponent<Image_UI_Manager>().Close();
             ui.SetActive(false);
         }
 
@@ -114,7 +118,6 @@ public class UI_Manager : MonoBehaviour
             zoneInfoMenuObj.transform.SetParent(spawnPoint, false);
             zoneInfoMenuObj.transform.localPosition = Vector3.zero;
             zoneInfoMenuObj.transform.localRotation = Quaternion.identity;
-            //zoneInfoMenuObj.SetActive(true);
             zoneInfoMenuObj.GetComponent<SnapMenuToPlayer>().OpenMenu();
         }
         zoneInfoMenuObj.SetActive(true);

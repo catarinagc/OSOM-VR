@@ -8,7 +8,7 @@ using System.Collections;
 public class BreakwaterManager : MonoBehaviour
 {
     private Vector3 OriginWalkingPoint;
-
+    private bool isInitialized = false;
     private Vector3 RefHotspotPoint;
     [SerializeField] GameObject modelPrefab;
 
@@ -73,6 +73,7 @@ public class BreakwaterManager : MonoBehaviour
         SetupShaderColors();
         ApplyHighlights();
         UpdateHighlightMode();
+        isInitialized = true;
     }
 
     // // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -142,8 +143,9 @@ public class BreakwaterManager : MonoBehaviour
 
     void Update()
     {
-        float height = controller.GetHeight();
+        if (!isInitialized) return;
 
+        float height = controller.GetHeight();
         bool newState = height >= heightHighlightChange;
 
         if (newState != lastCubesState)
@@ -152,8 +154,6 @@ public class BreakwaterManager : MonoBehaviour
             UpdateHighlightMode();
             lastCubesState = newState;
         }
-
-        //UpdateShaderSelection();
     }
 
     public void SetHeightThreshold(float value)

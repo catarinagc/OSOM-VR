@@ -1,13 +1,14 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-
+using System.Collections.Generic;
 public class HotspotScript : MonoBehaviour
 {
     [SerializeField] public Vector2 realWorldPosition;
     [SerializeField] public UI_Manager UI_Manager;
     [SerializeField] public int hotspotID;
     [SerializeField] public char troco_ID;
+    private List<InspectionImage> images = new List<InspectionImage>();
 
     [SerializeField] private GameObject textID;
 
@@ -54,11 +55,13 @@ public class HotspotScript : MonoBehaviour
 
     public void OnInteract()
     {
-        //hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID);
-        //hotspotImageObj.SetActive(true);
-
-        //mudar nome para UI_Manager
-        UI_Manager.openHotspotImageUI(hotspotID, troco_ID);
+        UI_Manager.openHotspotImageUI(hotspotID, troco_ID, images);
         Debug.Log("hello " + hotspotID + troco_ID);
+    }
+
+    public void AddImage(InspectionImage image)
+    {
+        Debug.Log("Imagem");
+        images.Add(image);
     }
 }
