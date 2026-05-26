@@ -216,7 +216,8 @@ GameObject:
   - component: {fileID: 6402103151133296629}
   - component: {fileID: 6913626426256814136}
   - component: {fileID: 5781488301810079527}
-  - component: {fileID: 6367898015931932930}
+  - component: {fileID: 4748310835684101731}
+  - component: {fileID: 1735819429998198327}
   m_Layer: 5
   m_Name: OSOMImage
   m_TagString: Untagged
@@ -281,7 +282,32 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &6367898015931932930
+--- !u!114 &4748310835684101731
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974198295998533804}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70a46e63fe55b3f46b8cf3ab7c41f782, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ImageDisplayController
+  UIManager: {fileID: 0}
+  annotationManager: {fileID: 0}
+  imageRect: {fileID: 6402103151133296629}
+  noteMarkerPrefab: {fileID: 8061200653348429790, guid: 6cefc726774521e4da05a6e7ef322d29, type: 3}
+  noteInputField: {fileID: 0}
+  imageData:
+    hotspotID: 0
+    dir: 
+    year: 
+    sprite: {fileID: 0}
+  currentYear: 0
+  currentHotspotId: 0
+  currentDirection: 
+--- !u!114 &1735819429998198327
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -325,9 +351,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: Movable_UI, Assembly-CSharp
-        m_MethodName: OnClick
+      - m_Target: {fileID: 4748310835684101731}
+        m_TargetAssemblyTypeName: ImageDisplayController, Assembly-CSharp
+        m_MethodName: OnClickInteractVR
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1374,7 +1400,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8463047761565882554, guid: 085ce58b196caa446a8545c9dd388793, type: 3}
       propertyPath: m_BlockingMask.m_Bits
-      value: 4294967295
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8598023550569248621, guid: 085ce58b196caa446a8545c9dd388793, type: 3}
       propertyPath: m_Size
@@ -1441,7 +1467,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 9152842938730233392}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 

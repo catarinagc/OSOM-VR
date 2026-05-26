@@ -27,31 +27,15 @@ public class RadialSelection : MonoBehaviour
     public UnityEvent<int> OnPartSelected;
     private string[] view_directions = { "F", "T", "L" };
     public Image_UI_Manager image_UI_Manager;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         triggerButton = inputActions.FindActionMap("XRI Right Interaction").FindAction("trigger");
         triggerButton.Enable();
-        //SpawnRadialPart();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        //GetSelectedRadialPart();
-        // if (triggerButton.WasPressedThisFrame())
-        // {
-        //     //Debug.Log(spawnedParts[currentSelectedRadialPart].GetComponentInChildren<TMP_Text>().text);
-        //     string str = spawnedParts[currentSelectedRadialPart].GetComponentInChildren<TMP_Text>().text;
-        //     if (System.Enum.TryParse(str, out Image_UI_Manager.ViewDirection result))
-        //     {
-        //         image_UI_Manager.ChangeViewDirection(result);
-        //     }
-        //     else
-        //     {
-        //         Debug.LogWarning("Unknown view direction string: " + str);
-        //     }
-        // }
         if (triggerButton.WasPressedThisFrame())
         {
             if (currentSelectedRadialPart < 0 ||
@@ -64,11 +48,6 @@ public class RadialSelection : MonoBehaviour
                 .GetComponentInChildren<TMP_Text>().text;
 
             image_UI_Manager.ShowDirection(dir);
-
-            // if (System.Enum.TryParse(str, out Image_UI_Manager.ViewDirection result))
-            // {
-            //     image_UI_Manager.ChangeViewDirection(result);
-            // }
 
         }
         UpdatePointerSelection();
@@ -90,23 +69,16 @@ public class RadialSelection : MonoBehaviour
             Vector3 hitPoint = ray.GetPoint(enter);
             Vector3 localPoint = radialPartCanvas.InverseTransformPoint(hitPoint); // relative to canvas
 
-            // Calculate angle from center
-            //tinha problemas na build
-            //float angle = Vector3.SignedAngle(radialPartCanvas.up, localPoint, -radialPartCanvas.forward);
-            //testar esta solucao
             float angle = Mathf.Atan2(localPoint.x, localPoint.y) * Mathf.Rad2Deg;
             if (angle < 0) angle += 360;
 
             float distanceFromCenter = localPoint.magnitude;
-            //
 
-            //currentSelectedRadialPart = (int)(angle * numberOfradialPart / 360);
             currentSelectedRadialPart = (int)(angle * numberOfradialPart / 360f);
 
             if (distanceFromCenter <= maxSelectDistance)
             {
                 if (angle < 0) angle += 360;
-                //currentSelectedRadialPart = (int)angle * numberOfradialPart / 360;
                 currentSelectedRadialPart = (int)(angle * numberOfradialPart / 360f);
             }
             else
@@ -153,27 +125,41 @@ public class RadialSelection : MonoBehaviour
 
         for (int i = 0; i < numberOfradialPart; i++)
         {
-            float angle = -i * 360 / numberOfradialPart - angleBetweenPart / 2;
-            Vector3 radialPartEulerAngle = new Vector3(0, 0, angle);
+            float fillAmount = 1f / numberOfradialPart - (angleBetweenPart / 360f);
+            float startAngle = -i * 360f / numberOfradialPart - angleBetweenPart / 2f;
+            Vector3 radialPartEulerAngle = new Vector3(0, 0, startAngle);
 
             GameObject spawnRadialPart = Instantiate(radialPartPrefab, radialPartCanvas);
-
             spawnRadialPart.transform.position = radialPartCanvas.position;
             spawnRadialPart.transform.localEulerAngles = radialPartEulerAngle;
-            // Make text upright
+            spawnRadialPart.GetComponent<Image>().fillAmount = fillAmount;
+
             var tmpText = spawnRadialPart.GetComponentInChildren<TMP_Text>();
             if (tmpText != null)
             {
-                Transform t = tmpText.transform;
+                if (i < view_directions.Length)
+                    tmpText.text = view_directions[i].ToString();
+                else
+                    tmpText.text = "L " + (i - view_directions.Length + 1).ToString();
 
-                // Align text "up" with controller's up
-                t.rotation = Quaternion.LookRotation(radialPartCanvas.forward, radialPartCanvas.up);
+                // 1. Calculate the middle angle relative only to this slice rotation
+                float sliceArcDegrees = fillAmount * 360f;
+                float localCenterAngleDeg = -(sliceArcDegrees / 2f) + 90f; 
+                float localCenterAngleRad = localCenterAngleDeg * Mathf.Deg2Rad;
+
+                // 2. Set distance radius
+                float textRadiusOffset = 85f; 
+
+                // 3. Position the text locally relative to the spawned slice parent
+                tmpText.transform.localPosition = new Vector3(
+                    Mathf.Cos(localCenterAngleRad) * textRadiusOffset,
+                    Mathf.Sin(localCenterAngleRad) * textRadiusOffset,
+                    0f
+                );
+
+                // 4. Force text to stay upright globally
+                tmpText.transform.rotation = Quaternion.LookRotation(radialPartCanvas.forward, radialPartCanvas.up);
             }
-            spawnRadialPart.GetComponent<Image>().fillAmount = 1 / (float)numberOfradialPart - (angleBetweenPart / 360);
-            if (i < view_directions.Length)
-                spawnRadialPart.GetComponentInChildren<TMP_Text>().text = view_directions[i].ToString();
-            else
-                spawnRadialPart.GetComponentInChildren<TMP_Text>().text = "L " + (i - view_directions.Length + 1).ToString();
 
             spawnedParts.Add(spawnRadialPart);
         }

@@ -24,6 +24,7 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] Image imagePlaceholder1_Shadow;
     [SerializeField] TMP_Text textPlaceholder1;
     [SerializeField] GameObject imageIconPlaceholder1;
+    [SerializeField] GameObject placeholder1;
     private Image interactedImage1;
 
     [Header("Placeholder 2")]
@@ -31,6 +32,7 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] Image imagePlaceholder2_Shadow;
     [SerializeField] TMP_Text textPlaceholder2;
     [SerializeField] GameObject imageIconPlaceholder2;
+    [SerializeField] GameObject placeholder2;
     private Image interactedImage2;
     
     [Header("VR only")]
@@ -41,6 +43,8 @@ public class Image_UI_Manager : MonoBehaviour
     public Transform rightController;
     public Transform leftController;
     [SerializeField] private GameObject imagePrefab;
+    [SerializeField] ImageAnnotationManager annotationManager;
+    [SerializeField] TMP_InputField noteInputField;
     private Dictionary<string, List<GameObject>> imagesByDirection = new();
     private List<InspectionImage> currentImages;
     private bool isDragging = false;
@@ -64,27 +68,49 @@ public class Image_UI_Manager : MonoBehaviour
         XRModeSwitcher.OnModeSelected += OnModeChosen;
     }
 
-    public void ShowItem(Image image, string year)
+    public void ShowItem(Image image, string year, InspectionImage imageData)
     {
         if (textPlaceholder1.text == year || textPlaceholder2.text == year)
             return;
 
         if (useFirstSlot)
         {
+            //antiga imagem
+            if (interactedImage1)
+            {
+                interactedImage1.color = new Color(1f, 1f, 1f, 1f);
+                placeholder1.GetComponent<ImageDisplayController>().ClearNotes();
+            }
+            //
             imagePlaceholder1.sprite = image.sprite;
             imagePlaceholder1.color = new Color(1f, 1f, 1f, 1f);
             textPlaceholder1.text = year;
             interactedImage1 = image;
             interactedImage1.color = new Color(1f, 1f, 1f, 0.47f);
+            placeholder1.GetComponent<ImageDisplayController>().currentYear = int.Parse(imageData.year);
+            placeholder1.GetComponent<ImageDisplayController>().currentHotspotId = imageData.hotspotID;
+            placeholder1.GetComponent<ImageDisplayController>().currentDirection = imageData.dir;
+            placeholder1.GetComponent<HotspotClearImage>().imageData = imageData;
+            placeholder1.GetComponent<ImageDisplayController>().SpawnMarkers();
             imageIconPlaceholder1.SetActive(true);
         }
         else
         {
+            if (interactedImage2)
+            {
+                interactedImage2.color = new Color(1f, 1f, 1f, 1f);
+                placeholder2.GetComponent<ImageDisplayController>().ClearNotes();
+            }
             imagePlaceholder2.sprite = image.sprite;
             imagePlaceholder2.color = new Color(1f, 1f, 1f, 1f);
             textPlaceholder2.text = year;
             interactedImage2 = image;
             interactedImage2.color = new Color(1f, 1f, 1f, 0.47f);
+            placeholder2.GetComponent<ImageDisplayController>().currentYear = int.Parse(imageData.year);
+            placeholder2.GetComponent<ImageDisplayController>().currentHotspotId = imageData.hotspotID;
+            placeholder2.GetComponent<ImageDisplayController>().currentDirection = imageData.dir;
+            placeholder2.GetComponent<HotspotClearImage>().imageData = imageData;
+            placeholder2.GetComponent<ImageDisplayController>().SpawnMarkers();
             imageIconPlaceholder2.SetActive(true);
         }
 
@@ -102,6 +128,7 @@ public class Image_UI_Manager : MonoBehaviour
             interactedImage1 = null;
             imageIconPlaceholder1.SetActive(false);
             useFirstSlot = true;
+            placeholder1.GetComponent<ImageDisplayController>().ClearNotes();
         }
         else
         {
@@ -111,6 +138,7 @@ public class Image_UI_Manager : MonoBehaviour
             interactedImage2.color = new Color(1f, 1f, 1f, 1f);
             interactedImage2 = null;
             imageIconPlaceholder2.SetActive(false);
+            placeholder2.GetComponent<ImageDisplayController>().ClearNotes();
             if (useFirstSlot)
                 useFirstSlot = false;
         }
@@ -157,10 +185,15 @@ public class Image_UI_Manager : MonoBehaviour
             imagesByDirection[dir].ForEach(o => o.SetActive(true));
     }
 
-    public void SetImageFullscreen(Image image)
+    public void SetImageFullscreen(InspectionImage imageData)
     {
         Image childImage = fullscreenPlaceholderImage;
-        childImage.sprite = image.sprite;
+        childImage.sprite = imageData.sprite;
+        fullscreenPlaceholder.GetComponent<ImageDisplayController>().ClearNotes();
+        fullscreenPlaceholder.GetComponent<ImageDisplayController>().currentYear = int.Parse(imageData.year);
+        fullscreenPlaceholder.GetComponent<ImageDisplayController>().currentHotspotId = imageData.hotspotID;
+        fullscreenPlaceholder.GetComponent<ImageDisplayController>().currentDirection = imageData.dir;
+        fullscreenPlaceholder.GetComponent<ImageDisplayController>().SpawnMarkers();
         fullscreenPlaceholder.SetActive(true);
     }
 
@@ -170,10 +203,22 @@ public class Image_UI_Manager : MonoBehaviour
         childImage.sprite = null;
         fullscreenPlaceholder.SetActive(false);
         childImage.GetComponent<UIZoomImage>().OnCloseImage();
+        if (interactedImage1)
+        {
+            placeholder1.GetComponent<ImageDisplayController>().ClearNotes();
+            placeholder1.GetComponent<ImageDisplayController>().SpawnMarkers();
+        }
+
+        if (interactedImage2)
+        {
+            placeholder2.GetComponent<ImageDisplayController>().ClearNotes();
+            placeholder2.GetComponent<ImageDisplayController>().SpawnMarkers();
+        }
     }
 
     public void PrepareOpen(int hotspotID, char troco_ID, List<InspectionImage> images)
     {
+        ResetHotspotData();
         clearPlaceholders();
         this.hotspotID = hotspotID;
         this.troco_ID = troco_ID;
@@ -187,6 +232,7 @@ public class Image_UI_Manager : MonoBehaviour
             obj.GetComponentInChildren<TMP_Text>().text = image.year;
             obj.GetComponentInChildren<Image>().sprite = image.sprite;
             obj.GetComponent<Image_Button>().UIManager = this;
+            obj.GetComponent<Image_Button>().imageData = image;
             obj.SetActive(false);
             imagesByDirection[image.dir].Add(obj);
         }
@@ -207,7 +253,7 @@ public class Image_UI_Manager : MonoBehaviour
         {
             InstancedObj = Instantiate(Controller_UI_Prefab);
             //default 3, pode depois mudar conforme hotspot
-            InstancedObj.GetComponent<RadialSelection>().numberOfradialPart = 3;
+            InstancedObj.GetComponent<RadialSelection>().numberOfradialPart = imagesByDirection.Count;
             InstancedObj.transform.SetParent(leftController, false);
             InstancedObj.GetComponent<RadialSelection>().handTransform = rightController;
             InstancedObj.GetComponent<RadialSelection>().image_UI_Manager = this;
@@ -216,7 +262,7 @@ public class Image_UI_Manager : MonoBehaviour
         panelAnimator.SetTrigger("Open");
     }
 
-    public void VR_Arrastar(Image image, string year)
+    public void VR_Arrastar(Image image, string year, InspectionImage imageData)
     {
         InstancedObj = Instantiate(imageOutside);
 
@@ -232,6 +278,15 @@ public class Image_UI_Manager : MonoBehaviour
         img.sprite = image.sprite;
         InstancedObj.GetComponentInChildren<TextMeshProUGUI>().text = year + " - Troço " +troco_ID+ " - Direção " + currentDir + " - Ponto " + hotspotID.ToString();
         
+        img.gameObject.GetComponent<ImageDisplayController>().ClearNotes();
+        img.gameObject.GetComponent<ImageDisplayController>().currentYear = int.Parse(imageData.year);
+        img.gameObject.GetComponent<ImageDisplayController>().currentHotspotId = imageData.hotspotID;
+        img.gameObject.GetComponent<ImageDisplayController>().currentDirection = imageData.dir;
+        img.gameObject.GetComponent<ImageDisplayController>().UIManager = this;
+        img.gameObject.GetComponent<ImageDisplayController>().annotationManager = annotationManager;
+        img.gameObject.GetComponent<ImageDisplayController>().noteInputField = noteInputField;
+        img.gameObject.GetComponent<ImageDisplayController>().imageData = imageData;
+        img.gameObject.GetComponent<ImageDisplayController>().SpawnMarkers();
         //Increase sharpness distance (lower mip bias = sharper farther away)
         if (img.sprite != null && img.sprite.texture != null)
         {
@@ -240,19 +295,27 @@ public class Image_UI_Manager : MonoBehaviour
         UI_Manager.CloseActiveUIs();
     }
 
-    public void imageInteract(Image image, string year)
+    public void imageInteract(Image image, string year, InspectionImage imageData)
     {
         if (isVR)
-            VR_Arrastar(image, year);
+            VR_Arrastar(image, year, imageData);
         else
-            ShowItem(image, year);
+            ShowItem(image, year, imageData);
     }
 
     public void Close()
     {
+        Debug.Log("FECHOU");
         foreach (var list in imagesByDirection.Values)
             list.ForEach(o => Destroy(o));
 
         imagesByDirection.Clear();
+        currentDir = "";
+        if (!isVR)
+        {
+            placeholder1.GetComponent<ImageDisplayController>().ClearNotes();
+            placeholder2.GetComponent<ImageDisplayController>().ClearNotes();
+            fullscreenPlaceholder.GetComponent<ImageDisplayController>().ClearNotes();       
+        }
     }
 }
