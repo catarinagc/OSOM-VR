@@ -1,6 +1,6 @@
 using UnityEngine;
 using TMPro;
-
+using System.Collections;
 public class NoteInputPanel : MonoBehaviour
 {
     [SerializeField] ImageAnnotationManager annotationManager;
@@ -16,5 +16,14 @@ public class NoteInputPanel : MonoBehaviour
         caller.SpawnMarker(note);
 
         noteInputField.text = string.Empty;
+    }
+
+    void OnEnable()
+    {
+        string existing = annotationManager.GetPendingMessage();
+        noteInputField.text = existing ?? string.Empty;
+        noteInputField.caretPosition = noteInputField.text.Length;
+        noteInputField.stringPosition = noteInputField.text.Length;
+        noteInputField.ForceLabelUpdate();
     }
 }

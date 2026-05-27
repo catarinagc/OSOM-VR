@@ -13,11 +13,13 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] TMP_Text image_title;
     [SerializeField] GameObject imagesHolder;
     [SerializeField] GameObject fullscreenPlaceholder;
+    [SerializeField] TMP_Text fullscreenPlaceholderText;
     [SerializeField] Image fullscreenPlaceholderImage;
     [SerializeField] GameObject imageScreen;
     [SerializeField] UI_Manager UI_Manager;
     [SerializeField] Sprite UIMask;
     public Animator panelAnimator;
+    [SerializeField] GameObject buttonsHolder;
 
     [Header("Placeholder 1")]
     [SerializeField] Image imagePlaceholder1;
@@ -25,7 +27,7 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] TMP_Text textPlaceholder1;
     [SerializeField] GameObject imageIconPlaceholder1;
     [SerializeField] GameObject placeholder1;
-    private Image interactedImage1;
+    public Image interactedImage1;
 
     [Header("Placeholder 2")]
     [SerializeField] Image imagePlaceholder2;
@@ -33,7 +35,7 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] TMP_Text textPlaceholder2;
     [SerializeField] GameObject imageIconPlaceholder2;
     [SerializeField] GameObject placeholder2;
-    private Image interactedImage2;
+    public Image interactedImage2;
     
     [Header("VR only")]
     [SerializeField] GameObject imageOutside;
@@ -52,6 +54,8 @@ public class Image_UI_Manager : MonoBehaviour
     private int hotspotID = 0;
     private char troco_ID = ' ';
     private bool isVR = false;
+    private string currentDir = "";
+    private bool useFirstSlot = true;
 
     public void OnModeChosen(bool isVR)
     {
@@ -59,9 +63,6 @@ public class Image_UI_Manager : MonoBehaviour
         this.isVR = isVR;
     }
 
-    private string currentDir = "";
-
-    private bool useFirstSlot = true;
 
     void Start()
     {
@@ -80,6 +81,7 @@ public class Image_UI_Manager : MonoBehaviour
             {
                 interactedImage1.color = new Color(1f, 1f, 1f, 1f);
                 placeholder1.GetComponent<ImageDisplayController>().ClearNotes();
+                interactedImage1.transform.parent.GetComponent<ButtonTooltip>().isActive = true;
             }
             //
             imagePlaceholder1.sprite = image.sprite;
@@ -87,6 +89,7 @@ public class Image_UI_Manager : MonoBehaviour
             textPlaceholder1.text = year;
             interactedImage1 = image;
             interactedImage1.color = new Color(1f, 1f, 1f, 0.47f);
+            interactedImage1.transform.parent.GetComponent<ButtonTooltip>().isActive = false;
             placeholder1.GetComponent<ImageDisplayController>().currentYear = int.Parse(imageData.year);
             placeholder1.GetComponent<ImageDisplayController>().currentHotspotId = imageData.hotspotID;
             placeholder1.GetComponent<ImageDisplayController>().currentDirection = imageData.dir;
@@ -100,12 +103,14 @@ public class Image_UI_Manager : MonoBehaviour
             {
                 interactedImage2.color = new Color(1f, 1f, 1f, 1f);
                 placeholder2.GetComponent<ImageDisplayController>().ClearNotes();
+                interactedImage2.transform.parent.GetComponent<ButtonTooltip>().isActive = true;
             }
             imagePlaceholder2.sprite = image.sprite;
             imagePlaceholder2.color = new Color(1f, 1f, 1f, 1f);
             textPlaceholder2.text = year;
             interactedImage2 = image;
             interactedImage2.color = new Color(1f, 1f, 1f, 0.47f);
+            interactedImage2.transform.parent.GetComponent<ButtonTooltip>().isActive = false;
             placeholder2.GetComponent<ImageDisplayController>().currentYear = int.Parse(imageData.year);
             placeholder2.GetComponent<ImageDisplayController>().currentHotspotId = imageData.hotspotID;
             placeholder2.GetComponent<ImageDisplayController>().currentDirection = imageData.dir;
@@ -125,6 +130,7 @@ public class Image_UI_Manager : MonoBehaviour
             imagePlaceholder1.sprite = UIMask;
             imagePlaceholder1.color = new Color(1f, 1f, 1f, 0.47f);
             interactedImage1.color = new Color(1f, 1f, 1f, 1f);
+            interactedImage1.transform.parent.GetComponent<ButtonTooltip>().isActive = true;
             interactedImage1 = null;
             imageIconPlaceholder1.SetActive(false);
             useFirstSlot = true;
@@ -136,6 +142,7 @@ public class Image_UI_Manager : MonoBehaviour
             imagePlaceholder2.sprite = UIMask;
             imagePlaceholder2.color = new Color(1f, 1f, 1f, 0.47f);
             interactedImage2.color = new Color(1f, 1f, 1f, 1f);
+            interactedImage1.transform.parent.GetComponent<ButtonTooltip>().isActive = true;
             interactedImage2 = null;
             imageIconPlaceholder2.SetActive(false);
             placeholder2.GetComponent<ImageDisplayController>().ClearNotes();
@@ -189,6 +196,7 @@ public class Image_UI_Manager : MonoBehaviour
     {
         Image childImage = fullscreenPlaceholderImage;
         childImage.sprite = imageData.sprite;
+        fullscreenPlaceholderText.text = imageData.year;
         fullscreenPlaceholder.GetComponent<ImageDisplayController>().ClearNotes();
         fullscreenPlaceholder.GetComponent<ImageDisplayController>().currentYear = int.Parse(imageData.year);
         fullscreenPlaceholder.GetComponent<ImageDisplayController>().currentHotspotId = imageData.hotspotID;
@@ -237,12 +245,26 @@ public class Image_UI_Manager : MonoBehaviour
             imagesByDirection[image.dir].Add(obj);
         }
 
-        ShowDirection("F");
-
         if (!isVR)
+        {
             fullscreenPlaceholder.SetActive(false);
+            PrepareButtons();
+        }
 
+        ShowDirection("F");
         openImages();
+    }
+
+    private void PrepareButtons()
+    {
+        foreach (Transform child in buttonsHolder.transform)
+        {
+            TMP_Text label = child.GetComponentInChildren<TMP_Text>();
+            if (label == null) continue;
+
+            bool hasImages = imagesByDirection.ContainsKey(label.text);
+            child.gameObject.SetActive(hasImages);
+        }
     }
 
     public void openImages()
@@ -278,15 +300,17 @@ public class Image_UI_Manager : MonoBehaviour
         img.sprite = image.sprite;
         InstancedObj.GetComponentInChildren<TextMeshProUGUI>().text = year + " - Troço " +troco_ID+ " - Direção " + currentDir + " - Ponto " + hotspotID.ToString();
         
-        img.gameObject.GetComponent<ImageDisplayController>().ClearNotes();
-        img.gameObject.GetComponent<ImageDisplayController>().currentYear = int.Parse(imageData.year);
-        img.gameObject.GetComponent<ImageDisplayController>().currentHotspotId = imageData.hotspotID;
-        img.gameObject.GetComponent<ImageDisplayController>().currentDirection = imageData.dir;
-        img.gameObject.GetComponent<ImageDisplayController>().UIManager = this;
-        img.gameObject.GetComponent<ImageDisplayController>().annotationManager = annotationManager;
-        img.gameObject.GetComponent<ImageDisplayController>().noteInputField = noteInputField;
-        img.gameObject.GetComponent<ImageDisplayController>().imageData = imageData;
-        img.gameObject.GetComponent<ImageDisplayController>().SpawnMarkers();
+        InstancedObj.GetComponent<ImageDisplayController>().isVR = isVR;
+        InstancedObj.GetComponent<ImageDisplayController>().ClearNotes();
+        InstancedObj.GetComponent<ImageDisplayController>().currentYear = int.Parse(imageData.year);
+        InstancedObj.GetComponent<ImageDisplayController>().currentHotspotId = imageData.hotspotID;
+        InstancedObj.GetComponent<ImageDisplayController>().currentDirection = imageData.dir;
+        InstancedObj.GetComponent<ImageDisplayController>().UIManager = this;
+        InstancedObj.GetComponent<ImageDisplayController>().annotationManager = annotationManager;
+        InstancedObj.GetComponent<ImageDisplayController>().noteInputField = noteInputField;
+        InstancedObj.GetComponent<ImageDisplayController>().imageData = imageData;
+        InstancedObj.GetComponent<ImageDisplayController>().SpawnMarkers();
+
         //Increase sharpness distance (lower mip bias = sharper farther away)
         if (img.sprite != null && img.sprite.texture != null)
         {
@@ -305,7 +329,6 @@ public class Image_UI_Manager : MonoBehaviour
 
     public void Close()
     {
-        Debug.Log("FECHOU");
         foreach (var list in imagesByDirection.Values)
             list.ForEach(o => Destroy(o));
 

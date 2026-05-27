@@ -7,6 +7,7 @@ TagManager:
   - Anchor
   - Hotspot
   - Image_UI
+  - UI
   layers:
   - Default
   - TransparentFX
@@ -14,7 +15,7 @@ TagManager:
   - Player
   - Water
   - UI
-  - 
+  - UI_Block
   - 
   - 
   - 

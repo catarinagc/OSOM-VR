@@ -52,19 +52,17 @@ public class VRController : MonoBehaviour
     }
 
     // Update is called once per frame
-    //TODO meter botoes para interact bem feitos, estes sao placeholders
     void Update()
     {
         if (yButton.WasPressedThisFrame())
         {
-            // pointerMode = InteractionMode.World;
             UI_Manager.CloseActiveUIs();
         }
 
-        // if (pointerMode == InteractionMode.UI)
-        //     return;
-
-        HandleHotspotLook();
+        if (!UI_Manager.isHotspotActive())
+        {
+            HandleHotspotLook();
+        }
 
         if (aButton.WasPressedThisFrame())
         {
@@ -83,44 +81,15 @@ public class VRController : MonoBehaviour
 
         if (rightPress.WasPressedThisFrame())
         {
-            if (currentHotspot)
+            if (currentHotspot && !UI_Manager.isHotspotActive())
                 currentHotspot.OnInteract();
         }
     }
-
-    // void LateUpdate()
-    // {
-    //     if (xrOrigin == null) return;
-
-    //     Vector3 pos = xrOrigin.position;
-
-    //     if (pos.y > maxHeight)
-    //     {
-    //         pos.y = maxHeight;
-    //         xrOrigin.position = pos;
-    //     }
-    // }
 
     public float GetHeight()
     {
         return gameObject.transform.position.y;
     }
-
-    // public void toggleFly()
-    // {
-    //     if (currentMode == MovementMode.Flying)
-    //     {
-    //         moveProvider.enableFly = false;
-    //         transform.position = initWalkPos.position;
-    //         transform.rotation = initWalkPos.rotation;  
-    //         currentMode = MovementMode.Walking;
-    //     }
-    //     else
-    //     {
-    //         moveProvider.enableFly = true;
-    //         currentMode = MovementMode.Flying;
-    //     }
-    // }
 
     public void toggleFly()
     {
@@ -159,10 +128,20 @@ public class VRController : MonoBehaviour
         Debug.DrawRay(rightController.position, rightController.forward * 10f, Color.red);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 10f)) // distance optional
+        if (Physics.Raycast(ray, out hit, 10f))
         {
-            HotspotScript hotspot = hit.collider.GetComponentInParent<HotspotScript>();
+            // If the first thing hit is UI, stop here
+            if (hit.collider.CompareTag("UI"))
+            {
+                if (currentHotspot != null)
+                {
+                    currentHotspot.StopHover();
+                    currentHotspot = null;
+                }
+                return;
+            }
 
+            HotspotScript hotspot = hit.collider.GetComponentInParent<HotspotScript>();
             if (hotspot != null)
             {
                 if (currentHotspot != hotspot)
@@ -173,7 +152,6 @@ public class VRController : MonoBehaviour
                     currentHotspot = hotspot;
                     currentHotspot.StartHover();
                 }
-
                 return;
             }
         }

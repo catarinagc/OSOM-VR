@@ -4,10 +4,12 @@ public class ButtonTooltip : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 {
     [TextArea]
     public string tooltipText;
+    public bool isActive = true;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public void OnPointerEnter(PointerEventData eventData)
     {
-        TooltipScript.Instance.Show(tooltipText);
+        if (isActive)
+            TooltipScript.Instance.Show(tooltipText);
     }
 
     public void OnPointerExit(PointerEventData eventData)

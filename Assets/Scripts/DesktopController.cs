@@ -26,10 +26,11 @@ public class DesktopController : MonoBehaviour
     private CharacterController controller;
     private float verticalVelocity;
     public Transform initWalkPos;
-    private HotspotScript currentHotspot;
+    public HotspotScript currentHotspot;
     [SerializeField] UI_Manager UI_Manager;
     [SerializeField] BreakwaterZoneManager breakwaterZoneManager;
-
+    [Header("Interaction")]
+    public float maxInteractDistance = 5f;
     public enum InteractionMode
     {
         World,
@@ -55,46 +56,41 @@ public class DesktopController : MonoBehaviour
 
     void Update()
     {
-        if (Mouse.current.rightButton.wasPressedThisFrame)
+        if (!UI_Manager.isHotspotActive())
         {
-            if (Cursor.lockState == CursorLockMode.None)
+            HandleMovement();
+            HandleHotspotLook();
+
+            if (Cursor.lockState == CursorLockMode.Locked)
             {
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
+                HandleLook();
             }
-            else
+
+            if (Mouse.current.rightButton.wasPressedThisFrame)
             {
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                if (Cursor.lockState == CursorLockMode.None)
+                {
+                    Cursor.lockState = CursorLockMode.Locked;
+                    Cursor.visible = false;
+                }
+                else
+                {
+                    Cursor.lockState = CursorLockMode.None;
+                    Cursor.visible = true;
+                }
             }
         }
 
-        // if (Mouse.current.leftButton.wasPressedThisFrame)
-        // {
-        //     // If clicking UI, ignore world interaction
-        //     if (EventSystem.current.IsPointerOverGameObject())
-        //         return;
-
-        //     if (currentHotspot)
-        //     {
-        //         currentHotspot.OnInteract();
-        //     }
-        // }
-
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            if (EventSystem.current.IsPointerOverGameObject())
+            if (Cursor.lockState == CursorLockMode.None && EventSystem.current.IsPointerOverGameObject())
                 return;
 
-            // Re-cast from screen center to confirm, don't rely on cursor position
-            Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
-            Ray ray = camera.ScreenPointToRay(screenCenter);
-
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            if (currentHotspot != null)
             {
-                HotspotScript hotspot = hit.collider.GetComponentInParent<HotspotScript>();
-                if (hotspot != null)
-                    hotspot.OnInteract();
+                currentHotspot.OnInteract();
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
             }
         }
         
@@ -112,14 +108,6 @@ public class DesktopController : MonoBehaviour
         {
             UI_Manager.OpenZoneMenu();
         }
-
-        HandleMovement();
-        HandleHotspotLook();
-
-        if (Cursor.lockState == CursorLockMode.Locked)
-        {
-            HandleLook();
-        }
     
         if (Keyboard.current.fKey.wasPressedThisFrame)
         {
@@ -135,17 +123,6 @@ public class DesktopController : MonoBehaviour
                 verticalVelocity = 0;
             }
         }
-
-        // if (Mouse.current.leftButton.wasPressedThisFrame)
-        // {
-        //     if (currentHotspot != null)
-        //     {
-        //         // pointerMode = InteractionMode.UI;
-        //         // Cursor.lockState = CursorLockMode.None;
-        //         // Cursor.visible = true;
-        //         currentHotspot.OnInteract();
-        //     }
-        // }
     }
 
     public float GetHeight()
@@ -160,7 +137,7 @@ public class DesktopController : MonoBehaviour
         Ray ray = camera.ScreenPointToRay(screenCenter);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit))
+        if (Physics.Raycast(ray, out hit, maxInteractDistance))
         {
             HotspotScript hotspot = hit.collider.GetComponentInParent<HotspotScript>();
 

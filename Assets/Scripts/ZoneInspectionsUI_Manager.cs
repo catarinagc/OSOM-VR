@@ -31,24 +31,6 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
         OpenInspectionData();
     }
     
-    // void BindObjectToUI(object data, List<UIField> fields)
-    // {
-    //     var type = data.GetType();
-
-    //     foreach (var fieldUI in fields)
-    //     {
-    //         var field = type.GetField(fieldUI.fieldName);
-
-    //         if (field == null)
-    //         {
-    //             fieldUI.text.text = "-";
-    //             continue;
-    //         }
-
-    //         var value = field.GetValue(data);
-    //         fieldUI.text.text = value != null ? value.ToString() : "-";
-    //     }
-    // }
     void BindObjectToUI(object data, List<UIField> fields, string[] labels)
     {
         var type = data.GetType();
@@ -57,7 +39,6 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
         {
             var fieldUI = fields[i];
 
-            // get label from your array
             string label = i < labels.Length ? labels[i] : fieldUI.fieldName;
 
             var field = type.GetField(fieldUI.fieldName);

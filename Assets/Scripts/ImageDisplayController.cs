@@ -16,52 +16,53 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler
     public int currentHotspotId;
     public string currentDirection;
     private bool isReady = false;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    // public void OnConfirmNote()
-    // {
-    //     Debug.Log("CONFIRM");
-    //     string message = noteInputField.text;
-
-    //     if (string.IsNullOrWhiteSpace(message)) return;
-
-    //     NoteData note = annotationManager.ConfirmNote(message);
-    //     SpawnMarker(note);
-
-    //     noteInputField.text = string.Empty;
-    // }
+    public bool isVR;
+    private Vector2 lastClickRelativePos;
 
     public void SpawnMarker(NoteData note)
     {
         NoteMarker marker = Instantiate(noteMarkerPrefab, imageRect);
         marker.Initialize(note, imageRect);
+        marker.displayController = this;
     }
 
-    // public void OnPointerClick(PointerEventData eventData)
-    // {
-    //     // Ignore if it was a UI button or other element on top
-    //     if (eventData.button != PointerEventData.InputButton.Left) return;
+    private float readyTime;
+    private const float READY_DELAY = 0.3f; // seconds after panel opens
 
-    //     //Vector2 relativePos = GetRelativePosition(eventData.position);
-    //     // Vector2 relativePos = GetRelativePositionVR(eventData);
-    //     // annotationManager.OpenNoteInput(currentYear, currentHotspotId, currentDirection, relativePos, this);
-    // }
-
-    private Vector2 lastClickRelativePos;
+    void OnEnable()
+    {
+        readyTime = Time.time + READY_DELAY;
+    }
 
     public void OnPointerClick(PointerEventData eventData)
     {
-        lastClickRelativePos = GetRelativePositionVR(eventData);
-    }
-
-    public void OnClickInteractVR()
-    {
-        if (!isReady) //avoid first auto click when panel opens, dont know why this happens
+        if (isVR)
         {
-            isReady = true;
+            if (Time.time < readyTime) return;
+            lastClickRelativePos = GetRelativePositionVR(eventData);
+
+            if (lastClickRelativePos.x < 0f || lastClickRelativePos.x > 1f ||
+            lastClickRelativePos.y < 0f || lastClickRelativePos.y > 1f)
+            return;
+
+            annotationManager.OpenNoteInput(currentYear, currentHotspotId, currentDirection, lastClickRelativePos, this);
             return;
         }
-        annotationManager.OpenNoteInput(currentYear, currentHotspotId, currentDirection, lastClickRelativePos, this);
+
+        if (eventData.button != PointerEventData.InputButton.Left) return;
+        Vector2 relativePos = GetRelativePosition(eventData.position);
+        annotationManager.OpenNoteInput(currentYear, currentHotspotId, currentDirection, relativePos, this);
     }
+
+    // public void OnClickInteractVR()
+    // {
+    //     if (!isReady) //avoid first auto click when panel opens, dont know why this happens
+    //     {
+    //         isReady = true;
+    //         return;
+    //     }
+    //     annotationManager.OpenNoteInput(currentYear, currentHotspotId, currentDirection, lastClickRelativePos, this);
+    // }
 
     private Vector2 GetRelativePosition(Vector2 screenClickPos)
     {
@@ -83,10 +84,8 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler
 
     private Vector2 GetRelativePositionVR(PointerEventData eventData)
     {
-        // In VR the worldPosition is where the ray hit the UI element
         Vector3 worldHitPos = eventData.pointerCurrentRaycast.worldPosition;
 
-        // Convert world position to local position on the imageRect
         Vector2 localPoint = imageRect.InverseTransformPoint(worldHitPos);
 
         Vector2 size = imageRect.rect.size;
@@ -114,5 +113,15 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler
             if (child.GetComponent<NoteMarker>() != null)
                 Destroy(child.gameObject);
         }
+    }
+
+    public void EditNote(NoteData note, System.Action onConfirm = null)
+    {
+        annotationManager.EditNote(note, this, onConfirm);
+    }
+
+    public void DeleteNote(NoteData data)
+    {
+        annotationManager.DeleteNote(data);
     }
 }

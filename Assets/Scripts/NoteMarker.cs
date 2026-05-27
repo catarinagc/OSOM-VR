@@ -2,11 +2,13 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using TMPro; // or UnityEngine.UI if using standard Text
 
-public class NoteMarker : MonoBehaviour, IPointerClickHandler
+public class NoteMarker : MonoBehaviour
 {
     public NoteData data;
-    [SerializeField] GameObject tooltipPanel;     // popup that shows the message
-    [SerializeField] TMP_Text tooltipText;        // text inside the popup
+    [SerializeField] GameObject tooltipPanel;
+    [SerializeField] TMP_Text tooltipText;
+    [SerializeField] TMP_Text tooltipTextDate;
+    public ImageDisplayController displayController;
 
     public void Initialize(NoteData noteData, RectTransform imageRect)
     {
@@ -23,11 +25,29 @@ public class NoteMarker : MonoBehaviour, IPointerClickHandler
         );
     }
 
-    public void OnPointerClick(PointerEventData eventData)
+    public void OnClick()
     {
-        //if (eventData.button != PointerEventData.InputButton.Left) return;
-        
-        tooltipText.text = $"{data.message}\n<size=10>{data.created}</size>";
-        tooltipPanel.SetActive(!tooltipPanel.activeSelf); // toggle on/off
+        tooltipText.text = data.message;
+        tooltipTextDate.text = data.created;
+        tooltipPanel.SetActive(true);
+    }
+
+    public void EditMessage()
+    {
+        displayController.annotationManager.EditNote(data, displayController, () =>
+        {
+            tooltipPanel.SetActive(false);
+        });
+    }
+
+    public void DeleteNote()
+    {
+        displayController.DeleteNote(data);
+        Destroy(gameObject);
+    }
+
+    public void DisablePanel()
+    {
+        tooltipPanel.SetActive(false);
     }
 }

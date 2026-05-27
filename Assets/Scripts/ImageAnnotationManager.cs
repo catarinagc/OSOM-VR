@@ -7,15 +7,36 @@ public class ImageAnnotationManager : MonoBehaviour
     private List<NoteData> allNotes;
     private ImageKey pendingKey;
     private Vector2 pendingPos;
+    private string pendingMessage;
     [SerializeField] GameObject inputPanel;
+    [SerializeField] GameObject inputPanelVR;
+    private GameObject activePanel;
+    private bool isVR;
     private ImageDisplayController pendingCaller;
     private string SavePath => System.IO.Path.Combine(Application.persistentDataPath, "annotations.json");
+    private NoteData editingNote = null;
 
     private void Awake()
     {
         allNotes = new List<NoteData>();
         LoadNotes();
     }
+
+    void Start()
+    {
+        XRModeSwitcher.OnModeSelected += OnModeChosen;
+    }
+
+    public void OnModeChosen(bool isVR)
+    {
+        Debug.Log("VR" + isVR);
+        this.isVR = isVR;
+        if (isVR)
+            activePanel = inputPanelVR;
+        else
+            activePanel = inputPanel;
+    }
+
     private void LoadNotes()
     {
         if (!System.IO.File.Exists(SavePath)) return;
@@ -25,6 +46,7 @@ public class ImageAnnotationManager : MonoBehaviour
         if (wrapper != null && wrapper.notes != null)
             allNotes = wrapper.notes;
     }
+
     public void ExportReport()
     {
         string report = GenerateReport();
@@ -62,19 +84,43 @@ public class ImageAnnotationManager : MonoBehaviour
         pendingKey = new ImageKey { year = year, hotspotId = hotspotId, direction = direction };
         pendingPos = relativePos;
         pendingCaller = caller;
-        inputPanel.SetActive(true);
+        activePanel.SetActive(true);
     }
 
-    public NoteData ConfirmNote(string message)
+    public void OpenNoteInput(ImageKey key, Vector2 relativePos, ImageDisplayController caller, string oldNote)
     {
-        NoteData note = CreateNote(pendingKey, pendingPos, message);
-        inputPanel.SetActive(false);
-        return note;
+        pendingKey = key;
+        pendingPos = relativePos;
+        pendingCaller = caller;
+        pendingMessage = oldNote;
+        activePanel.SetActive(true);
     }
 
     public ImageDisplayController GetPendingCaller()
     {
         return pendingCaller;
+    }
+
+    public string GetPendingMessage()
+    {
+        return pendingMessage;
+    }
+
+    public void ClearNotesForImage(ImageKey key)
+    {
+        allNotes.RemoveAll(n => n.imageKey.Equals(key));
+        SaveNotes();
+    }
+
+    public void ClearAllNotes()
+    {
+        allNotes.Clear();
+        SaveNotes();
+    }
+
+    public bool IsInputPanelOpen()
+    {
+        return activePanel != null && activePanel.activeSelf;
     }
 
     private NoteData CreateNote(ImageKey key, Vector2 relPosition, string message)
@@ -89,6 +135,44 @@ public class ImageAnnotationManager : MonoBehaviour
         allNotes.Add(note);
         SaveNotes();
         return note;
+    }
+
+    private System.Action onConfirmCallback;
+
+    public void EditNote(NoteData note, ImageDisplayController displayController, System.Action onConfirm = null)
+    {
+        editingNote = note;
+        onConfirmCallback = onConfirm;
+        OpenNoteInput(note.imageKey, note.relativePos, displayController, note.message);
+    }
+
+    public NoteData ConfirmNote(string message)
+    {
+        NoteData note;
+
+        if (editingNote != null)
+        {
+            editingNote.message = message;
+            editingNote.created = System.DateTime.Now.ToString("dd-MM-yyyy HH:mm");
+            note = editingNote;
+            editingNote = null;
+            SaveNotes();
+        }
+        else
+        {
+            note = CreateNote(pendingKey, pendingPos, message);
+        }
+
+        activePanel.SetActive(false);
+        onConfirmCallback?.Invoke();
+        onConfirmCallback = null;
+        return note;
+    }
+
+    public void DeleteNote(NoteData note)
+    {
+        allNotes.Remove(note);
+        SaveNotes();
     }
 }
 

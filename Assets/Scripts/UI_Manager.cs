@@ -17,6 +17,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] BreakwaterZoneManager breakwaterZoneManager;
     [SerializeField] Transform spawnPoint;
     private bool isVR = false;
+    private bool toReturnMenu = false;
 
     void Awake()
     {
@@ -56,14 +57,30 @@ public class UI_Manager : MonoBehaviour
         foreach (GameObject ui in activeUIs)
         {
             if (ui == hotspotImageObj)
-                ui.GetComponent<Image_UI_Manager>().Close();
+            {
+                ui.GetComponent<Image_UI_Manager>().Close();    
+            }
+
+            if (ui == riskMenuObj || ui == zoneInfoMenuObj || ui == zoneInspectionMenuObj)
+            {
+                toReturnMenu = true;
+            }
+            
             ui.SetActive(false);
+
         }
 
         activeUIs.Clear();
 
         if (VRController)
             VRController.stopInteraction();
+
+
+        if (toReturnMenu)
+        {
+            OpenZoneMenu();
+            toReturnMenu = false;
+        }
     }
 
     private void CloseSpecificUI(GameObject openUI)
@@ -150,5 +167,10 @@ public class UI_Manager : MonoBehaviour
             zoneInspectionMenuObj.GetComponent<SnapMenuToPlayer>().OpenMenu();
         }
         zoneInspectionMenuObj.GetComponent<ZoneInspectionsUI_Manager>().PrepareOpen(zone, zone.referenceInspection.Year);
+    }
+
+    public bool isHotspotActive()
+    {
+        return hotspotImageObj.active;
     }
 }
