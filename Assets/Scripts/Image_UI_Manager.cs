@@ -20,12 +20,14 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] Sprite UIMask;
     public Animator panelAnimator;
     [SerializeField] GameObject buttonsHolder;
+    [SerializeField] GameObject notePanelPC;
 
     [Header("Placeholder 1")]
     [SerializeField] Image imagePlaceholder1;
     [SerializeField] Image imagePlaceholder1_Shadow;
     [SerializeField] TMP_Text textPlaceholder1;
     [SerializeField] GameObject imageIconPlaceholder1;
+    [SerializeField] GameObject closeButtonPlaceholder1;
     [SerializeField] GameObject placeholder1;
     public Image interactedImage1;
 
@@ -34,6 +36,7 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] Image imagePlaceholder2_Shadow;
     [SerializeField] TMP_Text textPlaceholder2;
     [SerializeField] GameObject imageIconPlaceholder2;
+    [SerializeField] GameObject closeButtonPlaceholder2;
     [SerializeField] GameObject placeholder2;
     public Image interactedImage2;
     
@@ -47,6 +50,7 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] private GameObject imagePrefab;
     [SerializeField] ImageAnnotationManager annotationManager;
     [SerializeField] TMP_InputField noteInputField;
+    [SerializeField] GameObject notePanelVR;
     private Dictionary<string, List<GameObject>> imagesByDirection = new();
     private List<InspectionImage> currentImages;
     private bool isDragging = false;
@@ -96,6 +100,7 @@ public class Image_UI_Manager : MonoBehaviour
             placeholder1.GetComponent<HotspotClearImage>().imageData = imageData;
             placeholder1.GetComponent<ImageDisplayController>().SpawnMarkers();
             imageIconPlaceholder1.SetActive(true);
+            closeButtonPlaceholder1.SetActive(true);
         }
         else
         {
@@ -117,6 +122,7 @@ public class Image_UI_Manager : MonoBehaviour
             placeholder2.GetComponent<HotspotClearImage>().imageData = imageData;
             placeholder2.GetComponent<ImageDisplayController>().SpawnMarkers();
             imageIconPlaceholder2.SetActive(true);
+            closeButtonPlaceholder2.SetActive(true);
         }
 
         useFirstSlot = !useFirstSlot;
@@ -133,6 +139,7 @@ public class Image_UI_Manager : MonoBehaviour
             interactedImage1.transform.parent.GetComponent<ButtonTooltip>().isActive = true;
             interactedImage1 = null;
             imageIconPlaceholder1.SetActive(false);
+            closeButtonPlaceholder1.SetActive(false);
             useFirstSlot = true;
             placeholder1.GetComponent<ImageDisplayController>().ClearNotes();
         }
@@ -145,6 +152,7 @@ public class Image_UI_Manager : MonoBehaviour
             interactedImage1.transform.parent.GetComponent<ButtonTooltip>().isActive = true;
             interactedImage2 = null;
             imageIconPlaceholder2.SetActive(false);
+            closeButtonPlaceholder2.SetActive(false);
             placeholder2.GetComponent<ImageDisplayController>().ClearNotes();
             if (useFirstSlot)
                 useFirstSlot = false;
@@ -160,7 +168,9 @@ public class Image_UI_Manager : MonoBehaviour
             imagePlaceholder1.sprite = UIMask;
             imagePlaceholder2.sprite = UIMask;
             imageIconPlaceholder1.SetActive(false);
+            closeButtonPlaceholder1.SetActive(false);
             imageIconPlaceholder2.SetActive(false);
+            closeButtonPlaceholder2.SetActive(false);
             useFirstSlot = true;
         }
     }
@@ -201,6 +211,7 @@ public class Image_UI_Manager : MonoBehaviour
         fullscreenPlaceholder.GetComponent<ImageDisplayController>().currentYear = int.Parse(imageData.year);
         fullscreenPlaceholder.GetComponent<ImageDisplayController>().currentHotspotId = imageData.hotspotID;
         fullscreenPlaceholder.GetComponent<ImageDisplayController>().currentDirection = imageData.dir;
+        fullscreenPlaceholder.GetComponent<ImageDisplayController>().panelPC = notePanelPC;
         fullscreenPlaceholder.GetComponent<ImageDisplayController>().SpawnMarkers();
         fullscreenPlaceholder.SetActive(true);
     }
@@ -309,6 +320,7 @@ public class Image_UI_Manager : MonoBehaviour
         InstancedObj.GetComponent<ImageDisplayController>().annotationManager = annotationManager;
         InstancedObj.GetComponent<ImageDisplayController>().noteInputField = noteInputField;
         InstancedObj.GetComponent<ImageDisplayController>().imageData = imageData;
+        InstancedObj.GetComponent<ImageDisplayController>().panelVR = notePanelVR;
         InstancedObj.GetComponent<ImageDisplayController>().SpawnMarkers();
 
         //Increase sharpness distance (lower mip bias = sharper farther away)

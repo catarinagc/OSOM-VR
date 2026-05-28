@@ -26,4 +26,10 @@ public class NoteInputPanel : MonoBehaviour
         noteInputField.stringPosition = noteInputField.text.Length;
         noteInputField.ForceLabelUpdate();
     }
+
+    public void CancelNote()
+    {
+        noteInputField.text = string.Empty;
+        gameObject.SetActive(false);
+    }
 }

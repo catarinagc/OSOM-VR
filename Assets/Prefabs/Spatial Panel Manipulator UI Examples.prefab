@@ -1789,8 +1789,9 @@ MonoBehaviour:
   UIManager: {fileID: 0}
   annotationManager: {fileID: 0}
   imageRect: {fileID: 6402103151133296629}
-  noteMarkerPrefab: {fileID: 8061200653348429790, guid: 6cefc726774521e4da05a6e7ef322d29, type: 3}
+  noteMarkerPrefab: {fileID: 3305477395328794523, guid: 93cb45868750c2e478816a05c40f2282, type: 3}
   noteInputField: {fileID: 0}
+  panelVR: {fileID: 0}
   imageData:
     hotspotID: 0
     dir: 
@@ -1799,4 +1800,5 @@ MonoBehaviour:
   currentYear: 0
   currentHotspotId: 0
   currentDirection: 
+  canInteract: 1
   isVR: 0

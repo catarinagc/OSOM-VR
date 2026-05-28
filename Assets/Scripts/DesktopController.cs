@@ -102,6 +102,8 @@ public class DesktopController : MonoBehaviour
         if(Keyboard.current.spaceKey.wasPressedThisFrame)
         {
             UI_Manager.OpenMenu();
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
         }
 
         if(Keyboard.current.zKey.wasPressedThisFrame && breakwaterZoneManager.GetHasSelection())
