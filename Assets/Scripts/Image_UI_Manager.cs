@@ -51,6 +51,7 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] ImageAnnotationManager annotationManager;
     [SerializeField] TMP_InputField noteInputField;
     [SerializeField] GameObject notePanelVR;
+    [SerializeField] GameObject dualImageZoom;
     private Dictionary<string, List<GameObject>> imagesByDirection = new();
     private List<InspectionImage> currentImages;
     private bool isDragging = false;
@@ -214,6 +215,16 @@ public class Image_UI_Manager : MonoBehaviour
         fullscreenPlaceholder.GetComponent<ImageDisplayController>().panelPC = notePanelPC;
         fullscreenPlaceholder.GetComponent<ImageDisplayController>().SpawnMarkers();
         fullscreenPlaceholder.SetActive(true);
+    }
+
+    public void SetMultiImageFullscreen()
+    {
+        if (interactedImage1!= null && interactedImage2 != null)
+        {
+            dualImageZoom.SetActive(true);
+            dualImageZoom.GetComponent<DualImageZoom>().left.sprite = imagePlaceholder1.sprite;
+            dualImageZoom.GetComponent<DualImageZoom>().right.sprite = imagePlaceholder2.sprite;
+        }
     }
 
     public void hideFullscreen()

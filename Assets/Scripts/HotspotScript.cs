@@ -13,11 +13,29 @@ public class HotspotScript : MonoBehaviour
     [SerializeField] private GameObject textID;
 
     [SerializeField] private GameObject textID2;
+    [SerializeField] private GameObject mesh;
+    [SerializeField] Material selectedMaterial;
+    [SerializeField] Material unselectedMaterial;
+    private MaterialPropertyBlock _propBlock;
+    private Renderer _renderer;
 
     private bool isActive = false;
     private bool isHovering = false;
 
-    private Vector3 startPosition;
+    public Vector3 startPosition;
+    public Vector3 currentGlobalPosition;
+    void Awake()
+    {
+        _renderer = mesh.GetComponent<Renderer>();
+    }
+
+    public void setTransparency(bool isSelected)
+    {
+        if (isSelected)
+            _renderer.material = selectedMaterial;
+        else
+            _renderer.material = unselectedMaterial;
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -25,6 +43,7 @@ public class HotspotScript : MonoBehaviour
         textID.GetComponent<TextMeshProUGUI>().text = hotspotID.ToString();
         textID2.GetComponent<TextMeshProUGUI>().text = hotspotID.ToString();
         startPosition = transform.localPosition;
+        currentGlobalPosition = transform.position;
     }
 
     // Update is called once per frame
@@ -56,12 +75,12 @@ public class HotspotScript : MonoBehaviour
     public void OnInteract()
     {
         UI_Manager.openHotspotImageUI(hotspotID, troco_ID, images);
-        Debug.Log("hello " + hotspotID + troco_ID);
+        //Debug.Log("hello " + hotspotID + troco_ID);
     }
 
     public void AddImage(InspectionImage image)
     {
-        Debug.Log("Imagem");
+        //Debug.Log("Imagem");
         images.Add(image);
     }
 }

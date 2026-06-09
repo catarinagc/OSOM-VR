@@ -109,11 +109,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Image_Button
   UIManager: {fileID: 0}
-  sourceImage_F: {fileID: 21300000, guid: a4f9ee8031805bc48bd2e0d56096d78a, type: 3}
-  sourceImage_T: {fileID: 21300000, guid: 039c89b279e1cfc4f94e4e75eb925ed6, type: 3}
-  sourceImage_L: {fileID: 21300000, guid: a673efdaa1954c546be3b01f399c5735, type: 3}
   activeImage: {fileID: 7782348856590763177}
   yearText: {fileID: 4103311227603917132}
+  imageData:
+    hotspotID: 0
+    dir: 
+    year: 
+    sprite: {fileID: 0}
 --- !u!114 &9072561595116750189
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,7 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b4edae99b4ccc2439edcc615e0a33e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ButtonTooltip
-  tooltipText: Open Image
+  tooltipText: Abrir Imagem
+  isActive: 1
 --- !u!1 &5682680045045851949
 GameObject:
   m_ObjectHideFlags: 0

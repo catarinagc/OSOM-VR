@@ -84,6 +84,7 @@ public class ImageAnnotationManager : MonoBehaviour
         pendingKey = new ImageKey { year = year, hotspotId = hotspotId, direction = direction };
         pendingPos = relativePos;
         pendingCaller = caller;
+        pendingMessage = "";
         activePanel.SetActive(true);
     }
 

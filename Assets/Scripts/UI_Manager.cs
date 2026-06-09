@@ -14,7 +14,10 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] GameObject zoneInspectionMenuObj;
     [SerializeField] GameObject zoneInspectionSelectorObj;
     [SerializeField] GameObject breakwaterMenu;
+    [SerializeField] GameObject HUD;
+    [SerializeField] GameObject hotspotChangeMenu;
     [SerializeField] BreakwaterZoneManager breakwaterZoneManager;
+    [SerializeField] HotspotManager hotspotManager;
     [SerializeField] Transform spawnPoint;
     private bool isVR = false;
     private bool toReturnMenu = false;
@@ -42,6 +45,8 @@ public class UI_Manager : MonoBehaviour
     public void openHotspotImageUI(int hotspotID, char troco_ID, List<InspectionImage> images)
     {
         CloseActiveUIs();
+        if (!isVR)
+            HUD.SetActive(false);
         hotspotImageObj.GetComponent<Image_UI_Manager>().OnModeChosen(isVR);
         Debug.Log($"images null? {images == null} | count: {images?.Count}");
         hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID, images);
@@ -81,6 +86,8 @@ public class UI_Manager : MonoBehaviour
             OpenZoneMenu();
             toReturnMenu = false;
         }
+        if (!isVR)
+            HUD.SetActive(true);
     }
 
     private void CloseSpecificUI(GameObject openUI)
@@ -97,6 +104,8 @@ public class UI_Manager : MonoBehaviour
         CloseActiveUIs();
         activeUIs.Add(menuObj);
         menuObj.SetActive(true);
+        if (!isVR)
+            HUD.SetActive(false);
     }
 
     public void OpenZoneMenu()
@@ -107,6 +116,8 @@ public class UI_Manager : MonoBehaviour
             activeUIs.Add(zoneMenuObj);
             zoneMenuObj.SetActive(true);
             zoneMenuObj.GetComponent<zoneUIManager>().PrepareOpen(breakwaterZoneManager.GetSelectionZone());
+            if (!isVR)
+                HUD.SetActive(false);
         }
     }
 
@@ -122,6 +133,8 @@ public class UI_Manager : MonoBehaviour
         }
         riskMenuObj.SetActive(true);
         riskMenuObj.GetComponent<RiskMenuUI_Manager>().PrepareOpen(zone);
+        if (!isVR)
+            HUD.SetActive(false);
     }
 
     public void OpenZoneInfoMenu(Zone zone)
@@ -139,6 +152,8 @@ public class UI_Manager : MonoBehaviour
         }
         zoneInfoMenuObj.SetActive(true);
         zoneInfoMenuObj.GetComponent<ZoneInfoUI_Manager>().PrepareOpen(zone);
+        if (!isVR)
+            HUD.SetActive(false);
     }
 
     public void OpenZoneInspectionMenu(Zone zone)
@@ -167,10 +182,22 @@ public class UI_Manager : MonoBehaviour
             zoneInspectionMenuObj.GetComponent<SnapMenuToPlayer>().OpenMenu();
         }
         zoneInspectionMenuObj.GetComponent<ZoneInspectionsUI_Manager>().PrepareOpen(zone, zone.referenceInspection.Year);
+        if (!isVR)
+            HUD.SetActive(false);
     }
 
     public bool isHotspotActive()
     {
         return hotspotImageObj.active;
+    }
+
+    public void OpenHotspotChangeMenu()
+    {
+        activeUIs.Add(hotspotChangeMenu);
+        hotspotChangeMenu.SetActive(true);
+        List<HotspotScript> hotspots = hotspotManager.GetHotspotList();
+        hotspotChangeMenu.GetComponent<HotspotTeleportMenu>().PrepareMenu(hotspots);
+        if (!isVR)
+            HUD.SetActive(false);
     }
 }

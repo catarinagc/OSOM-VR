@@ -461,6 +461,9 @@ MonoBehaviour:
   troco_ID: 65
   textID: {fileID: 766547853215558106}
   textID2: {fileID: 394541883713594213}
+  mesh: {fileID: 8369649081145610947}
+  selectedMaterial: {fileID: 2100000, guid: e6a24bb830666d147a3bc7b839862f52, type: 2}
+  unselectedMaterial: {fileID: 2100000, guid: e940653a8af873d4eb5492904c233b97, type: 2}
 --- !u!1 &8369649081145610947
 GameObject:
   m_ObjectHideFlags: 0

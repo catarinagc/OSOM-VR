@@ -3,7 +3,7 @@ using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using TMPro;
 using System.Collections.Generic;
-
+using UnityEngine.InputSystem;
 public class ImageDisplayController : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] public Image_UI_Manager UIManager;
@@ -21,6 +21,8 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler
     [SerializeField] bool canInteract;
     public bool isVR;
     private Vector2 lastClickRelativePos;
+    private bool isSettingMarker = false;
+    private NoteMarker ghostMarker;
 
     public void SpawnMarker(NoteData note)
     {
@@ -38,31 +40,129 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler
         readyTime = Time.time + READY_DELAY;
     }
 
+    void OnStart()
+    {
+        isSettingMarker= false;
+    }
+
+    public void OnCLick()
+    {
+        if (!canInteract) return;
+
+        isSettingMarker = true;
+
+        if (ghostMarker == null)
+        {
+            // Create a temporary NoteData so Initialize doesn't blow up
+            NoteData placeholder = new NoteData();
+            ghostMarker = Instantiate(noteMarkerPrefab, imageRect);
+            ghostMarker.Initialize(placeholder, imageRect, isVR, canInteract: false, panelVR, panelPC);
+            // Make the ghost invisible to raycasts so clicks pass through to the image
+            CanvasGroup cg = ghostMarker.gameObject.AddComponent<CanvasGroup>();
+            cg.blocksRaycasts = false;
+        }
+
+        ghostMarker.gameObject.SetActive(true);
+    }
+
+    void Update()
+    {
+        if (!isSettingMarker || ghostMarker == null) return;
+
+        if (isVR) return;
+
+        if (Mouse.current == null) return;
+
+        Vector2 mousePos = Mouse.current.position.ReadValue();
+        Vector2 relativePos = GetRelativePosition(mousePos);
+
+        relativePos.x = Mathf.Clamp01(relativePos.x);
+        relativePos.y = Mathf.Clamp01(relativePos.y);
+
+        PositionMarkerAt(ghostMarker, relativePos);
+
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            Vector2 clickRelativePos = GetRelativePosition(mousePos);
+
+            if (clickRelativePos.x >= 0f && clickRelativePos.x <= 1f &&
+                clickRelativePos.y >= 0f && clickRelativePos.y <= 1f)
+            {
+                PlaceMarkerAndOpenInput(clickRelativePos);
+            }
+        }
+    }
+
+    private void PositionMarkerAt(NoteMarker marker, Vector2 relativePos)
+    {
+        Vector2 size = GetActualImageSize();
+        float localX = (relativePos.x - 0.5f) * size.x;
+        float localY = (relativePos.y - 0.5f) * size.y;
+        marker.GetComponent<RectTransform>().anchoredPosition = new Vector2(localX, localY);
+    }
+
+    public void CancelPlacement()
+    {
+        isSettingMarker = false;
+        if (ghostMarker != null)
+            ghostMarker.gameObject.SetActive(false);
+    }
+
+    // public void OnPointerClick(PointerEventData eventData)
+    // {
+    //     if (!canInteract || !isSettingMarker)
+    //         return;
+        
+    //     if (isVR)
+    //     {
+    //         if (Time.time < readyTime) return;
+    //         lastClickRelativePos = GetRelativePositionVR(eventData);
+
+    //         if (lastClickRelativePos.x < 0f || lastClickRelativePos.x > 1f || lastClickRelativePos.y < 0f || lastClickRelativePos.y > 1f)
+    //             return;
+
+    //         annotationManager.OpenNoteInput(currentYear, currentHotspotId, currentDirection, lastClickRelativePos, this);
+    //         return;
+    //     }
+
+    //     if (eventData.button != PointerEventData.InputButton.Right) return;
+    //     Vector2 relativePos = GetRelativePosition(eventData.position);
+
+    //     Debug.Log("REL " + relativePos);
+
+    //     if (relativePos.x < 0f || relativePos.x > 1f || relativePos.y < 0f || relativePos.y > 1f)
+    //         return;
+        
+    //     annotationManager.OpenNoteInput(currentYear, currentHotspotId, currentDirection, relativePos, this);
+    // }
+
     public void OnPointerClick(PointerEventData eventData)
     {
-        if (!canInteract)
-            return;
+        if (!canInteract) return;
         
+        // Placement is now handled in Update() for PC
+        if (!isVR && isSettingMarker) return;
+
         if (isVR)
         {
             if (Time.time < readyTime) return;
+
             lastClickRelativePos = GetRelativePositionVR(eventData);
+            if (lastClickRelativePos.x < 0f || lastClickRelativePos.x > 1f ||
+                lastClickRelativePos.y < 0f || lastClickRelativePos.y > 1f) return;
 
-            if (lastClickRelativePos.x < 0f || lastClickRelativePos.x > 1f || lastClickRelativePos.y < 0f || lastClickRelativePos.y > 1f)
-                return;
-
-            annotationManager.OpenNoteInput(currentYear, currentHotspotId, currentDirection, lastClickRelativePos, this);
+            PlaceMarkerAndOpenInput(lastClickRelativePos);
             return;
         }
+    }
 
-        if (eventData.button != PointerEventData.InputButton.Left) return;
-        Vector2 relativePos = GetRelativePosition(eventData.position);
+    private void PlaceMarkerAndOpenInput(Vector2 relativePos)
+    {
+        // Hide ghost, exit placement mode
+        isSettingMarker = false;
+        if (ghostMarker != null)
+            ghostMarker.gameObject.SetActive(false);
 
-        Debug.Log("REL " + relativePos);
-
-        if (relativePos.x < 0f || relativePos.x > 1f || relativePos.y < 0f || relativePos.y > 1f)
-            return;
-        
         annotationManager.OpenNoteInput(currentYear, currentHotspotId, currentDirection, relativePos, this);
     }
 

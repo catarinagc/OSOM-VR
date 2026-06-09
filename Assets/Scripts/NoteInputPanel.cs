@@ -15,13 +15,13 @@ public class NoteInputPanel : MonoBehaviour
         NoteData note = annotationManager.ConfirmNote(message);
         caller.SpawnMarker(note);
 
-        noteInputField.text = string.Empty;
+        noteInputField.text = "";
     }
 
     void OnEnable()
     {
         string existing = annotationManager.GetPendingMessage();
-        noteInputField.text = existing ?? string.Empty;
+        noteInputField.text = existing ?? "";
         noteInputField.caretPosition = noteInputField.text.Length;
         noteInputField.stringPosition = noteInputField.text.Length;
         noteInputField.ForceLabelUpdate();
@@ -29,7 +29,7 @@ public class NoteInputPanel : MonoBehaviour
 
     public void CancelNote()
     {
-        noteInputField.text = string.Empty;
+        noteInputField.text = "";
         gameObject.SetActive(false);
     }
 }

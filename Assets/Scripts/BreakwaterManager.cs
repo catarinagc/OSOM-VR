@@ -29,9 +29,11 @@ public class BreakwaterManager : MonoBehaviour
 
     string path;
     string json;
+    public static bool IsReady { get; private set; } = false;
 
     void Awake()
     {
+        IsReady = false; // Resets every time the scene loads
         path = Path.Combine(Application.streamingAssetsPath, "osom_dados.json");
         StartCoroutine(LoadJson());
     }
@@ -76,46 +78,6 @@ public class BreakwaterManager : MonoBehaviour
         isInitialized = true;
     }
 
-    // // Start is called once before the first execution of Update after the MonoBehaviour is created
-    // void Start()
-    // {
-    //     heightHighlightChange = 25;
-    //     Zones = BuildAll(json);
-    //     List<Inspection> inspections = BuildInspections(json);
-    //     AssignInspectionsToZones(Zones,inspections);
-        
-    //     PrepareRiskLevel();
-
-    //     highlightRenderers = new Dictionary<string, Renderer>();
-
-    //     foreach (Zone zone in Zones)
-    //     {
-    //         GameObject obj = GameObject.Find("Highlight_" + zone.name);
-    //         if (obj != null)
-    //         {
-    //             highlightRenderers[zone.name] = obj.GetComponent<Renderer>();
-    //         }
-    //     }
-
-    //     foreach (Zone zone in Zones)
-    //     {
-    //         if (!highlightRenderers.ContainsKey(zone.name))
-    //             continue;
-
-    //         Renderer r = highlightRenderers[zone.name];
-
-    //         MaterialPropertyBlock mpb = new MaterialPropertyBlock();
-    //         r.GetPropertyBlock(mpb);
-
-    //         mpb.SetColor("_Color", RiskToColor(zone.riskLevel));
-
-    //         r.SetPropertyBlock(mpb);
-    //     }
-    //     SetupShaderColors();
-    //     ApplyHighlights();
-    //     UpdateHighlightMode();
-    // }
-
     void SetupShaderColors()
     {
         if (overlayRenderer == null) return;
@@ -159,7 +121,7 @@ public class BreakwaterManager : MonoBehaviour
     public void SetHeightThreshold(float value)
     {
         heightHighlightChange = Mathf.RoundToInt(value);
-        Debug.Log(heightHighlightChange);
+        //Debug.Log(heightHighlightChange);
     }
 
     void UpdateHighlightMode()
@@ -228,7 +190,7 @@ public class BreakwaterManager : MonoBehaviour
 
         int index = GetZoneIndex(selectedZoneId);
 
-        Debug.Log("hello " + index);
+        //Debug.Log("hello " + index);
         overlayRenderer.material.SetInt("_selectedZone", index);
     }
 
@@ -251,7 +213,7 @@ public class BreakwaterManager : MonoBehaviour
 
         if (!exists)
         {
-            Debug.LogWarning($"Zone {zoneID} not found → reverting to default view");
+            //Debug.LogWarning($"Zone {zoneID} not found → reverting to default view");
 
             selectedZoneId = null; // fallback to default
         }
@@ -287,12 +249,13 @@ public class BreakwaterManager : MonoBehaviour
         foreach (Zone zone in Zones)
         {
             zone.PrepareRiskLevel(modelInspectionYear);
-            Debug.Log("Risk Level " + zone.riskLevel.ToString());
+            //Debug.Log("Risk Level " + zone.riskLevel.ToString());
         }
     }
 
     IEnumerator LoadJson()
     {
+        Debug.Log($"[BM] LoadJson started at {Time.time}");
         string uri = Path.Combine(Application.streamingAssetsPath, "osom_dados.json");
 
         if (!uri.Contains("://"))
@@ -310,9 +273,12 @@ public class BreakwaterManager : MonoBehaviour
 
             json = request.downloadHandler.text;
 
-            Debug.Log("JSON loaded, size: " + json.Length);
-
-            Initialize(); // your setup
+            //Debug.Log("JSON loaded, size: " + json.Length);
+            Debug.Log($"[BM] JSON downloaded at {Time.time}, initializing...");
+            Initialize();
+            Debug.Log($"[BM] Initialize done at {Time.time}");
+            IsReady = true;
+            Debug.Log($"[BM] IsReady=true at {Time.time}");
         }
     }
 
@@ -391,7 +357,7 @@ public class BreakwaterManager : MonoBehaviour
 
         inspection.Year = ParseYear(jObject["data"]);
 
-        Debug.Log("Year: " + inspection.Year);
+        //Debug.Log("Year: " + inspection.Year);
         inspection.ZoneId = int.Parse(jObject["codTroco"]?.ToString() ?? "0");
         
         inspection.General = Map<GeneralInspection>(jObject, GeneralInspectionMap.Map);
@@ -467,7 +433,7 @@ public class BreakwaterManager : MonoBehaviour
     {
         T obj = new T();
 
-        Debug.Log($"[MAP START] Mapping type: {typeof(T).Name}");
+        //Debug.Log($"[MAP START] Mapping type: {typeof(T).Name}");
         foreach (var entry in map)
         {
             var jsonKey = entry.Key;
@@ -475,13 +441,13 @@ public class BreakwaterManager : MonoBehaviour
 
             var token = json[jsonKey];
             if (token == null){
-                Debug.LogWarning($"[MAP MISS] JSON key not found: {jsonKey}");
+                //Debug.LogWarning($"[MAP MISS] JSON key not found: {jsonKey}");
                 continue;
             }
             var field = typeof(T).GetField(fieldName);
             if (field == null)
             {
-                Debug.LogWarning($"[MAP MISS] Field not found in {typeof(T).Name}: {fieldName}");
+                //Debug.LogWarning($"[MAP MISS] Field not found in {typeof(T).Name}: {fieldName}");
                 continue;
             }
 
@@ -489,9 +455,9 @@ public class BreakwaterManager : MonoBehaviour
             var value = token.ToString();
 
             field.SetValue(obj, value);
-            Debug.Log($"[MAP OK] {jsonKey} → {fieldName} = {value}");
+            //Debug.Log($"[MAP OK] {jsonKey} → {fieldName} = {value}");
         }
-        Debug.Log($"[MAP END] Finished mapping {typeof(T).Name}");
+        //Debug.Log($"[MAP END] Finished mapping {typeof(T).Name}");
         return obj;
     }
 

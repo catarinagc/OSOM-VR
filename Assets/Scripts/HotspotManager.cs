@@ -15,6 +15,26 @@ public class HotspotManager : MonoBehaviour
     private UI_Manager view_UI_manager;
     private string spritesRoot;
 
+    public static bool IsReady { get; private set; } = false;
+    private bool csvDone = false;
+    private bool spritesDone = false;
+
+    void Awake()
+    {
+        IsReady = false;
+        csvDone = false;
+        spritesDone = false;
+    }
+
+    void CheckIfReady()
+    {
+        if (csvDone && spritesDone)
+        {
+            IsReady = true;
+            Debug.Log($"[HM] IsReady=true at {Time.time}");
+        }
+    }
+
     void OnEnable()
     {
         XRModeSwitcher.OnModeSelected += OnModeChosen;
@@ -40,6 +60,7 @@ public class HotspotManager : MonoBehaviour
 
     void LoadAllSprites()
     {
+        Debug.Log($"[HM] LoadAllSprites started at {Time.time}");
         string fullPath = Path.Combine(Application.dataPath, "Resources/Hotspot_Images");
         
         foreach (string yearFolder in Directory.GetDirectories(fullPath))
@@ -68,16 +89,13 @@ public class HotspotManager : MonoBehaviour
                     }
                 }
                
-
-                //int imageId = int.Parse(fileName[..^1]);
-                //char imageDir = fileName[^1];
-                Debug.Log($"fileName: {fileName} | imageId: {imageId} | imageDir: {imageDir}");
-                Debug.Log($"hotspots count: {hotspots.Count}");
+                // Debug.Log($"fileName: {fileName} | imageId: {imageId} | imageDir: {imageDir}");
+                // Debug.Log($"hotspots count: {hotspots.Count}");
                 HotspotScript hotspot = hotspots.Find(h => h.hotspotID == imageId);
 
                 if (hotspot)
                 {
-                    Debug.Log("FOUND");
+                    //Debug.Log("FOUND");
                     hotspot.AddImage(new InspectionImage
                     {
                         sprite = sprite,
@@ -88,43 +106,12 @@ public class HotspotManager : MonoBehaviour
                 }
             }
 
-            Debug.Log($"Loaded {sprites.Length} sprites for {year}");
+            //Debug.Log($"Loaded {sprites.Length} sprites for {year}");
         }
+        spritesDone = true;
+        Debug.Log($"[HM] spritesDone at {Time.time}");
+        CheckIfReady();
     }
-
-
-    // void ReadCSV()
-    // {
-    //     string path = Path.Combine(Application.dataPath, "HotspotData/Hotspot_Data.csv");
-
-    //     if (!File.Exists(path))
-    //     {
-    //         Debug.LogError("CSV file not found: " + path);
-    //         return;
-    //     }
-
-    //     string[] lines = File.ReadAllLines(path);
-
-    //     // Start from line index 2
-    //     for (int i = 2; i < lines.Length; i++)
-    //     {
-    //         if (string.IsNullOrWhiteSpace(lines[i]))
-    //             continue;
-
-    //         string[] columns = lines[i].Split(',');
-
-    //         string id = columns[0];
-
-    //         float x = float.Parse(columns[1], CultureInfo.InvariantCulture);
-    //         float y = float.Parse(columns[2], CultureInfo.InvariantCulture);
-
-    //         //Debug.Log($"ID: {id} | X: {x} | Y: {y}");
-
-    //         GameObject hotspot = CreateHotspot(id, new Vector2(x, y));
-    //         ChangeHotspotPosition(hotspot);
-    //         AssignZone(hotspot);
-    //     }
-    // }
     void ReadCSV()
     {
         string path = Path.Combine(Application.streamingAssetsPath, "Hotspot_Data.csv");
@@ -138,6 +125,7 @@ public class HotspotManager : MonoBehaviour
 
     void ReadCSVDesktop(string path)
     {
+        Debug.Log($"[HM] ReadCSVDesktop started at {Time.time}");
         if (!File.Exists(path))
         {
             Debug.LogError("CSV not found: " + path);
@@ -145,6 +133,9 @@ public class HotspotManager : MonoBehaviour
         }
 
         ProcessCSV(File.ReadAllLines(path));
+        csvDone = true;
+        Debug.Log($"[HM] csvDone at {Time.time}");
+        CheckIfReady();
     }
 
     IEnumerator ReadCSVAndroid(string path)
@@ -154,6 +145,8 @@ public class HotspotManager : MonoBehaviour
 
         string[] lines = req.downloadHandler.text.Split('\n');
         ProcessCSV(lines);
+        csvDone = true;
+        CheckIfReady();
     }
 
     void ProcessCSV(string[] lines)
@@ -257,7 +250,7 @@ public class HotspotManager : MonoBehaviour
     public void SetUIManager(UI_Manager ui_Manager)
     {
         view_UI_manager = ui_Manager;
-        Debug.Log("1");
+        //Debug.Log("1");
     }
 
     public void ShowOnlyZoneHotspots(string zone)
@@ -284,35 +277,29 @@ public class HotspotManager : MonoBehaviour
 
     private void HideHotspotsNotFromZone(char zoneID)
     {
-        //HotspotScript[] hotspots = breakwaterOrigin.GetComponentsInChildren<HotspotScript>();
-
         foreach (HotspotScript hotspot in hotspots)
         {
             if (hotspot.troco_ID != zoneID)
             {
-                hotspot.gameObject.SetActive(false);
+                hotspot.setTransparency(false);
             }
             else
             {
-                hotspot.gameObject.SetActive(true);
+                hotspot.setTransparency(true);
             }
         }
     }
 
     private void ShowAllHotspots()
     {
-        //HotspotScript[] hotspots = breakwaterOrigin.GetComponentsInChildren<HotspotScript>();
-
         foreach (HotspotScript hotspot in hotspots)
         {
-            hotspot.gameObject.SetActive(true);
+            hotspot.setTransparency(true);
         }
     }
 
-    private void AddImagesToHotspots()
+    public List<HotspotScript> GetHotspotList()
     {
-        //ler os varios folders dos anos das images
-        //identificar o ID 16F - 16
-        //colocar na lista desse hotspot a imagem com a dirercao associada
+        return hotspots;
     }
 }

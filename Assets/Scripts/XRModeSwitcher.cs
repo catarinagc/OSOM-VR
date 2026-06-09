@@ -23,14 +23,17 @@ public class XRModeSwitcher : MonoBehaviour
     private bool inFlightMode = true;
     private bool isOn;
     public static event Action<bool> OnModeSelected; // bool = isVR
-
+    public static bool IsReady { get; private set; } = false;
+    //public static bool IsReady { get; private set; } = false;
     void Awake()
     {
+        IsReady = false;
         StartCoroutine(CheckXR());
     }
 
     private IEnumerator CheckXR()
     {
+        Debug.Log($"[XR] CheckXR started at {Time.time}");
         // 1. Initialize XR Loader
         yield return XRGeneralSettings.Instance.Manager.InitializeLoader();
 
@@ -61,6 +64,8 @@ public class XRModeSwitcher : MonoBehaviour
         }
         // Notify listeners that mode has been determined
         OnModeSelected?.Invoke(isVRActive);
+        Debug.Log($"[XR] OnModeSelected fired at {Time.time}");
+        IsReady = true;
     }
 
     void OnDestroy()
@@ -75,7 +80,7 @@ public class XRModeSwitcher : MonoBehaviour
     //void Start()
     //{
     //    //bool vrActive = XRSettings.isDeviceActive;
-    //    //neste ponto ainda não ativa, apenas no update, ver se há uma forma melhor
+    //    //neste ponto ainda nï¿½o ativa, apenas no update, ver se hï¿½ uma forma melhor
 
     //    //xrOrigin.SetActive(vrActive);
     //    //desktopRig.SetActive(!vrActive);

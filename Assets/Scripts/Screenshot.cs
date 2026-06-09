@@ -10,22 +10,36 @@ public class Screenshot : MonoBehaviour
 
     void Update()
     {
-        if (Keyboard.current.pKey.wasPressedThisFrame)
-        {
-            string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-            string directory = Path.Combine(pictures, "OSOM_Screenhots");
+        // if (Keyboard.current.pKey.wasPressedThisFrame)
+        // {
+        //     string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        //     string directory = Path.Combine(pictures, "OSOM_Screenhots");
 
-            if (!Directory.Exists(directory))
-                Directory.CreateDirectory(directory);
+        //     if (!Directory.Exists(directory))
+        //         Directory.CreateDirectory(directory);
 
-            string filename = "screenshot_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png";
-            string path = Path.Combine(directory, filename);
+        //     string filename = "screenshot_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png";
+        //     string path = Path.Combine(directory, filename);
 
-            ScreenCapture.CaptureScreenshot(path);
-            Debug.Log("Saving to: " + path);
-        }
+        //     ScreenCapture.CaptureScreenshot(path);
+        //     Debug.Log("Saving to: " + path);
+        // }
     }
 
+    public void TakeScreenshot()
+    {
+        string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
+        string directory = Path.Combine(pictures, "OSOM_Screenhots");
+
+        if (!Directory.Exists(directory))
+            Directory.CreateDirectory(directory);
+
+        string filename = "screenshot_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png";
+        string path = Path.Combine(directory, filename);
+
+        ScreenCapture.CaptureScreenshot(path);
+        Debug.Log("Saving to: " + path);
+    }
 
 
     // public void TakeScreenshotVR()
