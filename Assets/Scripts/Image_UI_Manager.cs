@@ -16,7 +16,7 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] TMP_Text fullscreenPlaceholderText;
     [SerializeField] Image fullscreenPlaceholderImage;
     [SerializeField] GameObject imageScreen;
-    [SerializeField] UI_Manager UI_Manager;
+    public UI_Manager UI_Manager;
     [SerializeField] Sprite UIMask;
     public Animator panelAnimator;
     [SerializeField] GameObject buttonsHolder;
@@ -47,11 +47,18 @@ public class Image_UI_Manager : MonoBehaviour
     private GameObject InstancedObj;
     public Transform rightController;
     public Transform leftController;
+    [SerializeField] private InputActionReference leftGripAction;
+    [SerializeField] private InputActionReference rightGripAction;
     [SerializeField] private GameObject imagePrefab;
     [SerializeField] ImageAnnotationManager annotationManager;
     [SerializeField] TMP_InputField noteInputField;
     [SerializeField] GameObject notePanelVR;
     [SerializeField] GameObject dualImageZoom;
+    [SerializeField] SyncZoomVR_Manager syncZoomVRManager;
+    
+    [Header("Interactors")]
+    [SerializeField] public UnityEngine.XR.Interaction.Toolkit.Interactors.NearFarInteractor leftInteractor;
+    [SerializeField] public UnityEngine.XR.Interaction.Toolkit.Interactors.NearFarInteractor rightInteractor;
     private Dictionary<string, List<GameObject>> imagesByDirection = new();
     private List<InspectionImage> currentImages;
     private bool isDragging = false;
@@ -150,7 +157,7 @@ public class Image_UI_Manager : MonoBehaviour
             imagePlaceholder2.sprite = UIMask;
             imagePlaceholder2.color = new Color(1f, 1f, 1f, 0.47f);
             interactedImage2.color = new Color(1f, 1f, 1f, 1f);
-            interactedImage1.transform.parent.GetComponent<ButtonTooltip>().isActive = true;
+            interactedImage2.transform.parent.GetComponent<ButtonTooltip>().isActive = true;
             interactedImage2 = null;
             imageIconPlaceholder2.SetActive(false);
             closeButtonPlaceholder2.SetActive(false);
@@ -219,11 +226,34 @@ public class Image_UI_Manager : MonoBehaviour
 
     public void SetMultiImageFullscreen()
     {
-        if (interactedImage1!= null && interactedImage2 != null)
+        if (interactedImage1 != null && interactedImage2 != null)
         {
+            DualImageZoom dualZoom = dualImageZoom.GetComponent<DualImageZoom>();
+            dualZoom.left.sprite = imagePlaceholder1.sprite;
+            dualZoom.right.sprite = imagePlaceholder2.sprite;
+
+            
+            // Set up left controller
+            ImageDisplayController leftController = dualZoom.leftController;
+            InspectionImage imageData = placeholder1.GetComponent<HotspotClearImage>().imageData;
+            leftController.ClearNotes();
+            leftController.currentYear = int.Parse(imageData.year);
+            leftController.currentHotspotId = imageData.hotspotID;
+            leftController.currentDirection = imageData.dir;
+            leftController.panelPC = notePanelPC;
+            leftController.SpawnMarkers();
+
+            // Set up right controller
+            ImageDisplayController rightController = dualZoom.rightController;
+            imageData = placeholder2.GetComponent<HotspotClearImage>().imageData;
+            rightController.ClearNotes();
+            rightController.currentYear = int.Parse(imageData.year);
+            rightController.currentHotspotId = imageData.hotspotID;
+            rightController.currentDirection = imageData.dir;
+            rightController.panelPC = notePanelPC;
+            rightController.SpawnMarkers();
+
             dualImageZoom.SetActive(true);
-            dualImageZoom.GetComponent<DualImageZoom>().left.sprite = imagePlaceholder1.sprite;
-            dualImageZoom.GetComponent<DualImageZoom>().right.sprite = imagePlaceholder2.sprite;
         }
     }
 
@@ -233,6 +263,26 @@ public class Image_UI_Manager : MonoBehaviour
         childImage.sprite = null;
         fullscreenPlaceholder.SetActive(false);
         childImage.GetComponent<UIZoomImage>().OnCloseImage();
+        if (interactedImage1)
+        {
+            placeholder1.GetComponent<ImageDisplayController>().ClearNotes();
+            placeholder1.GetComponent<ImageDisplayController>().SpawnMarkers();
+        }
+
+        if (interactedImage2)
+        {
+            placeholder2.GetComponent<ImageDisplayController>().ClearNotes();
+            placeholder2.GetComponent<ImageDisplayController>().SpawnMarkers();
+        }
+    }
+
+    public void hideMultiFullscreen()
+    {
+        // Image childImage = fullscreenPlaceholderImage;
+        // childImage.sprite = null;
+        dualImageZoom.SetActive(false);
+        dualImageZoom.GetComponent<DualImageZoom>().OnCloseImage();
+        //childImage.GetComponent<UIZoomImage>().OnCloseImage();
         if (interactedImage1)
         {
             placeholder1.GetComponent<ImageDisplayController>().ClearNotes();
@@ -333,6 +383,15 @@ public class Image_UI_Manager : MonoBehaviour
         InstancedObj.GetComponent<ImageDisplayController>().imageData = imageData;
         InstancedObj.GetComponent<ImageDisplayController>().panelVR = notePanelVR;
         InstancedObj.GetComponent<ImageDisplayController>().SpawnMarkers();
+        InstancedObj.GetComponent<ImageDisplayController>().vrControllerRay = rightController;
+
+        InstancedObj.GetComponent<ImageDisplayController>().leftGripAction = leftGripAction;
+        InstancedObj.GetComponent<ImageDisplayController>().rightGripAction = rightGripAction;
+        InstancedObj.GetComponent<ImageDisplayController>().leftControllerTransform = leftController;
+        InstancedObj.GetComponent<ImageDisplayController>().rightControllerTransform = rightController;
+        InstancedObj.GetComponent<ImageDisplayController>().leftInteractor = leftInteractor;
+        InstancedObj.GetComponent<ImageDisplayController>().rightInteractor = rightInteractor;
+        InstancedObj.GetComponent<ImageDisplayController>().syncManager = syncZoomVRManager;
 
         //Increase sharpness distance (lower mip bias = sharper farther away)
         if (img.sprite != null && img.sprite.texture != null)
@@ -357,11 +416,13 @@ public class Image_UI_Manager : MonoBehaviour
 
         imagesByDirection.Clear();
         currentDir = "";
+        gameObject.SetActive(false);
         if (!isVR)
         {
             placeholder1.GetComponent<ImageDisplayController>().ClearNotes();
             placeholder2.GetComponent<ImageDisplayController>().ClearNotes();
-            fullscreenPlaceholder.GetComponent<ImageDisplayController>().ClearNotes();       
+            fullscreenPlaceholder.GetComponent<ImageDisplayController>().ClearNotes(); 
+            dualImageZoom.SetActive(false);       
         }
     }
 }

@@ -5,8 +5,8 @@ using UnityEngine.UI;
 public class NoteMarker : MonoBehaviour
 {
     public NoteData data;
-    [SerializeField] GameObject tooltipPanelVR;
-    [SerializeField] GameObject tooltipPanelPC;
+    public GameObject tooltipPanelVR;
+    public GameObject tooltipPanelPC;
     private GameObject activePanel;
     [SerializeField] TMP_Text tooltipTextVR;
     [SerializeField] TMP_Text tooltipTextDateVR;
@@ -14,6 +14,7 @@ public class NoteMarker : MonoBehaviour
     [SerializeField] TMP_Text tooltipTextDatePC;
     [SerializeField] TMP_Text activeTooltipText;
     [SerializeField] TMP_Text activeTooltipTextDate;
+    public UI_Manager uI_Manager;
     public ImageDisplayController displayController;
     private bool isVR;
     private bool canInteract;
@@ -24,25 +25,14 @@ public class NoteMarker : MonoBehaviour
         data = noteData;
         this.isVR = isVR;
         if (isVR)
-        {
-            // activePanel = tooltipPanelVR;
-            // activeTooltipText = tooltipTextVR;
-            // activeTooltipTextDate = tooltipTextDateVR;
             activePanel = panelVR;
-        }
         else
-        {
-            // activePanel = tooltipPanelPC;
-            // activeTooltipText = tooltipTextPC;
-            // activeTooltipTextDate = tooltipTextDatePC;
             activePanel = panelPC;
-        }
         SetPosition(noteData.relativePos, imageRect);
     }
 
     private void SetPosition(Vector2 relativePos, RectTransform imageRect)
     {
-        //Vector2 size = imageRect.rect.size;
         Vector2 size = GetActualImageSize(imageRect);
         GetComponent<RectTransform>().anchoredPosition = new Vector2(
             (relativePos.x - 0.5f) * size.x,
@@ -77,37 +67,38 @@ public class NoteMarker : MonoBehaviour
 
     public void OnClick()
     {
-        if (!canInteract)
-            return;
-        // if (!isVR)
-        // {     
-        //     activeTooltipText.text = data.message;
-        //     activeTooltipTextDate.text = data.created;
-        // }
-        // if (isVR)
-        // {
-        //     activePanel.GetComponent<NotePanel>().Open(data.message, data.created, this);
-        // }
+        if (!canInteract) return;
+        
+        //uI_Manager.OpenNoteMenu(data.message, data.created, this);
         activePanel.GetComponent<NotePanel>().Open(data.message, data.created, this);
-        activePanel.SetActive(true);
+        if (isVR)
+            uI_Manager.OpenNoteMenu();
+        //activePanel.SetActive(true);
     }
 
     public void EditMessage()
     {
         displayController.annotationManager.EditNote(data, displayController, () =>
         {
-            activePanel.SetActive(false);
+            uI_Manager.CloseSpecificUI(activePanel);
+            displayController.ClearNotes();
+            displayController.SpawnMarkers();
         });
     }
 
     public void DeleteNote()
     {
+        Debug.Log($"DeleteNote called on: {data.message}, notes in list before: {displayController.annotationManager.GetNotesForImage(data.imageKey).Count}");
         displayController.DeleteNote(data);
         Destroy(gameObject);
     }
 
     public void DisablePanel()
     {
-        activePanel.SetActive(false);
+        //activePanel.SetActive(false);
+        if (isVR)
+            uI_Manager.CloseSpecificUI(activePanel);
+        else
+            activePanel.SetActive(false);
     }
 }

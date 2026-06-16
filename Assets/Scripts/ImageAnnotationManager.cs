@@ -15,6 +15,7 @@ public class ImageAnnotationManager : MonoBehaviour
     private ImageDisplayController pendingCaller;
     private string SavePath => System.IO.Path.Combine(Application.persistentDataPath, "annotations.json");
     private NoteData editingNote = null;
+    public bool IsEditing() => editingNote != null;
 
     private void Awake()
     {

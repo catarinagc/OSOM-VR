@@ -1308,6 +1308,7 @@ MonoBehaviour:
   tooltipTextDatePC: {fileID: 803398848108660291}
   activeTooltipText: {fileID: 0}
   activeTooltipTextDate: {fileID: 0}
+  uI_Manager: {fileID: 0}
   displayController: {fileID: 0}
 --- !u!222 &1506384174406801392
 CanvasRenderer:

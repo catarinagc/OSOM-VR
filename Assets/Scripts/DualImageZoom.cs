@@ -8,6 +8,8 @@ public class DualImageZoom : MonoBehaviour,
     [Header("The images themselves (children of the masked wrappers)")]
     [SerializeField] private RectTransform leftImage;
     [SerializeField] private RectTransform rightImage;
+    public ImageDisplayController leftController;
+    public ImageDisplayController rightController;
 
     [Header("Zoom")]
     [SerializeField] private float zoomSpeed = 0.1f;

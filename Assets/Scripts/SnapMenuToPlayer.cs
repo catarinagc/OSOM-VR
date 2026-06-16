@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class SnapMenuToPlayer : MonoBehaviour
 {
@@ -12,95 +13,138 @@ public class SnapMenuToPlayer : MonoBehaviour
     public float fadeSpeed = 5f;
     public float moveThreshold = 0.05f;
     public float followSpeed = 6f;
-    private Vector3 frozenTargetPos;
-    private float freezeTimer = 0f;
-    public float forwardFreezeTime = 0.15f;
 
     public float forwardExtraDistance = 0.5f;
     public float distanceLerpSpeed = 6f;
 
+    [SerializeField] GameObject grabIcon;
+
     private Vector3 lastPosition;
     private float currentDistance;
-    private bool hasFullyAppeared = false;
-    private float settleTimer = 0f;
-    public float settleTime = 0.2f;
     private bool opening = false;
+    private bool isPinned = true;
+
+    // Offset in XR Origin's LOCAL space, so it rotates with the player
+    private Vector3 localOffset;
+    private bool isGrabbed = false;
 
     void Start()
     {
         lastPosition = xrOrigin.position;
         currentDistance = distance;
+        isPinned = true;
+        RecalculateOffsetFromForward();
+    }
+
+    // Call this from XRGrabInteractable's OnSelectEntered event
+    public void OnGrabbed()
+    {
+        isGrabbed = true;
+        isPinned = false; // Let the XR system move it freely while held
+    }
+
+    // Call this from XRGrabInteractable's OnSelectExited event
+    public void OnReleased()
+    {
+        isGrabbed = false;
+        isPinned = true;
+
+        // Snapshot the object's current world position as a new local offset
+        // relative to the XR Origin — this becomes the new follow anchor
+        Vector3 worldOffset = transform.position - xrOrigin.position;
+        localOffset = xrOrigin.InverseTransformDirection(worldOffset);
+    }
+
+    public void TogglePin()
+    {
+        isPinned = !isPinned;
+
+        if (isPinned)
+            RecalculateOffsetFromForward(); // Reset to front if re-pinning
     }
 
     public void OpenMenu()
     {
         opening = true;
         menuCanvas.enabled = false;
+        isPinned = true;
 
-        // ✅ Snap menu instantly to the correct position in front of player
-        Vector3 forward = xrOrigin.forward;
-        forward.y = 0f;
-        forward.Normalize();
+        RecalculateOffsetFromForward();
 
-        Vector3 spawnPos = xrOrigin.position + forward * distance + Vector3.up * height;
+        Vector3 spawnPos = xrOrigin.position + xrOrigin.TransformDirection(localOffset);
         transform.position = spawnPos;
 
-        // ✅ Face player immediately
-        Vector3 lookDir = spawnPos - xrOrigin.position;
-        lookDir.y = 0f;
-        transform.rotation = Quaternion.LookRotation(lookDir);
+        FacePlayer();
     }
 
     void LateUpdate()
     {
-        Vector3 velocity =
-            (xrOrigin.position - lastPosition) / Time.deltaTime;
+        if (isPinned && !isGrabbed)
+        {
+            Vector3 velocity = (xrOrigin.position - lastPosition) / Time.deltaTime;
+            lastPosition = xrOrigin.position;
 
-        lastPosition = xrOrigin.position;
+            bool isMoving = velocity.magnitude > moveThreshold;
 
-        bool isMoving = velocity.magnitude > moveThreshold;
+            // Convert the stored local offset back to world space each frame
+            // so the panel orbits correctly as the player rotates
+            Vector3 currentWorldOffset = xrOrigin.TransformDirection(localOffset);
 
+            // Optional: push the panel slightly further when walking forward
+            Vector3 flatForward = xrOrigin.forward;
+            flatForward.y = 0f;
+            flatForward.Normalize();
+
+            float forwardDot = 0f;
+            if (velocity.sqrMagnitude > 0.0001f)
+                forwardDot = Vector3.Dot(velocity.normalized, flatForward);
+
+            bool movingForward = forwardDot > 0.5f;
+
+            if (movingForward && isMoving)
+            {
+                // Nudge the offset outward along the flat forward axis temporarily
+                currentWorldOffset += flatForward * (forwardExtraDistance * 2f);
+            }
+
+            Vector3 targetPos = xrOrigin.position + currentWorldOffset;
+
+            transform.position = Vector3.Lerp(
+                transform.position,
+                targetPos,
+                Time.deltaTime * followSpeed
+            );
+
+            FacePlayer();
+
+            if (opening)
+            {
+                StartCoroutine(EnableNextFrame());
+                opening = false;
+                return;
+            }
+
+            SetVisible(!isMoving);
+        }
+    }
+
+    // Sets localOffset so the panel sits directly in front at the configured distance/height
+    private void RecalculateOffsetFromForward()
+    {
         Vector3 forward = xrOrigin.forward;
         forward.y = 0f;
         forward.Normalize();
 
-        float forwardDot = 0f;
+        Vector3 worldOffset = forward * distance + Vector3.up * height;
+        localOffset = xrOrigin.InverseTransformDirection(worldOffset);
+    }
 
-        if (velocity.sqrMagnitude > 0.0001f)
-            forwardDot = Vector3.Dot(velocity.normalized, forward);
-
-        bool movingForward = forwardDot > 0.5f;
-
-        float targetDistance = distance;
-
-        if (movingForward && isMoving)
-            targetDistance = distance + forwardExtraDistance * 2;
-
-        currentDistance = targetDistance;
-
-        Vector3 targetPos =
-            xrOrigin.position +
-            forward * currentDistance +
-            Vector3.up * height;
-
-        transform.position = Vector3.Lerp(
-            transform.position,
-            targetPos,
-            Time.deltaTime * followSpeed
-        );
-
+    private void FacePlayer()
+    {
         Vector3 lookDir = transform.position - xrOrigin.position;
         lookDir.y = 0f;
-        transform.rotation = Quaternion.LookRotation(lookDir);
-
-        if (opening)
-        {
-            StartCoroutine(EnableNextFrame());
-            opening = false;
-            return;
-        }
-
-        SetVisible(!isMoving);
+        if (lookDir.sqrMagnitude > 0.001f)
+            transform.rotation = Quaternion.LookRotation(lookDir);
     }
 
     IEnumerator EnableNextFrame()
@@ -112,5 +156,6 @@ public class SnapMenuToPlayer : MonoBehaviour
     void SetVisible(bool visible)
     {
         menuCanvas.enabled = visible;
+        this.GetComponent<SkinnedMeshRenderer>().enabled = visible;
     }
 }

@@ -276,17 +276,18 @@ public class DesktopController : MonoBehaviour
                 (targetMultiplier - 1f) / accelerationTime * Time.deltaTime
             );
         }
-        else
+        else if (_autoMoveCoroutine == null) // only reset if not auto-moving
         {
             currentSpeedMultiplier = 1f;
         }
 
         float currentSpeed = moveSpeed * currentSpeedMultiplier;
+        float currentFlySpeed = flySpeed * currentSpeedMultiplier;
 
         if (currentMode == MovementMode.Flying)
         {
             Vector3 move = (camTransform.forward * input.y) + (camTransform.right * input.x);
-            controller.Move(move * flySpeed * Time.deltaTime); // flySpeed unchanged
+            controller.Move(move * currentFlySpeed * Time.deltaTime);
         }
         else
         {
@@ -320,41 +321,74 @@ public class DesktopController : MonoBehaviour
         _autoMoveCoroutine = StartCoroutine(AutoMoveCoroutine(hotspot.currentGlobalPosition));
     }
 
+    private Vector3 lastPos;
+
     private IEnumerator AutoMoveCoroutine(Vector3 target)
     {
-
+        int stuckFrames = 0;
+        const int stuckThreshold = 4;
+        const float stuckMoveThreshold = 0.001f;
+        float nudgeDirection = 1f;
+        int nudgeFramesRemaining = 0;
+        const int nudgeDuration = 6;
+        const float nudgeStrength = 0.4f;
         while (true)
         {
-            // Player touched movement input — abort
             Vector2 input = moveAction.action.ReadValue<Vector2>();
             if (input.magnitude > 0.1f)
             {
+                currentSpeedMultiplier = 1f;
                 _autoMoveCoroutine = null;
                 yield break;
             }
 
             Vector3 current = transform.position;
-            Vector3 flatTarget = new Vector3(target.x, target.y, target.z); // ignore Y so gravity still applies
-            float distance = Vector3.Distance(current, flatTarget);
+            float distance = Vector3.Distance(current, target);
 
             if (distance < arrivalThreshold)
             {
+                currentSpeedMultiplier = 1f;
                 _autoMoveCoroutine = null;
                 yield break;
             }
 
-            // Move toward target, gravity handled separately
-            Vector3 direction = (flatTarget - current).normalized;
+            // Ramp up the same way HandleMovement does
+            float targetMultiplier = maxSpeed / moveSpeed;
+            currentSpeedMultiplier = Mathf.MoveTowards(
+                currentSpeedMultiplier,
+                targetMultiplier,
+                (targetMultiplier - 1f) / accelerationTime * Time.deltaTime
+            );
+            Debug.Log(currentSpeedMultiplier);
 
-            // if (controller.isGrounded && verticalVelocity < 0)
-            //     verticalVelocity = -2f;
-            // else
-            //     verticalVelocity += gravity * Time.deltaTime;
 
-            Vector3 move = direction * autoMoveSpeed;
-            //move.y = verticalVelocity;
+            Vector3 direction = (target - current).normalized;
+            Vector3 move = direction * moveSpeed * currentSpeedMultiplier;
+            if (lastPos != null && Vector3.Distance(transform.position, lastPos) < stuckMoveThreshold)
+            {
+                stuckFrames++;
+                if (stuckFrames >= stuckThreshold)
+                {
+                    nudgeFramesRemaining = nudgeDuration;
+                    nudgeDirection = (stuckFrames / stuckThreshold % 2 == 0) ? 1f : -1f;
+                    stuckFrames = 0;
+                }
+            }
+            else
+            {
+                stuckFrames = 0;
+            }
+
+            // Apply nudge perpendicular to movement direction
+            if (nudgeFramesRemaining > 0)
+            {
+                Vector3 perpendicular = new Vector3(-direction.z, 0f, direction.x);
+                move += perpendicular * nudgeStrength * moveSpeed * nudgeDirection;
+                nudgeFramesRemaining--;
+            }
+
             controller.Move(move * Time.deltaTime);
-
+            lastPos = transform.position;
             yield return null;
         }
     }

@@ -3,6 +3,8 @@ using TMPro;
 using System.Collections.Generic;
 public class RiskMenuUI_Manager : MonoBehaviour
 {
+    [SerializeField] UI_Manager uI_Manager;
+
     [System.Serializable]
     public class RiskLevelUIGroup
     {
@@ -26,6 +28,16 @@ public class RiskMenuUI_Manager : MonoBehaviour
     void Awake()
     {
         default_title_text = "Portimão Poente ";
+    }
+
+    public void CloseUI()
+    {
+        uI_Manager.CloseSpecificUI(this.gameObject);
+    }
+
+    public void OnMenuClicked()
+    {
+        uI_Manager.ReopenSelectorForMenu(this.gameObject);
     }
     
     public void PrepareOpen(Zone zone)

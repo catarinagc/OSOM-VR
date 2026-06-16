@@ -5,6 +5,7 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
 {
     [SerializeField] TMP_Text title_text;
     [SerializeField] TMP_Dropdown dropdown;
+     [SerializeField] UI_Manager uI_Manager;
 
     [System.Serializable] 
     public class UIField
@@ -29,6 +30,16 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
     {
         yearSelected = currentZone.Inspections[index].Year;
         OpenInspectionData();
+    }
+
+    public void CloseUI()
+    {
+        uI_Manager.CloseSpecificUI(this.gameObject);
+    }
+
+    public void OnMenuClicked()
+    {
+        uI_Manager.ReopenSelectorForMenu(this.gameObject);
     }
     
     void BindObjectToUI(object data, List<UIField> fields, string[] labels)

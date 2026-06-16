@@ -106,7 +106,7 @@ public class RadialSelection : MonoBehaviour
             }
             else
             {
-                spawnedParts[i].GetComponent<Image>().color = Color.white;
+                spawnedParts[i].GetComponent<Image>().color = Color.black;
                 spawnedParts[i].transform.localScale = Vector3.one;
             }
         }
@@ -169,7 +169,7 @@ public class RadialSelection : MonoBehaviour
     {
         foreach (var part in spawnedParts)
         {
-            part.GetComponent<Image>().color = Color.white;
+            part.GetComponent<Image>().color = Color.black;
             part.transform.localScale = Vector3.one;
         }
     }

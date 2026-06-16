@@ -23,6 +23,8 @@ public class ZoneInfoUI_Manager : MonoBehaviour
     [SerializeField] List<UIField> resistentArmorFields;
     [SerializeField] List<UIField> toeBermFields;
     [SerializeField] List<UIField> foundationFields;
+    
+    [SerializeField] UI_Manager uI_Manager;
 
     void BindObjectToUI(object data, List<UIField> fields, string[] labels)
     {
@@ -56,6 +58,16 @@ public class ZoneInfoUI_Manager : MonoBehaviour
     void Awake()
     {
         default_title_text = "Portimão Poente ";
+    }
+
+    public void CloseUI()
+    {
+        uI_Manager.CloseSpecificUI(this.gameObject);
+    }
+
+    public void OnMenuClicked()
+    {
+        uI_Manager.ReopenSelectorForMenu(this.gameObject);
     }
 
     public void PrepareOpen(Zone zone)

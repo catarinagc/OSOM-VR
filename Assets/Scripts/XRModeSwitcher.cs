@@ -24,7 +24,6 @@ public class XRModeSwitcher : MonoBehaviour
     private bool isOn;
     public static event Action<bool> OnModeSelected; // bool = isVR
     public static bool IsReady { get; private set; } = false;
-    //public static bool IsReady { get; private set; } = false;
     void Awake()
     {
         IsReady = false;

@@ -26,6 +26,7 @@ public class BreakwaterManager : MonoBehaviour
     int heightHighlightChange;
     [SerializeField] ControllerManager controller;
     bool useCubesRuntime;
+    public bool highlightsActive = true;
 
     string path;
     string json;
@@ -78,6 +79,12 @@ public class BreakwaterManager : MonoBehaviour
         isInitialized = true;
     }
 
+    public void ToggleHighlights()
+    {
+        highlightsActive = !highlightsActive;
+        UpdateHighlightMode();
+    }
+
     void SetupShaderColors()
     {
         if (overlayRenderer == null) return;
@@ -106,6 +113,7 @@ public class BreakwaterManager : MonoBehaviour
     void Update()
     {
         if (!isInitialized) return;
+        if (!highlightsActive) return;
 
         float height = controller.GetHeight();
         bool newState = height >= heightHighlightChange;
@@ -126,8 +134,16 @@ public class BreakwaterManager : MonoBehaviour
 
     void UpdateHighlightMode()
     {
-        ShowHighlightCubes(useCubesRuntime);
-        ShowHighlightShader(!useCubesRuntime);
+        if (highlightsActive)
+        {
+            ShowHighlightCubes(useCubesRuntime);
+            ShowHighlightShader(!useCubesRuntime);
+        }
+        else
+        {
+            ShowHighlightCubes(false);
+            ShowHighlightShader(false);
+        }
     }
     void ShowHighlightCubes(bool state)
     {
@@ -135,11 +151,11 @@ public class BreakwaterManager : MonoBehaviour
         {
             if (kvp.Value != null)
             {
-                kvp.Value.gameObject.SetActive(state && showHighlight);
+                kvp.Value.gameObject.SetActive(state);
             }
         }
 
-        if (useCubesRuntime)
+        if (useCubesRuntime && highlightsActive)
         {
             foreach (Zone zone in Zones)
             {
@@ -150,7 +166,6 @@ public class BreakwaterManager : MonoBehaviour
 
                 bool isSelected = selectedZoneId == zone.name;
 
-                // ONLY handle selection logic here
                 obj.SetActive(isSelected || selectedZoneId == null);
             }
         }

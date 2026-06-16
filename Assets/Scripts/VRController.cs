@@ -1,5 +1,5 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
+using UnityEngine.XR.Interaction.Toolkit.Interactors.Visuals;
 using UnityEngine.XR.Interaction.Toolkit.Samples.StarterAssets;
 using UnityEngine.InputSystem;
 using UnityEngine.XR;
@@ -35,10 +35,16 @@ public class VRController : MonoBehaviour
     [Header("Auto-Move")]
     [SerializeField] private float autoMoveSpeed = 5f;
     [SerializeField] private float arrivalThreshold = 0.5f;
+    [SerializeField] private UnityEngine.XR.Interaction.Toolkit.Locomotion.Comfort.TunnelingVignetteController vignetteController;
     public ControllerManager controllerManager;
     private Coroutine _autoMoveCoroutine;
     private float currentSpeedMultiplier = 1f;
     private InputAction moveAction;
+    [SerializeField] private UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation.TeleportationProvider teleportationProvider;
+    [SerializeField] private CurveVisualController rightCurveVisual;
+    [SerializeField] private CurveVisualController leftCurveVisual;
+    [SerializeField] private float interactDistance = 10f;
+    [SerializeField] private float defaultRayDistance = 0.2f;
 
     public enum InteractionMode
     {
@@ -69,44 +75,10 @@ public class VRController : MonoBehaviour
         currentMode = MovementMode.Walking;
     }
 
-    // Update is called once per frame
-    // void Update()
-    // {
-    //     if (yButton.WasPressedThisFrame())
-    //     {
-    //         UI_Manager.CloseActiveUIs();
-    //     }
-
-    //     if (!UI_Manager.isHotspotActive())
-    //     {
-    //         HandleHotspotLook();
-    //     }
-
-    //     if (aButton.WasPressedThisFrame())
-    //     {
-    //         screenshot.TakeScreenshotVR();
-    //     }
-
-    //     if (xButton.WasPressedThisFrame())
-    //     {
-    //         UI_Manager.OpenMenu();
-    //     }
-
-    //     if (bButton.WasPressedThisFrame())
-    //     {
-    //         toggleFly();
-    //     }
-
-    //     if (rightPress.WasPressedThisFrame() || leftPress.WasPressedThisFrame())
-    //     {
-    //         if (currentHotspot && !UI_Manager.isHotspotActive())
-    //             currentHotspot.OnInteract();
-    //     }
-    // }
-
     // Replace your Update() with this:
     void Update()
     {
+        Debug.Log("HOTSPOT " + UI_Manager.isHotspotActive());
         HandleMovementSpeed();
 
         if (yButton.WasPressedThisFrame())
@@ -119,7 +91,7 @@ public class VRController : MonoBehaviour
             screenshot.TakeScreenshotVR();
 
         if (xButton.WasPressedThisFrame())
-            controllerManager.MoveToHomePosition();
+            UI_Manager.OpenMenu();
 
         if (bButton.WasPressedThisFrame())
             toggleFly();
@@ -127,7 +99,17 @@ public class VRController : MonoBehaviour
         if (rightPress.WasPressedThisFrame() || leftPress.WasPressedThisFrame())
         {
             if (currentHotspot && !UI_Manager.isHotspotActive())
+            {
                 currentHotspot.OnInteract();
+                currentHotspot.StopHover();
+                currentHotspot = null;
+                CurveVisualController[] visuals = { rightCurveVisual, leftCurveVisual };
+                for (int i = 0; i < visuals.Length; i++)
+                {
+                    if (visuals[i])
+                        visuals[i].restingVisualLineLength = defaultRayDistance;
+                }
+            }
         }
     }
 
@@ -151,14 +133,9 @@ public class VRController : MonoBehaviour
                 (targetMultiplier - 1f) / accelerationTime * Time.deltaTime
             );
         }
-        else
+        else if (_autoMoveCoroutine == null) // only reset if not auto-moving
         {
-            // Decelerate back to base
-            currentSpeedMultiplier = Mathf.MoveTowards(
-                currentSpeedMultiplier,
-                1f,
-                (maxSpeed / baseSpeed - 1f) / decelerationTime * Time.deltaTime
-            );
+            currentSpeedMultiplier = 1f;
         }
 
         moveProvider.moveSpeed = baseSpeed * currentSpeedMultiplier;
@@ -200,83 +177,44 @@ public class VRController : MonoBehaviour
         }
     }
 
-    // private void HandleHotspotLook()
-    // {
-    //     Ray ray = new Ray(rightController.position, rightController.forward);
-    //     Debug.DrawRay(rightController.position, rightController.forward * 10f, Color.red);
-    //     RaycastHit hit;
-
-    //     if (Physics.Raycast(ray, out hit, 10f))
-    //     {
-    //         // If the first thing hit is UI, stop here
-    //         if (hit.collider.CompareTag("UI"))
-    //         {
-    //             if (currentHotspot != null)
-    //             {
-    //                 currentHotspot.StopHover();
-    //                 currentHotspot = null;
-    //             }
-    //             return;
-    //         }
-
-    //         HotspotScript hotspot = hit.collider.GetComponentInParent<HotspotScript>();
-    //         if (hotspot != null)
-    //         {
-    //             if (currentHotspot != hotspot)
-    //             {
-    //                 if (currentHotspot != null)
-    //                     currentHotspot.StopHover();
-
-    //                 currentHotspot = hotspot;
-    //                 currentHotspot.StartHover();
-    //             }
-    //             return;
-    //         }
-    //     }
-
-    //     if (currentHotspot != null)
-    //     {
-    //         currentHotspot.StopHover();
-    //         currentHotspot = null;
-    //     }
-    // }
 
     private void HandleHotspotLook()
     {
-        // Check both controllers, use whichever hits a hotspot (right takes priority)
         Transform[] controllers = { rightController, leftControllerTransform };
+        CurveVisualController[] visuals = { rightCurveVisual, leftCurveVisual };
 
         HotspotScript foundHotspot = null;
+        int foundIndex = -1;
+        float foundDistance = defaultRayDistance;
 
-        foreach (Transform controller in controllers)
+        for (int i = 0; i < controllers.Length; i++)
         {
+            Transform controller = controllers[i];
             Ray ray = new Ray(controller.position, controller.forward);
             Debug.DrawRay(controller.position, controller.forward * 10f, Color.red);
             RaycastHit hit;
 
-            if (Physics.Raycast(ray, out hit, 10f))
+            if (Physics.Raycast(ray, out hit, interactDistance))
             {
-                // If the first thing hit is UI, skip this controller
-                if (hit.collider.CompareTag("UI"))
-                    continue;
+                if (hit.collider.CompareTag("UI")) continue;
 
                 HotspotScript hotspot = hit.collider.GetComponentInParent<HotspotScript>();
                 if (hotspot != null)
                 {
                     foundHotspot = hotspot;
-                    break; // Found one, no need to check the other controller
+                    foundIndex = i;
+                    foundDistance = hit.distance;
+                    break;
                 }
             }
         }
 
-        // Update hover state based on what was found
+        // Update hover state
         if (foundHotspot != null)
         {
             if (currentHotspot != foundHotspot)
             {
-                if (currentHotspot != null)
-                    currentHotspot.StopHover();
-
+                if (currentHotspot != null) currentHotspot.StopHover();
                 currentHotspot = foundHotspot;
                 currentHotspot.StartHover();
             }
@@ -288,6 +226,13 @@ public class VRController : MonoBehaviour
                 currentHotspot.StopHover();
                 currentHotspot = null;
             }
+        }
+
+        // Only extend the ray that's pointing at the hotspot
+        for (int i = 0; i < visuals.Length; i++)
+        {
+            if (visuals[i])
+                visuals[i].restingVisualLineLength = (i == foundIndex) ? foundDistance : defaultRayDistance;
         }
     }
 
@@ -303,50 +248,23 @@ public class VRController : MonoBehaviour
 
     public void MoveToHotspot(HotspotScript hotspot)
     {
-        if (_autoMoveCoroutine != null)
-            StopCoroutine(_autoMoveCoroutine);
-
-        _autoMoveCoroutine = StartCoroutine(AutoMoveCoroutine(hotspot.currentGlobalPosition));
+        TeleportTo(hotspot.currentGlobalPosition);
     }
 
     public void MoveToHomePosition(Vector3 homePos)
     {
-        if (_autoMoveCoroutine != null)
-            StopCoroutine(_autoMoveCoroutine);
-
-        _autoMoveCoroutine = StartCoroutine(AutoMoveCoroutine(homePos));
+        moveProvider.enableFly = true;
+        TeleportTo(homePos);
     }
 
-    private IEnumerator AutoMoveCoroutine(Vector3 target)
+    private void TeleportTo(Vector3 targetPosition)
     {
-        while (true)
+        var request = new UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation.TeleportRequest
         {
-            // Abort if the player touches the thumbstick
-            Vector2 input = moveAction.ReadValue<Vector2>();
-            if (input.magnitude > 0.1f)
-            {
-                _autoMoveCoroutine = null;
-                yield break;
-            }
+            destinationPosition = targetPosition,
+            matchOrientation = UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation.MatchOrientation.None
+        };
 
-            Vector3 current = xrOrigin.position;
-            float distance = Vector3.Distance(current, target);
-
-            if (distance < arrivalThreshold)
-            {
-                _autoMoveCoroutine = null;
-                yield break;
-            }
-
-            // Move the XR Origin directly toward the target
-            Vector3 direction = (target - current).normalized;
-            xrOrigin.position = Vector3.MoveTowards(
-                current,
-                target,
-                autoMoveSpeed * Time.deltaTime
-            );
-
-            yield return null;
-        }
+        teleportationProvider.QueueTeleportRequest(request);
     }
 }
