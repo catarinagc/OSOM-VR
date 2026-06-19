@@ -24,6 +24,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] HotspotManager hotspotManager;
     [SerializeField] Transform spawnPoint;
     [SerializeField] GameObject vrNoteHandMenu;
+    [SerializeField] GameObject vrTasksMenu;
 
     private bool isVR = false;
     private bool toReturnMenu = false;
@@ -50,8 +51,9 @@ public class UI_Manager : MonoBehaviour
         handVRMenus.Add(noteMenu);
         handVRMenus.Add(zoneMenuObj);
         handVRMenus.Add(menuObj);
-        //testar
         handVRMenus.Add(vrNoteHandMenu);
+        handVRMenus.Add(hotspotChangeMenu);
+        handVRMenus.Add(vrTasksMenu);
     }
 
     void OnEnable()  { XRModeSwitcher.OnModeSelected += OnModeChosen; }
@@ -309,12 +311,16 @@ public class UI_Manager : MonoBehaviour
 
     public void OpenHotspotChangeMenu()
     {
+        if (!isVR)
+            CloseHandMenus();
+        //HUD.SetActive(false);
         activeUIs.Add(hotspotChangeMenu);
         hotspotChangeMenu.SetActive(true);
-        List<HotspotScript> hotspots = hotspotManager.GetHotspotList();
-        hotspotChangeMenu.GetComponent<HotspotTeleportMenu>().PrepareMenu(hotspots);
-        if (!isVR)
-            HUD.SetActive(false);
+        if (!hotspotChangeMenu.GetComponent<HotspotTeleportMenu>().isPrepared)
+        {
+            List<HotspotScript> hotspots = hotspotManager.GetHotspotList();
+            hotspotChangeMenu.GetComponent<HotspotTeleportMenu>().PrepareMenu(hotspots);
+        }
     }
 
     public void ReopenSelectorForMenu(GameObject contentMenu)
@@ -333,6 +339,13 @@ public class UI_Manager : MonoBehaviour
         CloseHandMenus();
         vrNoteHandMenu.SetActive(true);
         activeUIs.Add(vrNoteHandMenu);
+    }
+
+    public void OpenTasksMenu()
+    {
+        CloseHandMenus();
+        vrTasksMenu.SetActive(true);
+        activeUIs.Add(vrTasksMenu);
     }
 
     public bool isHotspotActive() => hotspotImageObj.active;

@@ -9,16 +9,20 @@ public class HotspotTeleportMenu : MonoBehaviour
 
     private Dictionary<int, HotspotScript> hotspotMap = new();
 
+    public bool isPrepared = false;
+
     public void PrepareMenu(List<HotspotScript> hotspots)
     {
         hotspotMap.Clear();
         dropdown.ClearOptions();
 
+        dropdown.options.Add(new TMP_Dropdown.OptionData("Nenhum"));
         foreach (HotspotScript hotspot in hotspots)
         {
             hotspotMap[hotspot.hotspotID] = hotspot;
             dropdown.options.Add(new TMP_Dropdown.OptionData(hotspot.hotspotID.ToString()));
         }
+        isPrepared = true;
     }
 
     public void OnClick()
@@ -34,7 +38,8 @@ public class HotspotTeleportMenu : MonoBehaviour
             Debug.LogWarning($"Hotspot with ID {selectedID} not found.");
             return;
         }
-
         controllerManager.MoveToHotspot(selectedHotspot);
+        dropdown.SetValueWithoutNotify(0);
+        dropdown.RefreshShownValue();
     }
 }

@@ -45,6 +45,7 @@ public class VRController : MonoBehaviour
     [SerializeField] private CurveVisualController leftCurveVisual;
     [SerializeField] private float interactDistance = 10f;
     [SerializeField] private float defaultRayDistance = 0.2f;
+    [SerializeField] Vector3 hotspotOffset = new Vector3(-10,0,-10);
 
     public enum InteractionMode
     {
@@ -248,7 +249,8 @@ public class VRController : MonoBehaviour
 
     public void MoveToHotspot(HotspotScript hotspot)
     {
-        TeleportTo(hotspot.currentGlobalPosition);
+        
+        TeleportTo(hotspot.currentGlobalPosition + hotspotOffset);
     }
 
     public void MoveToHomePosition(Vector3 homePos)

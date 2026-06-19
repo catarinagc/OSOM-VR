@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
-
+using TMPro;
 public class DualImageZoom : MonoBehaviour,
     IScrollHandler, IBeginDragHandler, IDragHandler
 {
@@ -10,6 +10,7 @@ public class DualImageZoom : MonoBehaviour,
     [SerializeField] private RectTransform rightImage;
     public ImageDisplayController leftController;
     public ImageDisplayController rightController;
+    [SerializeField] public TMP_Text currentYears;
 
     [Header("Zoom")]
     [SerializeField] private float zoomSpeed = 0.1f;

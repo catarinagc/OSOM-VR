@@ -253,6 +253,7 @@ public class Image_UI_Manager : MonoBehaviour
             rightController.panelPC = notePanelPC;
             rightController.SpawnMarkers();
 
+            dualZoom.currentYears.text = leftController.currentYear.ToString() + " | " + rightController.currentYear.ToString();
             dualImageZoom.SetActive(true);
         }
     }

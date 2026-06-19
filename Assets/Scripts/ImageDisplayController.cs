@@ -72,6 +72,12 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler, IPoin
     {
         if (!canInteract) return;
 
+        if (isSettingMarker)
+        {
+            CancelPlacement();
+            return;
+        }
+
         isSettingMarker = true;
 
         if (ghostMarker == null)
@@ -88,96 +94,11 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler, IPoin
         ghostMarker.gameObject.SetActive(true);
     }
 
-    // void Update()
-    // {
-    //     if (!isSettingMarker)
-    //         return;
-        
-    //     if (!settingFromDouble && ghostMarker == null) return;
-    //     //if (!isSettingMarker || ghostMarker == null) return;
-        
-    //     if (isVR)
-    //     {
-    //         if (vrControllerRay == null) return;
-
-    //         Ray ray = new Ray(vrControllerRay.position, vrControllerRay.forward);
-            
-    //         if (Physics.Raycast(ray, out RaycastHit hit))
-    //         {
-    //             // Make sure we're hitting this image
-    //             if (hit.transform != imageRect.transform) return;
-
-    //             Vector2 localPoint = imageRect.InverseTransformPoint(hit.point);
-    //             Vector2 size = GetActualImageSize();
-
-    //             Vector2 relativePos = new Vector2(
-    //                 (localPoint.x / size.x) + 0.5f,
-    //                 (localPoint.y / size.y) + 0.5f
-    //             );
-
-    //             relativePos.x = Mathf.Clamp01(relativePos.x);
-    //             relativePos.y = Mathf.Clamp01(relativePos.y);
-
-    //             PositionMarkerAt(ghostMarker, relativePos);
-    //         }
-
-    //         return;
-    //     }
-
-    //     if (Mouse.current == null) return;
-
-    //     Vector2 mousePos = Mouse.current.position.ReadValue();
-    //     Vector2 relativePos = GetRelativePosition(mousePos);
-
-    //     relativePos.x = Mathf.Clamp01(relativePos.x);
-    //     relativePos.y = Mathf.Clamp01(relativePos.y);
-
-    //     PositionMarkerAt(ghostMarker, relativePos);
-
-    //     if (Mouse.current.leftButton.wasPressedThisFrame)
-    //     {
-    //         Vector2 clickRelativePos = GetRelativePosition(mousePos);
-
-    //         if (clickRelativePos.x >= 0f && clickRelativePos.x <= 1f &&
-    //             clickRelativePos.y >= 0f && clickRelativePos.y <= 1f)
-    //         {
-    //             PlaceMarkerAndOpenInput(clickRelativePos);
-    //         }
-    //     }
-    // }
-
     void Update()
     {
         if (!isSettingMarker || ghostMarker == null) return;
 
         if(isVR) return;
-        // if (isVR)
-        // {
-        //     if (vrControllerRay == null) return;
-
-        //     Ray ray = new Ray(vrControllerRay.position, vrControllerRay.forward);
-            
-        //     if (Physics.Raycast(ray, out RaycastHit hit))
-        //     {
-        //         // Make sure we're hitting this image
-        //         if (hit.transform != imageRect.transform) return;
-
-        //         Vector2 localPoint = imageRect.InverseTransformPoint(hit.point);
-        //         Vector2 size = GetActualImageSize();
-
-        //         Vector2 relativePos = new Vector2(
-        //             (localPoint.x / size.x) + 0.5f,
-        //             (localPoint.y / size.y) + 0.5f
-        //         );
-
-        //         relativePos.x = Mathf.Clamp01(relativePos.x);
-        //         relativePos.y = Mathf.Clamp01(relativePos.y);
-
-        //         PositionMarkerAt(ghostMarker, relativePos);
-        //     }
-
-        //     return;
-        // }
 
         // PC path unchanged
         if (Mouse.current == null) return;
@@ -202,19 +123,6 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler, IPoin
         }
     }
 
-
-    // public void OnPointerEnter(PointerEventData eventData)
-    // {
-    //     if (!isSettingMarker || ghostMarker == null || !isVR) return;
-
-    //     Vector2 relativePos = GetRelativePositionVR(eventData);
-
-    //     relativePos.x = Mathf.Clamp01(relativePos.x);
-    //     relativePos.y = Mathf.Clamp01(relativePos.y);
-
-    //     PositionMarkerAt(ghostMarker, relativePos);
-    // }
-
     private void PositionMarkerAt(NoteMarker marker, Vector2 relativePos)
     {
         Vector2 size = GetActualImageSize();
@@ -223,91 +131,12 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler, IPoin
         marker.GetComponent<RectTransform>().anchoredPosition = new Vector2(localX, localY);
     }
 
-    // public void OnPointerMove(PointerEventData eventData)
-    // {
-    //     if (!isSettingMarker || ghostMarker == null || !isVR) return;
-    //     if (vrControllerRay == null) return;
-
-    //     Ray ray = new Ray(vrControllerRay.position, vrControllerRay.forward);
-
-    //     // Get the image plane from its transform
-    //     Plane imagePlane = new Plane(imageRect.forward, imageRect.position);
-
-    //     if (imagePlane.Raycast(ray, out float distance))
-    //     {
-    //         Vector3 worldHitPos = ray.GetPoint(distance);
-    //         Vector2 localPoint = imageRect.InverseTransformPoint(worldHitPos);
-    //         Vector2 size = imageRect.rect.size;
-
-    //         Vector2 relativePos = new Vector2(
-    //             (localPoint.x / size.x) + 0.5f,
-    //             (localPoint.y / size.y) + 0.5f
-    //         );
-
-    //         relativePos.x = Mathf.Clamp01(relativePos.x);
-    //         relativePos.y = Mathf.Clamp01(relativePos.y);
-
-    //         PositionMarkerAt(ghostMarker, relativePos);
-    //     }
-    // }
-
-    // public void OnPointerMove(PointerEventData eventData)
-    // {
-    //     if (!isSettingMarker || ghostMarker == null || !isVR) return;
-    //     if (vrControllerRay == null) return;
-
-    //     Ray ray = new Ray(vrControllerRay.position, vrControllerRay.forward);
-
-    //     // Get the image plane from its transform
-    //     Plane imagePlane = new Plane(imageRect.forward, imageRect.position);
-
-    //     if (imagePlane.Raycast(ray, out float distance))
-    //     {
-
-    //         Vector2 pos = GetRelativePositionVR(eventData);
-    //         // Vector3 worldHitPos = ray.GetPoint(distance);
-    //         // Vector2 localPoint = imageRect.InverseTransformPoint(worldHitPos);
-    //         // Vector2 size = imageRect.rect.size;
-
-    //         // Vector2 relativePos = new Vector2(
-    //         //     (localPoint.x / size.x) + 0.5f,
-    //         //     (localPoint.y / size.y) + 0.5f
-    //         // );
-
-    //         // relativePos.x = Mathf.Clamp01(relativePos.x);
-    //         // relativePos.y = Mathf.Clamp01(relativePos.y);
-
-    //         PositionMarkerAt(ghostMarker, pos);
-    //     }
-    // }
-
-
     public void CancelPlacement()
     {
         isSettingMarker = false;
         if (ghostMarker != null)
             ghostMarker.gameObject.SetActive(false);
     }
-
-    // public void OnPointerClick(PointerEventData eventData)
-    // {
-    //     if (!canInteract) return;
-        
-    //     // Placement is now handled in Update() for PC
-    //     if (!isVR && isSettingMarker) return;
-
-    //     if (isVR)
-    //     {
-    //         if (Time.time < readyTime) return;
-
-    //         lastClickRelativePos = GetRelativePositionVR(eventData);
-    //         if (lastClickRelativePos.x < 0f || lastClickRelativePos.x > 1f ||
-    //             lastClickRelativePos.y < 0f || lastClickRelativePos.y > 1f) return;
-
-    //         PlaceMarkerAndOpenInput(lastClickRelativePos);
-    //         return;
-    //     }
-    // }
 
     private Vector2 lastVRRelativePos;
 
@@ -363,102 +192,6 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler, IPoin
             (localPoint.y / size.y) + 0.5f
         );
     }
-    // public void OnPointerMove(PointerEventData eventData)
-    // {
-    //     if (!isSettingMarker || ghostMarker == null || !isVR) return;
-    //     if (vrControllerRay == null) return;
-
-    //     Ray ray = new Ray(vrControllerRay.position, vrControllerRay.forward);
-    //     Plane imagePlane = new Plane(-imageRect.forward, imageRect.position);
-
-    //     if (imagePlane.Raycast(ray, out float distance))
-    //     {
-    //         Vector2 relativePos = WorldHitToRelative(ray.GetPoint(distance));
-    //         PositionMarkerAt(ghostMarker, relativePos);
-    //     }
-    // }
-
-    // public void OnPointerClick(PointerEventData eventData)
-    // {
-    //     if (!canInteract) return;
-    //     if (!isVR && isSettingMarker) return;
-
-    //     if (isVR)
-    //     {
-    //         if (Time.time < readyTime) return;
-    //         if (!isSettingMarker) return;
-    //         if (vrControllerRay == null) return;
-
-    //         Ray ray = new Ray(vrControllerRay.position, vrControllerRay.forward);
-    //         Plane imagePlane = new Plane(-imageRect.forward, imageRect.position);
-
-    //         if (!imagePlane.Raycast(ray, out float distance)) return;
-
-    //         Vector2 relativePos = WorldHitToRelative(ray.GetPoint(distance));
-    //         PlaceMarkerAndOpenInput(relativePos);
-    //     }
-    // }
-
-    // public void OnPointerMove(PointerEventData eventData)
-    // {
-    //     if (!isSettingMarker || ghostMarker == null || !isVR) return;
-    //     if (vrControllerRay == null) return;
-
-    //     Ray ray = new Ray(vrControllerRay.position, vrControllerRay.forward);
-    //     Plane imagePlane = new Plane(-imageRect.forward, imageRect.position);
-
-    //     if (imagePlane.Raycast(ray, out float distance))
-    //     {
-    //         Vector3 worldHitPos = ray.GetPoint(distance);
-    //         Vector2 localPoint = imageRect.InverseTransformPoint(worldHitPos);
-    //         Vector2 size = GetActualImageSize(); // ← was imageRect.rect.size, causing offset
-
-    //         Vector2 relativePos = new Vector2(
-    //             (localPoint.x / size.x) + 0.5f,
-    //             (localPoint.y / size.y) + 0.5f
-    //         );
-
-    //         relativePos.x = Mathf.Clamp01(relativePos.x);
-    //         relativePos.y = Mathf.Clamp01(relativePos.y);
-
-    //         PositionMarkerAt(ghostMarker, relativePos);
-    //     }
-    // }
-
-    // public void OnPointerClick(PointerEventData eventData)
-    // {
-    //     if (!canInteract) return;
-    //     if (!isVR && isSettingMarker) return;
-
-    //     if (isVR)
-    //     {
-    //         if (Time.time < readyTime) return;
-    //         if (!isSettingMarker) return;
-    //         if (vrControllerRay == null) return;
-
-    //         Ray ray = new Ray(vrControllerRay.position, vrControllerRay.forward);
-    //         Plane imagePlane = new Plane(-imageRect.forward, imageRect.position);
-
-    //         if (!imagePlane.Raycast(ray, out float distance)) return;
-
-    //         Vector3 worldHitPos = ray.GetPoint(distance);
-    //         Vector2 localPoint = imageRect.InverseTransformPoint(worldHitPos);
-    //         Vector2 size = GetActualImageSize();
-
-    //         Vector2 relativePos = new Vector2(
-    //             (localPoint.x / size.x) + 0.5f,
-    //             (localPoint.y / size.y) + 0.5f
-    //         );
-
-    //         relativePos.x = Mathf.Clamp01(relativePos.x);
-    //         relativePos.y = Mathf.Clamp01(relativePos.y);
-
-    //         if (relativePos.x < 0f || relativePos.x > 1f ||
-    //             relativePos.y < 0f || relativePos.y > 1f) return;
-
-    //         PlaceMarkerAndOpenInput(relativePos);
-    //     }
-    // }
 
     private Vector2 WorldHitToRelative(Vector3 worldHitPos)
     {
@@ -513,7 +246,8 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler, IPoin
     private Vector2 GetActualImageSize()
     {
         Image img = imageRect.GetComponent<Image>();
-        if (img == null || img.sprite == null) return imageRect.rect.size;
+        if (img == null || img.sprite == null || !img.preserveAspect)
+            return imageRect.rect.size;
 
         float spriteWidth = img.sprite.rect.width;
         float spriteHeight = img.sprite.rect.height;
@@ -524,40 +258,11 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler, IPoin
         float rectAspect = rectWidth / rectHeight;
 
         if (spriteAspect > rectAspect)
-        {
-            // Letterboxed top and bottom
             return new Vector2(rectWidth, rectWidth / spriteAspect);
-        }
         else
-        {
-            // Letterboxed left and right
             return new Vector2(rectHeight * spriteAspect, rectHeight);
-        }
     }
 
-    // private Vector2 GetRelativePositionVR(PointerEventData eventData)
-    // {
-    //     Vector3 worldHitPos = eventData.pointerCurrentRaycast.worldPosition;
-
-    //     Vector2 localPoint = imageRect.InverseTransformPoint(worldHitPos);
-
-    //     Vector2 size = imageRect.rect.size;
-
-    //     return new Vector2(
-    //         (localPoint.x / size.x) + 0.5f,
-    //         (localPoint.y / size.y) + 0.5f
-    //     );
-    // }
-
-    // public void SpawnMarkers()
-    // {    
-    //     ImageKey key = new ImageKey { year = currentYear, hotspotId = currentHotspotId, direction = currentDirection };
-    //     List<NoteData> notes = annotationManager.GetNotesForImage(key);
-    //     foreach (NoteData note in notes)
-    //     {
-    //         SpawnMarker(note);
-    //     }
-    // }
     public void SpawnMarkers()
     {    
         ImageKey key = new ImageKey { year = currentYear, hotspotId = currentHotspotId, direction = currentDirection };
@@ -568,15 +273,6 @@ public class ImageDisplayController : MonoBehaviour, IPointerClickHandler, IPoin
             SpawnMarker(note);
         }
     }
-
-    // public void ClearNotes()
-    // {
-    //     foreach (Transform child in imageRect)
-    //     {
-    //         if (child.GetComponent<NoteMarker>() != null)
-    //             Destroy(child.gameObject);
-    //     }
-    // }
 
     public void ClearNotes()
     {

@@ -91,15 +91,18 @@ public class DesktopController : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            if (Cursor.lockState == CursorLockMode.None && EventSystem.current.IsPointerOverGameObject())
-                return;
-
             if (currentHotspot != null)
             {
                 currentHotspot.OnInteract();
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                currentHotspot.StopHover();
+                currentHotspot = null;
             }
+
+            // if (Cursor.lockState == CursorLockMode.None && EventSystem.current.IsPointerOverGameObject())
+            //     return;
+
         }
         
         if(Keyboard.current.escapeKey.wasPressedThisFrame)

@@ -40,10 +40,36 @@ public class NoteMarker : MonoBehaviour
         );
     }
 
+    // private Vector2 GetActualImageSize(RectTransform imageRect)
+    // {
+    //     Image img = imageRect.GetComponent<Image>();
+    //     if (img == null || img.sprite == null) return imageRect.rect.size;
+
+    //     float spriteWidth = img.sprite.rect.width;
+    //     float spriteHeight = img.sprite.rect.height;
+    //     float spriteAspect = spriteWidth / spriteHeight;
+
+    //     float rectWidth = imageRect.rect.width;
+    //     float rectHeight = imageRect.rect.height;
+    //     float rectAspect = rectWidth / rectHeight;
+
+    //     if (spriteAspect > rectAspect)
+    //     {
+    //         // Letterboxed top and bottom
+    //         return new Vector2(rectWidth, rectWidth / spriteAspect);
+    //     }
+    //     else
+    //     {
+    //         // Letterboxed left and right
+    //         return new Vector2(rectHeight * spriteAspect, rectHeight);
+    //     }
+    // }
+
     private Vector2 GetActualImageSize(RectTransform imageRect)
     {
         Image img = imageRect.GetComponent<Image>();
-        if (img == null || img.sprite == null) return imageRect.rect.size;
+        if (img == null || img.sprite == null || !img.preserveAspect)
+            return imageRect.rect.size;
 
         float spriteWidth = img.sprite.rect.width;
         float spriteHeight = img.sprite.rect.height;
@@ -54,15 +80,9 @@ public class NoteMarker : MonoBehaviour
         float rectAspect = rectWidth / rectHeight;
 
         if (spriteAspect > rectAspect)
-        {
-            // Letterboxed top and bottom
             return new Vector2(rectWidth, rectWidth / spriteAspect);
-        }
         else
-        {
-            // Letterboxed left and right
             return new Vector2(rectHeight * spriteAspect, rectHeight);
-        }
     }
 
     public void OnClick()
@@ -73,14 +93,22 @@ public class NoteMarker : MonoBehaviour
         activePanel.GetComponent<NotePanel>().Open(data.message, data.created, this);
         if (isVR)
             uI_Manager.OpenNoteMenu();
-        //activePanel.SetActive(true);
+        else
+            activePanel.SetActive(true);
     }
 
     public void EditMessage()
     {
         displayController.annotationManager.EditNote(data, displayController, () =>
         {
-            uI_Manager.CloseSpecificUI(activePanel);
+            if (isVR)
+            {
+                uI_Manager.CloseSpecificUI(activePanel);
+            }
+            else
+            {
+                activePanel.SetActive(false);
+            }
             displayController.ClearNotes();
             displayController.SpawnMarkers();
         });
