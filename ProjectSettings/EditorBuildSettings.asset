@@ -6,9 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/LoadingScreen.unity
-    guid: 5a2d197ca1edc354a9432c43a498303b
-  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 55daccc09a3b69647bbab145b54a3ab3
   m_configObjects:
@@ -17,6 +14,7 @@ EditorBuildSettings:
     UnityEditor.XR.ARCore.ARCoreSettings: {fileID: 11400000, guid: 9bec1ce6a03ccba4b9a8215241b32e63, type: 2}
     UnityEditor.XR.ARKit.ARKitSettings: {fileID: 11400000, guid: a49cadc1a815591479693b955ccf08c1, type: 2}
     WebXR.Settings: {fileID: 11400000, guid: 7bee72b689d6c5642aaaeef4fb0d45c5, type: 2}
+    com.unity.addressableassets: {fileID: 11400000, guid: 15a68c73cb879b44f8860ee32324370c, type: 2}
     com.unity.input.settings: {fileID: 11400000, guid: 8cb7fa8b369d6994dad283492fcfe25d, type: 2}
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 1394d80dec4288d48a648853eb146bc4, type: 3}
     com.unity.xr.arfoundation.simulation_settings: {fileID: 11400000, guid: 908d62378b8205449861e5838a18a596, type: 2}

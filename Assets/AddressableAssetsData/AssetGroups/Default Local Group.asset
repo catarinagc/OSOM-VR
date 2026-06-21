@@ -1,0 +1,1655 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbb281ee3bf0b054c82ac2347e9e782c, type: 3}
+  m_Name: Default Local Group
+  m_EditorClassIdentifier: Unity.Addressables.Editor::UnityEditor.AddressableAssets.Settings.AddressableAssetGroup
+  m_GroupName: Default Local Group
+  m_GUID: 2c2bd38d9032f0b40bed2389f5a48485
+  m_SerializeEntries:
+  - m_GUID: 00497f1c57e31f34b9f85b857c93e23f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/16T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_16
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 011e045728f9b3f469e24fd2cc8d983f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/28L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_28
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0149084de3bd05d499e392832cdcfc43
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/23L.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_23
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0153880105ce5704fa4433bbf6c07229
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/13T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_13
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0438da2615c40744484195b384175b8b
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/06T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_6
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 061bd95ee4be96a4a82acb07b46e3dbc
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/18T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_18
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0696c3046b5e0044f8b239e0199946d7
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/16T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_16
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 07a8a7f47f887014491c9008fe2343cb
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/17T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_17
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 080213fe8980114418888ceb6533ca0e
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/16F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_16
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0837b50629b5f4447a8c6a2dc9b58a05
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/25F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_25
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 089eae9c202cd184086a873ba1b9a4f2
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/02T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0959a2f93723fd3488cc0cf79c0f45c7
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/10T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_10
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0974d934574cddf4e9dd9f5f9dfca881
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/14F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_14
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0980168fa29c4a646a63bfabeb67b349
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/23L.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_23
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0af574712bb02cf4aac46d194fff3a39
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/12L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0b3599cf5166ed84794e9d146caefc02
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/19F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_19
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0c5db7174fbba71479bb22a258aa0084
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/02F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0eb3fe3b58d31fa4bb36d2c6b12b5dff
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/26F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_26
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 0f0a3ba2f792e4f4ba103ec5f6cebbe1
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/16F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_16
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 125a93e54c192cb428e9611865f9230c
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/17T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_17
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 146b34d3269b2214e9c9292f4e120dd8
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/04F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_4
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1a1e4573919996042aaafb34ee5a76e8
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/28T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_28
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b0d5e9a244926a40bfdc91295a55502
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/15T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_15
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1b12be1990405e343b4b792c9ae7b950
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/15F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_15
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1e258aa59dfaf644cade2874fc667881
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/22L.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1f5040e77b31e30478e4d36a69fb254f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/24T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_24
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 1fbfcd1519c4fd04caef5075984b83bc
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/24T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_24
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 20944e2d5abc9ef4685f1ef55706cbc5
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/02F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 214a4628bc7d1b6438988299b28a19d8
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/16F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_16
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 21fdeef757258bd48a0504a23bc4f1f1
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/12T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 223a03acdf4dc82409dda42d01478e23
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/21L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_21
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2262bf3451074f24b96e41a5f0595749
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/26T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_26
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22f3e76122eb8f847a2b2499387841c0
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/06F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_6
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22f476a0126618344957a30a279f1417
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/23F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_23
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 22f9bfdc1f078fc49b046c751a362319
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/07T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_7
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 23192afb9d40f6c4da0c7e25cd400399
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/18F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_18
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2348fbc8a3083da43a6534973b469d57
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/06T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_6
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24ce719c4c1e57445b8658707f14681c
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/24F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_24
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 24d2821abf55e99499600a993617de89
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/12L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27c1547a816ad9f4cb5cec0c17f96d2b
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/26T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_26
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 27c5e076f5471504d8c2346b00f7a7c4
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/06F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_6
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 282431b438920b847b2e842f4523a4bf
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/23T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_23
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 29047bb5dfebc6d4488689c7363f7477
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/26F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_26
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 292e7476d8358db4c9035200f71d1c50
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/20F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_20
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2991f1cf8305e0b4494eb673e4e10040
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/03F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_3
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2a6b43dba2bbb5f4d99125c2cc2a86b2
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/24L.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_24
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2aedac25392e5944db23a07996def7e2
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/18T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_18
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2bf34d51b6603d842ac320ab8bcbc029
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/26F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_26
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2de0943651658a2419db6f95027b1640
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/02T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 2f7b4e7e60e45df4fbd300c54fa5cb6e
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/13T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_13
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32293985e0771ad4ca4f717c01b7852d
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/28L_2.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_28
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 324e2fc72e80342438ac9da62841dbdd
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/23F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_23
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 325e64b1b0ac80c4eb413c2a7b89ded8
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/07F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_7
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32b300b0e835ed34e8e27097da907faf
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/04F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_4
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3361dbd2810d6c340b8decb0e7f4d9e3
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/07T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_7
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 338eb8fe250c09445b87330cf716b98e
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/22F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 35a351b40d428314bbabc40688bcd929
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/13T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_13
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3609b23659df267488e7a54485d5d705
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/19T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_19
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 363dd0bc88c05ed43afbd498bb2d3736
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/26F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_26
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 375167700c8231e47a9f443f24cc65c5
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/10F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_10
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 380aa89e1f95d5a47a5f00631b2d697e
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/23L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_23
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 385b8cd4c6049a14ea821dd540e6a2f0
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/22T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3910a2c8c6133bd4f8427cedeae43b35
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/27T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_27
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3a6f250f9fa443546b4f42a2ccdcf427
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/21T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_21
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3af6756a1bea4624aa7a337c1b21b4d4
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/05F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_5
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3d65ed00b9f77b74fb479aedbe4b5cb9
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/25F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_25
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3de430e702901e442ae58f92bc79ed46
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/04T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_4
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e36c0eeff0135d47a3260d2e62e2ac6
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/18F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_18
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3e5f4653770a0874c8f142dca1bbc119
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/05T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_5
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 3f1c77f4147deb64f80e58511422dafa
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/18F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_18
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 418ccdf1c89f129499fed98de0c5d6ee
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/06T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_6
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 418eebd42d6c5254baab90209a5a7524
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/12T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 42181539ab6f71548b6f6800a32330f7
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/24T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_24
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 421e20fd9e7e2e748a455ce139cab4c1
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/24L.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_24
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 42996f72258088943b7c972da4af2a95
+    m_Address: Hotspot_Images/2025-11-10/01F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_1
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4312cda49d5a3cf4b81cd3156a18f5d0
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/28F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_28
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4392a40439d3f504cb057e1068f85ddb
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/14T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_14
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 44ee3fdeeebe1364a8506592575e556d
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/17F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_17
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 460747a5837b9cb4eb6fd2d72eddc2e9
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/02F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 475d05462a761af48a6c2a06dce17733
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/13T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_13
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 48a5c0d25e0fea746b176740b968f90c
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/06T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_6
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4b22637f8c62ede45ae5707e1fefccdb
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/04T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_4
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4bbaf71556ac4024bb781d5b9fd79371
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/06F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_6
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4cda4b002089e3b4e8f99e2a1f720f3b
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/12L.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4ce88197f33357f47af2803aeeeda24f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/20F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_20
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4d61ff1ce096002448cbf5c0c2bc1720
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/10F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_10
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4e4b968c9c3c46046b8b97437ca0ac20
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/17F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_17
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4eb73e40de2bb1044b2d66969cf74504
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/20F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_20
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f2ad2593503a16469a422dd3989e315
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/27F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_27
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4f6a52d36090870468884088c860f4ad
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/06F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_6
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 4fca691862941a64e98acf220fedd3e9
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/14T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_14
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 521be2b1835af8d4fb7e5ad6c12734f1
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/11F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_11
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52644ed0aadb19541bf750d69e819498
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/23T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_23
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 52ccd8e59516a3844981a4ac3554f7fe
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/19T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_19
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 531ac6a7b4b5d8141aa1fe0b4efd2a9b
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/03F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_3
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53b416312aa197b4387577dcfd268143
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/13F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_13
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 53d51c208794bc34f9e0ceb21a0f92f5
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/11F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_11
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 57e842da2657ce948bd16d360b087b26
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/09T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_9
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 585200972dae9c1428fc22d2dd79f530
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/12T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 587c56af290eea645afcd5934b899fc6
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/20T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_20
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 58b966049a583d24698d841b24558e4f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/25T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_25
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5a074642aaa019f4dbdadd1b25119161
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/27L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_27
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5be9cc8ab7e271d4592c8a17010f5a08
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/08F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_8
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c5d1e80115c5fb4db779aff4dd3ab6e
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/15T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_15
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5c6316b09ff32f6409641168b8a7148f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/20T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_20
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5d14f0e0f884f3441a196a63da25db49
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/22L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e0bb76a7cfadff438af3eecaefd41c6
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/03T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_3
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5e41696d19f748e48a0a2ad4b380bd28
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/02F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 5fa56f437a10ad440ba064197519ca76
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/09T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_9
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6061e7291b95140459517aea2919ad0d
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/12F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 60e027696d2e0884b82a890d041e5377
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/12T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6109c0806a59a2d419a7aec32570aee8
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/20T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_20
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 62e65ccdeaa21a148932e1258d4eff6d
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/14F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_14
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 63ce461fe00893e48abae334838c2d5e
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/07F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_7
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 651e609a5e8b9334a869ba545965bda3
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/02F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6561a690d138bab459af6385e05bbc47
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/26T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_26
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65991111586636b40a22b4c045205b85
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/09F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_9
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 65bf36ab5d3fbcf418af96d3e99a0af2
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/08T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_8
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 662b431bd570e794ea47c7b575aa37f5
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/05T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_5
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 671957d3bad0dd641842650216d1ca5c
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/14T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_14
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6810329255a5f0e438a281ffe1cd7653
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/12F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 69e09036eb7d07a49b38f7fd9d7e962c
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/03T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_3
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6b7a90dcdd5dc1d459c2c283a21b4049
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/09T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_9
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6bb87d6a718509b4d88eae24fb67bc19
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/19F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_19
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c07622118f20624f90b29089a15666e
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/25F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_25
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6c36d1463bba4864da1bcb95065fe139
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/22F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6d0a5b1a9aadb204dabe91656a77ad32
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/12F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6e118b04d56f27446b7297bb68758a64
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/11F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_11
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 6f53f70757d0df043805d32b8a2c7cd6
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/25F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_25
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 732fcefd25e46a347b7611a9f2b7ae5c
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/27T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_27
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 74a1cf26ec4725a429962860583cb836
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/01T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_1
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 750107b4a82e7f545a20e2107abb7b87
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/17T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_17
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 751618c4dfeeacd4fb18ee684db9e601
+    m_Address: Hotspot_Images/2018-09-10/01F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_1
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 77cc9b2113ca74a4b9b656070a89de79
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/01T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_1
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7c835bda311b42343ab5e28ae905d1aa
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/13F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_13
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d25bd05eb84f004792a4bf5629d5e23
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/22L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7d9b1d4982341f44e9db6180682523fc
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/10F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_10
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7dc73af2431da5b46977969efc0570f3
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/25T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_25
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 7f07b099b3196f24b935efcbc0d68e06
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/08T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_8
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8076d30a660458c4b9939ee5d6ad67eb
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/26F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_26
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80a6ca33e0ac63e45a647fbfb48cdf64
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/22T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 80bd6ed761fb9f14da89d80631e8e259
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/26T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_26
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8236a68d4cd20504aaae3fbff4ab2462
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/04F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_4
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83740fbfdbdafb04db45e56b01085438
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/19F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_19
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83a5907a3e333a746abddd1358b3bb74
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/28T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_28
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 83e6314df3ed24a4a9c3669f19e3599d
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/22T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8402476b8a2074044a794cd6fc91b034
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/03F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_3
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8683360eba0103a449a346842970bf20
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/11T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_11
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86cfc7661ca18a744bbc8d3b1b48a921
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/16T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_16
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 86e416edc2b4f414d89184f39b168b58
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/07F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_7
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88d6f914cef816d43a6a638201f0b785
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/02T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 88ebb9eed1788494785408d3068123d9
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/14T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_14
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 895e2b5819da1aa4b8c09313af336e82
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/04T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_4
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 89955892670551543ac3509c13c89c62
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/21T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_21
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8b0ee0875d47225488b0435408a4e59a
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/15F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_15
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8ca2e84e835654b498abf37139119539
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/21F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_21
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 8e2fbf71441dcf845a732c012aa7e732
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/28L_2.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_28
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 91526918aea03da449949c796f286f82
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/20L.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_20
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 92b40554d07b9644586d002ff4c3423d
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/12T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9494e6abd5aeb9d4080b1ca6469e32c7
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/08F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_8
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96b10b4525b0b7e46b7cccf999aa5742
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/05F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_5
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9725e8ed36973464d8c3b6ed3955e6ae
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/03T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_3
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 978aca2249a9d4d449d1c12ca748e033
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/18F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_18
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 97b96846757e2cd44955bc3833ab6e5a
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/12F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 995c71c9c532fef4885923fe0c671881
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/26T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_26
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a31f442b2dbe404883108933d54cfa8
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/10T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_10
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9a56e2ec11b430f458cfac7202e8241c
+    m_Address: Hotspot_Images/2020-11-18/01F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_1
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9bd60c90bcda008449057a97424394dc
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/01T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_1
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 9e4c7ffa377819f4f8c8175e909b08ac
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/20F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_20
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a09a614ccb5c3874cbb8df31b39098c9
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/08T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_8
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a0e6a2e7509dc4f4f98d393d2b52db9d
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/03T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_3
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a11d03f0e0228144ea004f8ab0d0a8d5
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/19F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_19
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a2909ce2c91127248b39e52a8a0079c8
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/04T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_4
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3463ea2dcf2d214abcb0ae0e769763f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/25T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_25
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a3da3cb0436e60e4ebc9cb781433f960
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/12L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6242c66c12d8e14b9149af410f55d29
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/22T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a6f51cea59a4397489cf2444cb1d05b6
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/13F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_13
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a757d321604d4004a938469a88fc5be1
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/05F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_5
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a7e5ae5f89d5a5b45b020665d120b0a8
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/11F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_11
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a8901355620a18a4ebb109718955a0e2
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/15F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_15
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: a978108fabe3a8049860450407f0e1d3
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/17T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_17
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aa54387fd35f88f4cb95e8220539f9a0
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/08F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_8
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: aaf8064d3ca9fb045a8b9eb74d73fa3d
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/27L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_27
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab3338c44e81c504cb765a30773542b6
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/04F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_4
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ab43ca5a9d9fdaf40bd2d77ce58aae05
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/21T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_21
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac61c286c8e34cb4aa201357a45b8425
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/08T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_8
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac7233ab22677574eb8634440e009027
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/02T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ac9df2ffa024a9246ad4e3b1966b7e23
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/24F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_24
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b0c09746689049e4ab55cbbe27f6e421
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/10T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_10
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b14361b1d8f7fca40b3ce7c1c38b75f4
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/07T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_7
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b188c5be3d0ba204294deacb6351e9f7
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/02T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_2
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b2887958d9c8f4447a403910c4822b6b
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/09T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_9
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b4aa99208c8fdb7428b3f3ed17e03940
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/25T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_25
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b631725477626c64abe29dfac9e1d323
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/07F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_7
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b637f3f0ef52f154f98a83fbd3980df0
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/08F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_8
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b7b6eb9de94823243a1d8d2e8d727f39
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/05T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_5
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b8ee2c4a524c1fa439de595549a3ff66
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/05F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_5
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9913fac07576d9429e17602b33f04b3
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/21T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_21
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: b9a7f9c14eaa5b94799e51deef373ab0
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/19F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_19
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bade2f433b246e745bb2ecec7df5d25b
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/11F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_11
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb4034901250d9140b5b7a357ceadc11
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/06T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_6
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bb5732d553688bf4cabd64aa81555e8a
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/13F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_13
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bc44290e39ad463449f9d457de45fa58
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/10F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_10
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bd0892d904316664da03e611d2aca59a
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/09F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_9
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be0d7727f43b4d14aa8180ca6df1a780
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/07T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_7
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: be98a6cc80547c742a02ba2ed68f189d
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/18T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_18
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: bfb3fef6aac897145bec5f44e95258e0
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/07F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_7
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c20f6962c311fdf40b834086030bce2a
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/06F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_6
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c3aafc19ffa5b4b46902bca54faa5445
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/21F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_21
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c49aff0c25b4e2d45b9b70f5a9f7bdd4
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/21F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_21
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c68eab4b63c39bf4cb5fa7f6b3c1f212
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/21F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_21
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c78a87f761ed2e74bb458c9bdc6d4552
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/01T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_1
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c873a048aecda39419c6a15edca9c4f8
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/07T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_7
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c981b668ba65a5141ae7d43af0188ac9
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/18T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_18
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ca31042cd534cc141b74efd918288ab6
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/16F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_16
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cbd5f271cffc97f4085dc4e3979ba803
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/22T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc7818ab65c55c14cbc6c66cddedc28c
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/08F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_8
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cc89b83dbd6264c4781ccf43f242910c
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/24F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_24
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ccd245f935b337e4996ef0a49b1edf09
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/19T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_19
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: cf12f7845ac3d3340bd81188b8bb9bab
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/21F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_21
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d126d80067f34f448985357a1ec96bb0
+    m_Address: Hotspot_Images/2022-05-02/01F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_1
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d16c7c6fc6ce6564683a2719ebca15b9
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/21T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_21
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d1813e147a1e0964ca956488e1279e87
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/05F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_5
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d24ae7d8de8f92440b966cfcb21cae03
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/17F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_17
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d44561603fc7bd44fa402e9f6d878050
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/27F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_27
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d524bc7627980db488032e217a2a11c9
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/24L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_24
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5341bdd94846b74981faea3873ddbbd
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/11T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_11
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d5608d2ead322534cad42ebc8460c045
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/03T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_3
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d6e02e94142d17c478af9718412bccbb
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/23T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_23
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d8d39f2a7fbca244d85ee49cb6553fad
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/03F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_3
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: d9cc92182440ea14ea3c4acb7df2d932
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/16T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_16
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: da20c61c099a0434780359d88d9b1776
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/15T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_15
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: db296ce67221ec14fbc3a71e94eef7c1
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/09F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_9
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dc223bfd8e61631469b4a2d580e052d3
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/17F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_17
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: dec4044ea0776d34bb2b0a2a3b64ded5
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/17F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_17
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df27ddd0d86928c4ba92d5d5d292281a
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/10T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_10
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: df82b120f2972334bbc8a5ea5dd944db
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/20T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_20
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e1f8c544e9429b64cbe47fd360a65748
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/09F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_9
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e33d653b1829d274fa5cd9a52f7395d5
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/22F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e376a40d76b3d124e80ea60565b68865
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/20F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_20
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3d5ed798aca8a24ea43d0fa45b0300e
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/22F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3eeff8ae7fe6d944919b04db68c06c6
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/11T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_11
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e46e8d0fd904d254b8c7832047ef57dd
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/19T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_19
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e4bf26b4d4ecb9b4eae6f55861d1b531
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/09F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_9
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e53eedbcac9a8de4f90e632ea037fa01
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/05T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_5
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e59955ee05187ff43a5a665e71493113
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/16F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_16
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6598cc71467dc64f87904f83947d2d6
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/05T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_5
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e6b024467651e5d43af63a7a0164dec2
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/08T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_8
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e925584e3db142645bd811bfb0c305c8
+    m_Address: Hotspot_Images/2023-11-27/01F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_1
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e953b7c2e8fcbfb40bd98aa607d2344d
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/13T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_13
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ec67dcac6bfc758489212054628f5f8f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/22L.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_22
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: edfccae6e2e97a941a0147964329ee82
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/14F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_14
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee62cb60741a424428666916ceb0a65f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/23F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_23
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: ee6af7860929f6c4ab21ac3b9fd7dac0
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/11T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_11
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f13dc1fbf41c36247abe15b3f7c9092f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/04F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_4
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f199d0da851f7344280bdaa7665ec1b6
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/28L.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_28
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f1aafd6c9e958ce4697723d4a5c91c95
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/09T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_9
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2085dff048971e4e9fcaf7208dcd29a
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/28F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_28
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f22116e3eaba55d4ea3813b4a8936d67
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/16T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_16
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f338c2eebe59d58488cbfbb88c495054
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/19T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_19
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f489ba7886db49942833ddb4811564f4
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/25F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_25
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f49345076ad301d43a8ecbadffc99770
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/11T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_11
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f57da64824f7355488a8eb0035fceb7d
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/04T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_4
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f648421a92b291348a10946e6184808f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2023-11-27/10T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_10
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f8b146c1af3b8d847a8415e5015a5eb1
+    m_Address: Assets/Resources_moved/Hotspot_Images/2020-11-18/10F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_10
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f9b361431a72f684aa15fbbc256df044
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/18T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_18
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa2ff05d8f1c258409158042054d0e5a
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/01T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_1
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fa6f227f20c8628459fc1b5c74f1041f
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/18F.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_18
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fb6c3006ded7e0c4e8f3634d25fbc198
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/12F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_12
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fcbf28583c980ab4fb5cf8cbafa955e0
+    m_Address: Assets/Resources_moved/Hotspot_Images/2022-05-02/20T.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_20
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe6ac405af9f604499e25028a2d4b9b2
+    m_Address: Assets/Resources_moved/Hotspot_Images/2025-11-10/13F.jpeg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_13
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: fe7476b1f433cca44ba56bada1dec784
+    m_Address: Assets/Resources_moved/Hotspot_Images/2018-09-10/17T.jpg
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - HS_17
+    FlaggedDuringContentUpdateRestriction: 0
+  m_ReadOnly: 0
+  m_Settings: {fileID: 11400000, guid: 44226ac5f5d60564d97fd37f0451c4a3, type: 2}
+  m_SchemaSet:
+    m_Schemas:
+    - {fileID: 11400000, guid: 8d0fe2c8ef739684090330f73dc6d069, type: 2}
+    - {fileID: 11400000, guid: ad91532cd9b691541928db9b14e95757, type: 2}
