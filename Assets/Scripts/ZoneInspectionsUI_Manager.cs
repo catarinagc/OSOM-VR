@@ -29,6 +29,7 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
     public void ChangeYearSelected(int index)
     {
         yearSelected = currentZone.Inspections[index].Year;
+        TelemetryLogger.Instance.LogUIInteraction("Change Inspection Year" , yearSelected.ToString());
         OpenInspectionData();
     }
 

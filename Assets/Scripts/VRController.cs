@@ -74,6 +74,8 @@ public class VRController : MonoBehaviour
     {
         moveProvider.enableFly = false;
         currentMode = MovementMode.Walking;
+        UI_Manager.setMovementModeIsFly(currentMode == MovementMode.Flying);
+        TelemetryLogger.Instance.LogUIInteraction("Walk");
     }
 
     // Replace your Update() with this:
@@ -89,13 +91,22 @@ public class VRController : MonoBehaviour
             HandleHotspotLook();
 
         if (aButton.WasPressedThisFrame())
+        {
             screenshot.TakeScreenshotVR();
+            TelemetryLogger.Instance.LogUIInteraction("Screenshot", "Shortcut");
+        }
 
         if (xButton.WasPressedThisFrame())
+        {
             UI_Manager.OpenMenu();
+            TelemetryLogger.Instance.LogUIInteraction("Open Menu", "Shortcut");
+        }
 
         if (bButton.WasPressedThisFrame())
+        {
             toggleFly();
+            TelemetryLogger.Instance.LogUIInteraction("Movement Mode", "Shortcut");
+        }
 
         if (rightPress.WasPressedThisFrame() || leftPress.WasPressedThisFrame())
         {
@@ -156,12 +167,16 @@ public class VRController : MonoBehaviour
             currentMode = MovementMode.Walking;
 
             SnapToGround();
+            UI_Manager.setMovementModeIsFly(false);
+            TelemetryLogger.Instance.LogUIInteraction("Walk");
         }
         else
         {
             moveProvider.enableFly = true;
 
             currentMode = MovementMode.Flying;
+            UI_Manager.setMovementModeIsFly(true);
+            TelemetryLogger.Instance.LogUIInteraction("Fly");
         }
     }
 
@@ -249,13 +264,13 @@ public class VRController : MonoBehaviour
 
     public void MoveToHotspot(HotspotScript hotspot)
     {
-        
         TeleportTo(hotspot.currentGlobalPosition + hotspotOffset);
     }
 
     public void MoveToHomePosition(Vector3 homePos)
     {
-        moveProvider.enableFly = true;
+        // moveProvider.enableFly = true;
+        toggleFly();
         TeleportTo(homePos);
     }
 

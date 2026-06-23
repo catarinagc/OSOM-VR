@@ -38,8 +38,12 @@ public class HotspotTeleportMenu : MonoBehaviour
             Debug.LogWarning($"Hotspot with ID {selectedID} not found.");
             return;
         }
+        
+        TelemetryLogger.Instance.LogUIInteraction("Hotspot Move", dropdown.options[dropdown.value].text);
+
         controllerManager.MoveToHotspot(selectedHotspot);
         dropdown.SetValueWithoutNotify(0);
         dropdown.RefreshShownValue();
+
     }
 }

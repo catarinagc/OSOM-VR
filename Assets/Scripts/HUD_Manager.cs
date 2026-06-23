@@ -17,29 +17,30 @@ public class HUD_Manager : MonoBehaviour
     public void ScreenshotButton()
     {
         ControllerManager.TakeScreenhot();
+        TelemetryLogger.Instance.LogUIInteraction("Screenshot", "HUD");
     }
 
     public void MenuButton()
     {
         UIManager.OpenMenu();
+        TelemetryLogger.Instance.LogUIInteraction("Open Menu", "HUD");
     }
 
     public void MovementModeButton()
     {
         ControllerManager.ChangeMovementMode();
-        if (movementModeImage.sprite == walkSprite)
-            movementModeImage.sprite = flySprite;
-        else
-            movementModeImage.sprite = walkSprite;
+        TelemetryLogger.Instance.LogUIInteraction("Movement Mode", "HUD");
     }
 
     public void MoveToHotspotMenu()
     {
         UIManager.OpenHotspotChangeMenu();
+        TelemetryLogger.Instance.LogUIInteraction("Hotspot Change", "HUD");
     }
 
     public void MoveToHome()
     {
+        TelemetryLogger.Instance.LogUIInteraction("Click Home");
         ControllerManager.MoveToHomePosition();
     }
 
@@ -50,5 +51,13 @@ public class HUD_Manager : MonoBehaviour
             highlightModeImage.sprite = highlightOffSprite;
         else
             highlightModeImage.sprite = highlightOnSprite;
+    }
+
+    public void setMovementModeIsFly(bool isFlying)
+    {
+        if (isFlying)
+            movementModeImage.sprite = walkSprite;
+        else
+            movementModeImage.sprite = flySprite;
     }
 }

@@ -7,7 +7,7 @@ public class LoadScreen : MonoBehaviour
     [SerializeField] Image progressBar;
     void Start()
     {
-        StartCoroutine(LoadGame());
+        //StartCoroutine(LoadGame());
     }
 
     void Update() { }

@@ -25,5 +25,6 @@ public class CollapsableUI : MonoBehaviour
         }
         collapse_UI.SetActive(true);
         ui_title.text = selected_title.text;
+        TelemetryLogger.Instance.LogUIInteraction("Interact with submenu", selected_title.text);
     }
 }

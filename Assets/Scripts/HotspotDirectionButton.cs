@@ -9,6 +9,7 @@ public class HotspotDirectionButton : MonoBehaviour
 
     public void OnClick()
     {
+        TelemetryLogger.Instance.LogUIInteraction("Change Image Direction");
         UIManager.ShowDirection(direction.text);
     }
 }

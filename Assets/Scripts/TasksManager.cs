@@ -41,9 +41,12 @@ public class TasksManager : MonoBehaviour
     {
         if (remainingIndices.Count == 0)
         {
+            TelemetryLogger.Instance.LogUIInteraction("Tasks over");
             taskDescription.text = "Fim das tarefas";
             return;
         }
+
+        TelemetryLogger.Instance.LogUIInteraction("Change Task");
 
         int index = remainingIndices[^1];
         remainingIndices.RemoveAt(remainingIndices.Count - 1);

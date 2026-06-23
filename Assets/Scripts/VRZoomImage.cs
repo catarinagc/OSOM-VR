@@ -43,6 +43,7 @@ public class VRZoomImage : MonoBehaviour
 
     public void OnClickPin()
     {
+        TelemetryLogger.Instance.LogUIInteraction("Pin Image");
         isPinned = !isPinned;
         if (isPinned)
             syncManager.AddImage(this);
@@ -65,7 +66,6 @@ public class VRZoomImage : MonoBehaviour
             _wasPinchingSingle = false;
         }
 
-        //Apply();
         if (isPinned)
             syncManager.UpdateAllImages(_zoom, _pan);
         else

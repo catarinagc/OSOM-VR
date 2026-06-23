@@ -50,6 +50,7 @@ public class ImageAnnotationManager : MonoBehaviour
 
     public void ExportReport()
     {
+        TelemetryLogger.Instance.LogUIInteraction("Download Report");
         string report = GenerateReport();
         string path = System.IO.Path.Combine(Application.persistentDataPath, "annotations_report.txt");
         System.IO.File.WriteAllText(path, report);

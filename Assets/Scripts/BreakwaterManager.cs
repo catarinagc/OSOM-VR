@@ -37,6 +37,7 @@ public class BreakwaterManager : MonoBehaviour
         IsReady = false; // Resets every time the scene loads
         path = Path.Combine(Application.streamingAssetsPath, "osom_dados.json");
         StartCoroutine(LoadJson());
+        TelemetryLogger.Instance.LogUIInteraction("Highlight On", "true");
     }
 
     void Initialize()
@@ -82,6 +83,10 @@ public class BreakwaterManager : MonoBehaviour
     public void ToggleHighlights()
     {
         highlightsActive = !highlightsActive;
+        if (highlightsActive)
+            TelemetryLogger.Instance.LogUIInteraction("Highlight On", "true");
+        else
+            TelemetryLogger.Instance.LogUIInteraction("Highlight On", "false");
         UpdateHighlightMode();
     }
 

@@ -60,6 +60,10 @@ public class DesktopController : MonoBehaviour
         Cursor.visible = false;
 
         pointerMode = InteractionMode.World;
+
+        UI_Manager.setMovementModeIsFly(currentMode == MovementMode.Flying);
+        
+        TelemetryLogger.Instance.LogUIInteraction("Walk");
     }
 
     void Update()
@@ -99,10 +103,6 @@ public class DesktopController : MonoBehaviour
                 currentHotspot.StopHover();
                 currentHotspot = null;
             }
-
-            // if (Cursor.lockState == CursorLockMode.None && EventSystem.current.IsPointerOverGameObject())
-            //     return;
-
         }
         
         if(Keyboard.current.escapeKey.wasPressedThisFrame)
@@ -113,6 +113,7 @@ public class DesktopController : MonoBehaviour
         if(Keyboard.current.hKey.wasPressedThisFrame)
         {
             UI_Manager.OpenHotspotChangeMenu();
+            TelemetryLogger.Instance.LogUIInteraction("Hotspot Change", "Shortcut");
         }
 
         if(Keyboard.current.spaceKey.wasPressedThisFrame)
@@ -122,22 +123,26 @@ public class DesktopController : MonoBehaviour
                 UI_Manager.OpenMenu();
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                TelemetryLogger.Instance.LogUIInteraction("Open Menu", "Shortcut");
             }
         }
 
         if (Keyboard.current.pKey.wasPressedThisFrame)
         {
             TakeScreenhot();
+            TelemetryLogger.Instance.LogUIInteraction("Screenshot", "Shortcut");
         }
 
         if(Keyboard.current.zKey.wasPressedThisFrame && breakwaterZoneManager.GetHasSelection())
         {
             UI_Manager.OpenZoneMenu();
+            TelemetryLogger.Instance.LogUIInteraction("Zone Menu", "Shortcut");
         }
     
         if (Keyboard.current.fKey.wasPressedThisFrame)
         {
             ChangeMovementMode();
+            TelemetryLogger.Instance.LogUIInteraction("Movement Mode", "Shortcut");
         }
     }
 
@@ -148,11 +153,15 @@ public class DesktopController : MonoBehaviour
             currentMode = MovementMode.Walking;
             verticalVelocity = 0;
             SnapToGround();
+            UI_Manager.setMovementModeIsFly(false);
+            TelemetryLogger.Instance.LogUIInteraction("Walk");
         }
         else
         {
             currentMode = MovementMode.Flying;
             verticalVelocity = 0;
+            UI_Manager.setMovementModeIsFly(true);
+            TelemetryLogger.Instance.LogUIInteraction("Fly");
         }
     }
 
@@ -168,7 +177,6 @@ public class DesktopController : MonoBehaviour
 
     private void HandleHotspotLook()
     {
-        //Ray ray = camera.ScreenPointToRay(Mouse.current.position.ReadValue());
         Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = camera.ScreenPointToRay(screenCenter);
         RaycastHit hit;
@@ -230,39 +238,6 @@ public class DesktopController : MonoBehaviour
         // Apply pitch to the camera only
         camTransform.localRotation = Quaternion.Euler(pitch, 0f, 0f);
     }
-
-    // void HandleMovement()
-    // {
-    //     Vector2 input = moveAction.action.ReadValue<Vector2>();
-    //     Vector3 moveDirection;
-
-    //     if (currentMode == MovementMode.Flying)
-    //     {
-    //         Vector3 move = (camTransform.forward * input.y) + (camTransform.right * input.x);
-    //         Vector3 proposed = transform.position + (move * flySpeed * Time.deltaTime);
-
-    //         // only apply Y if under max height
-    //         controller.Move(move * flySpeed * Time.deltaTime);
-
-    //     }
-    //     else
-    //     {
-    //         Vector3 forward = transform.forward;
-    //         Vector3 right = transform.right;
-    //         moveDirection = (forward * input.y) + (right * input.x);
-
-    //         // Apply Gravity
-    //         if (controller.isGrounded && verticalVelocity < 0)
-    //             verticalVelocity = -2f;
-    //         else
-    //             verticalVelocity += gravity * Time.deltaTime;
-
-    //         Vector3 finalMove = (moveDirection * moveSpeed);
-    //         finalMove.y = verticalVelocity;
-
-    //         controller.Move(finalMove * Time.deltaTime);
-    //     }
-    // }
 
     void HandleMovement()
     {
@@ -401,8 +376,9 @@ public class DesktopController : MonoBehaviour
         if (_autoMoveCoroutine != null)
             StopCoroutine(_autoMoveCoroutine);
 
-        currentMode = MovementMode.Flying;
-        verticalVelocity = 0;
+        ChangeMovementMode();
+        // currentMode = MovementMode.Flying;
+        // verticalVelocity = 0;
         _autoMoveCoroutine = StartCoroutine(AutoMoveCoroutine(homePos));
     }
 }

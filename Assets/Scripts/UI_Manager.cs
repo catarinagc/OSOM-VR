@@ -25,6 +25,7 @@ public class UI_Manager : MonoBehaviour
     [SerializeField] Transform spawnPoint;
     [SerializeField] GameObject vrNoteHandMenu;
     [SerializeField] GameObject vrTasksMenu;
+    [SerializeField] GameObject pcTasksMenu;
 
     private bool isVR = false;
     private bool toReturnMenu = false;
@@ -62,10 +63,6 @@ public class UI_Manager : MonoBehaviour
     private void OnModeChosen(bool isVR) 
     { 
         this.isVR = isVR;
-        // if (isVR)
-        //     activeTooltipPanel = noteMarker.tooltipPanelVR;
-        // else
-        //     activeTooltipPanel = noteMarker.tooltipPanelPC;
     }
 
     // ── Helpers ────────────────────────────────────────────────────────────────
@@ -189,7 +186,6 @@ public class UI_Manager : MonoBehaviour
     {
         CloseHandMenus();
         CloseActiveUIs();
-        //HideAllPersistentSelectors(); // hide floating selectors while main menu is open
         activeUIs.Add(menuObj);
         menuObj.SetActive(true);
         if (!isVR)
@@ -199,6 +195,7 @@ public class UI_Manager : MonoBehaviour
     public void OpenZoneMenu()
     {
         if (!breakwaterZoneManager.GetHasSelection()) return;
+        TelemetryLogger.Instance.LogUIInteraction("Open Zone Menu");
         CloseHandMenus();
         CloseActiveUIs();
         //HideAllPersistentSelectors();
@@ -214,6 +211,7 @@ public class UI_Manager : MonoBehaviour
         CloseHandMenus();
         // If already open in VR, just restore its selector
         if (TryReopenSelector(riskMenuObj)) return;
+        TelemetryLogger.Instance.LogUIInteraction("Open Risk Menu");
         CloseActiveUIs();
         activeUIs.Add(riskMenuObj);
         riskMenuObj.SetActive(true);
@@ -235,6 +233,8 @@ public class UI_Manager : MonoBehaviour
     {
         CloseHandMenus();
         if (TryReopenSelector(zoneInfoMenuObj)) return;
+
+        TelemetryLogger.Instance.LogUIInteraction("Open Info Menu");
 
         CloseActiveUIs();
         activeUIs.Add(zoneInfoMenuObj);
@@ -261,6 +261,8 @@ public class UI_Manager : MonoBehaviour
         CloseHandMenus();
         if (TryReopenSelector(zoneInspectionMenuObj)) return;
 
+        TelemetryLogger.Instance.LogUIInteraction("Open Inspection Menu");
+
         CloseActiveUIs();
         activeUIs.Add(zoneInspectionMenuObj);
         zoneInspectionMenuObj.SetActive(true);
@@ -278,6 +280,8 @@ public class UI_Manager : MonoBehaviour
     {
         CloseHandMenus();
         if (TryReopenSelector(zoneInspectionMenuObj)) return;
+        
+        TelemetryLogger.Instance.LogUIInteraction("Open Inspection Menu");
 
         CloseActiveUIs();
         activeUIs.Add(zoneInspectionMenuObj);
@@ -298,21 +302,31 @@ public class UI_Manager : MonoBehaviour
 
     public void openHotspotImageUI(int hotspotID, char troco_ID, List<InspectionImage> images)
     {
+        TelemetryLogger.Instance.LogUIInteraction("Open Hotspot");
+        hotspotImageObj.GetComponent<Image_UI_Manager>().OnModeChosen(isVR);
+        Debug.Log($"images null? {images == null} | count: {images?.Count}");
+        hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID, images);
+
+    }
+
+    public void ShowLoadingScreen()
+    {
         CloseActiveUIs();
         HideAllPersistentSelectors();
         if (!isVR)
             HUD.SetActive(false);
-        hotspotImageObj.GetComponent<Image_UI_Manager>().OnModeChosen(isVR);
-        Debug.Log($"images null? {images == null} | count: {images?.Count}");
-        hotspotImageObj.GetComponent<Image_UI_Manager>().PrepareOpen(hotspotID, troco_ID, images);
-        activeUIs.Add(hotspotImageObj);
+        Debug.Log($"[Loading] SetActive(true) at frame {Time.frameCount}");
         hotspotImageObj.SetActive(true);
+        hotspotImageObj.GetComponent<Image_UI_Manager>().loadingImagesScreen.SetActive(true);
+        activeUIs.Add(hotspotImageObj);
     }
 
     public void OpenHotspotChangeMenu()
     {
         if (!isVR)
             CloseHandMenus();
+
+        TelemetryLogger.Instance.LogUIInteraction("Open Hotspot Move to");
         //HUD.SetActive(false);
         activeUIs.Add(hotspotChangeMenu);
         hotspotChangeMenu.SetActive(true);
@@ -336,6 +350,7 @@ public class UI_Manager : MonoBehaviour
 
     public void OpenNoteMenu()
     {
+        TelemetryLogger.Instance.LogUIInteraction("Open Note Menu");
         CloseHandMenus();
         vrNoteHandMenu.SetActive(true);
         activeUIs.Add(vrNoteHandMenu);
@@ -343,9 +358,23 @@ public class UI_Manager : MonoBehaviour
 
     public void OpenTasksMenu()
     {
-        CloseHandMenus();
-        vrTasksMenu.SetActive(true);
-        activeUIs.Add(vrTasksMenu);
+        if (isVR)
+        {
+            CloseHandMenus();
+            vrTasksMenu.SetActive(true);
+            activeUIs.Add(vrTasksMenu);
+        }else
+        {
+            CloseActiveUIs();
+            pcTasksMenu.SetActive(true);
+            activeUIs.Add(pcTasksMenu);
+        }
+        TelemetryLogger.Instance.LogUIInteraction("Open Task Menu");
+    }
+
+    public void setMovementModeIsFly(bool isFlying)
+    {
+        HUD.GetComponent<HUD_Manager>().setMovementModeIsFly(isFlying);
     }
 
     public bool isHotspotActive() => hotspotImageObj.active;

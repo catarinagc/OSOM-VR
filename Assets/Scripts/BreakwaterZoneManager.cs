@@ -41,6 +41,7 @@ public class BreakwaterZoneManager : MonoBehaviour
 
     public void ChangeBreakwaterZone(string newZone)
     {
+        TelemetryLogger.Instance.LogUIInteraction("Change Zone Selected");
         currentSelection = newZone;
         switch (newZone)
         {

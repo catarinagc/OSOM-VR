@@ -47,6 +47,8 @@ public class RadialSelection : MonoBehaviour
             string dir = spawnedParts[currentSelectedRadialPart]
                 .GetComponentInChildren<TMP_Text>().text;
 
+            TelemetryLogger.Instance.LogUIInteraction("Change Image Direction");
+            
             image_UI_Manager.ShowDirection(dir);
 
         }
