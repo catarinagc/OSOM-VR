@@ -158,6 +158,11 @@ public class VRController : MonoBehaviour
         return gameObject.transform.position.y;
     }
 
+    public Vector3 GetPosition()
+    {
+        return xrOrigin.position;
+    }
+
     public void toggleFly()
     {
         if (currentMode == MovementMode.Flying)
@@ -264,23 +269,35 @@ public class VRController : MonoBehaviour
 
     public void MoveToHotspot(HotspotScript hotspot)
     {
-        TeleportTo(hotspot.currentGlobalPosition + hotspotOffset);
+        TeleportTo(hotspot.currentGlobalPosition + hotspotOffset, hotspot.currentGlobalPosition);
     }
 
     public void MoveToHomePosition(Vector3 homePos)
     {
-        // moveProvider.enableFly = true;
         toggleFly();
         TeleportTo(homePos);
     }
 
-    private void TeleportTo(Vector3 targetPosition)
+    private void TeleportTo(Vector3 targetPosition, Vector3? lookAtPosition = null)
     {
         var request = new UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation.TeleportRequest
         {
             destinationPosition = targetPosition,
             matchOrientation = UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation.MatchOrientation.None
         };
+
+        if (lookAtPosition.HasValue)
+        {
+            Vector3 flatDirection = lookAtPosition.Value - targetPosition;
+            flatDirection.y = 0f;
+
+            if (flatDirection.sqrMagnitude > 0.0001f)
+            {
+                request.destinationRotation = Quaternion.LookRotation(flatDirection.normalized, Vector3.up);
+                request.matchOrientation = UnityEngine.XR.Interaction.Toolkit.Locomotion.Teleportation.MatchOrientation.TargetUpAndForward;
+            }
+        }
+
 
         teleportationProvider.QueueTeleportRequest(request);
     }

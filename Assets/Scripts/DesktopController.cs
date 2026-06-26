@@ -39,6 +39,10 @@ public class DesktopController : MonoBehaviour
     [SerializeField] BreakwaterZoneManager breakwaterZoneManager;
     [Header("Interaction")]
     public float maxInteractDistance = 5f;
+
+    [Header("Mouse Position Logging")]
+    [SerializeField] private float mousePositionLogIntervalSeconds = 0.5f;
+    private float mousePositionLogTimer;
     public enum InteractionMode
     {
         World,
@@ -144,6 +148,14 @@ public class DesktopController : MonoBehaviour
             ChangeMovementMode();
             TelemetryLogger.Instance.LogUIInteraction("Movement Mode", "Shortcut");
         }
+
+        mousePositionLogTimer += Time.unscaledDeltaTime;
+        if (mousePositionLogTimer >= mousePositionLogIntervalSeconds)
+        {
+            mousePositionLogTimer = 0f;
+            Vector2 mousePos = Mouse.current.position.ReadValue();
+            TelemetryLogger.Instance.LogMousePosition(mousePos);
+        }
     }
 
     public void ChangeMovementMode()
@@ -173,6 +185,11 @@ public class DesktopController : MonoBehaviour
     public float GetHeight()
     {
         return gameObject.transform.position.y;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
     }
 
     private void HandleHotspotLook()
@@ -306,10 +323,11 @@ public class DesktopController : MonoBehaviour
         int stuckFrames = 0;
         const int stuckThreshold = 4;
         const float stuckMoveThreshold = 0.001f;
-        float nudgeDirection = 1f;
-        int nudgeFramesRemaining = 0;
-        const int nudgeDuration = 6;
-        const float nudgeStrength = 0.4f;
+        bool hasLastPos = false;
+
+        float castRadius = controller.radius * 0.9f;
+        float castDistance = controller.radius + 0.3f;
+
         while (true)
         {
             Vector2 input = moveAction.action.ReadValue<Vector2>();
@@ -330,43 +348,43 @@ public class DesktopController : MonoBehaviour
                 yield break;
             }
 
-            // Ramp up the same way HandleMovement does
             float targetMultiplier = maxSpeed / moveSpeed;
             currentSpeedMultiplier = Mathf.MoveTowards(
                 currentSpeedMultiplier,
                 targetMultiplier,
                 (targetMultiplier - 1f) / accelerationTime * Time.deltaTime
             );
-            Debug.Log(currentSpeedMultiplier);
-
 
             Vector3 direction = (target - current).normalized;
-            Vector3 move = direction * moveSpeed * currentSpeedMultiplier;
-            if (lastPos != null && Vector3.Distance(transform.position, lastPos) < stuckMoveThreshold)
+            Vector3 moveDir = direction;
+
+            Vector3 castOrigin = current + controller.center;
+
+            // If something is in our path, slide along its surface instead of guessing a side
+            if (Physics.SphereCast(castOrigin, castRadius, direction, out RaycastHit hit, castDistance))
             {
-                stuckFrames++;
-                if (stuckFrames >= stuckThreshold)
-                {
-                    nudgeFramesRemaining = nudgeDuration;
-                    nudgeDirection = (stuckFrames / stuckThreshold % 2 == 0) ? 1f : -1f;
-                    stuckFrames = 0;
-                }
-            }
-            else
-            {
-                stuckFrames = 0;
+                moveDir = Vector3.ProjectOnPlane(direction, hit.normal).normalized;
             }
 
-            // Apply nudge perpendicular to movement direction
-            if (nudgeFramesRemaining > 0)
+            Vector3 move = moveDir * moveSpeed * currentSpeedMultiplier;
+
+            if (hasLastPos && Vector3.Distance(transform.position, lastPos) < stuckMoveThreshold)
+                stuckFrames++;
+            else
+                stuckFrames = 0;
+
+            // Genuinely wedged (e.g. a corner) - push straight away from whatever we're touching, once
+            if (stuckFrames >= stuckThreshold)
             {
-                Vector3 perpendicular = new Vector3(-direction.z, 0f, direction.x);
-                move += perpendicular * nudgeStrength * moveSpeed * nudgeDirection;
-                nudgeFramesRemaining--;
+                if (Physics.SphereCast(castOrigin, castRadius, direction, out RaycastHit cornerHit, castDistance))
+                    move += cornerHit.normal * moveSpeed * 0.5f;
+
+                stuckFrames = 0;
             }
 
             controller.Move(move * Time.deltaTime);
             lastPos = transform.position;
+            hasLastPos = true;
             yield return null;
         }
     }

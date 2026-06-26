@@ -458,5 +458,6 @@ public class Image_UI_Manager : MonoBehaviour
             fullscreenPlaceholder.GetComponent<ImageDisplayController>().ClearNotes(); 
             dualImageZoom.SetActive(false);       
         }
+        imageScreen.SetActive(false);
     }
 }

@@ -42,6 +42,8 @@ public class TelemetryLogger : MonoBehaviour
     private readonly List<string> uiBuffer = new List<string>();
     private readonly List<string> timingBuffer = new List<string>();
     private readonly List<string> fpsBuffer = new List<string>();
+    private readonly List<string> positionBuffer = new List<string>();
+    private readonly List<string> mousePositionBuffer = new List<string>();
     private readonly object bufferLock = new object();
 
     // continuous FPS tracking
@@ -250,6 +252,27 @@ public class TelemetryLogger : MonoBehaviour
         {
             EndInteractionCore(name, name + "_" + reasonSuffix);
         }
+    }
+
+    /// <summary>
+    /// Log the player's world position. Call this periodically (e.g. from ControllerManager
+    /// on a timer) to build a movement trail/heatmap you can compare between VR and PC testers.
+    /// </summary>
+    public void LogPosition(Vector3 position)
+    {
+        if (!isInitialized) StartSession(null);
+        Enqueue(positionBuffer, $"{Timestamp()},{sessionId},{platformTag},{Num(position.x)},{Num(position.y)},{Num(position.z)}");
+    }
+
+    /// <summary>
+    /// Log the mouse cursor's screen-space position (PC only). Screen width/height are recorded
+    /// alongside each sample so you can normalize to 0-1 later even if testers used different
+    /// monitor resolutions.
+    /// </summary>
+    public void LogMousePosition(Vector2 screenPosition)
+    {
+        if (!isInitialized) StartSession(null);
+        Enqueue(mousePositionBuffer, $"{Timestamp()},{sessionId},{platformTag},{Num(screenPosition.x)},{Num(screenPosition.y)},{Screen.width},{Screen.height}");
     }
 
     private void Enqueue(List<string> buffer, string row)

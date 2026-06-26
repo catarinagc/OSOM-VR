@@ -7,7 +7,7 @@ public class IdEntryScreen : MonoBehaviour
 {
     [SerializeField] private TMP_InputField idInputField;
 
-    private void OnSubmitClicked()
+    public void OnSubmitClicked()
     {
         string playerId = idInputField.text.Trim();
         if (string.IsNullOrEmpty(playerId)) return;

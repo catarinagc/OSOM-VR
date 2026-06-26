@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit.Interactables;
+using UnityEngine.UI;
 public class VRZoomImage : MonoBehaviour
 {
     [Header("The image (child of the masked wrapper)")]
@@ -29,6 +30,8 @@ public class VRZoomImage : MonoBehaviour
     [Header("Interactable")]
     [SerializeField] private XRGrabInteractable grabInteractable;
 
+    [SerializeField] private Button pinButton;
+
     public SyncZoomVR_Manager syncManager;
 
     private float _zoom = 1f;
@@ -41,15 +44,30 @@ public class VRZoomImage : MonoBehaviour
     private Vector3 _lastMidpoint;
     private bool isPinned = false;
 
+    private ColorBlock defaultPinButtonColors;
+    private ColorBlock selectedPinButtonColors;
+
+    void Start()
+    {
+        defaultPinButtonColors = pinButton.colors;
+        selectedPinButtonColors = pinButton.colors;
+        selectedPinButtonColors.normalColor = selectedPinButtonColors.pressedColor;
+        selectedPinButtonColors.highlightedColor = selectedPinButtonColors.pressedColor;
+    }
+
     public void OnClickPin()
     {
         TelemetryLogger.Instance.LogUIInteraction("Pin Image");
         isPinned = !isPinned;
         if (isPinned)
+        {
             syncManager.AddImage(this);
+            pinButton.colors = selectedPinButtonColors;
+        }
         else
         {
             syncManager.RemoveImage(this);
+            pinButton.colors = defaultPinButtonColors;
                         
         }
     }

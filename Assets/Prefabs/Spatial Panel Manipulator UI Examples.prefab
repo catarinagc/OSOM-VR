@@ -147,7 +147,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: f35522b7d9406c84ab606f28b570bb65, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d53cfa965905f6a4bbffa3f65e5eb3af, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -222,7 +222,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 483e17ba2ebfb4f4490a1639efa44abc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 766034b86c27e1240921a23b59e46792, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -469,6 +469,7 @@ MonoBehaviour:
   leftInteractor: {fileID: 0}
   rightInteractor: {fileID: 0}
   grabInteractable: {fileID: 8302681630709873127}
+  pinButton: {fileID: 3546031753102030234}
   syncManager: {fileID: 0}
 --- !u!1 &2595057715805713926
 GameObject:
@@ -803,7 +804,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 8c3495dbec1fe4343acb41ca1e3ed47e, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 533d3b3bb22668248ab4bd169ed28e7f, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2090,6 +2091,7 @@ MonoBehaviour:
   canInteract: 1
   isVR: 0
   vrControllerRay: {fileID: 0}
+  isDynamicWorldCopy: 0
   leftGripAction: {fileID: 0}
   rightGripAction: {fileID: 0}
   leftControllerTransform: {fileID: 0}
@@ -2258,6 +2260,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7753147258609537286, guid: fa5ef3b56cfeb4f4ba855cdf2610a578, type: 3}
+      propertyPath: m_Transition
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7753147258609537286, guid: fa5ef3b56cfeb4f4ba855cdf2610a578, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
       value: 1
       objectReference: {fileID: 0}
@@ -2305,6 +2311,17 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 6031767883286307801}
   m_SourcePrefab: {fileID: 100100000, guid: fa5ef3b56cfeb4f4ba855cdf2610a578, type: 3}
+--- !u!114 &3546031753102030234 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7753147258609537286, guid: fa5ef3b56cfeb4f4ba855cdf2610a578, type: 3}
+  m_PrefabInstance: {fileID: 6534370450776122524}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7273732586817397429}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7273732586817397429 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4494524748444649001, guid: fa5ef3b56cfeb4f4ba855cdf2610a578, type: 3}

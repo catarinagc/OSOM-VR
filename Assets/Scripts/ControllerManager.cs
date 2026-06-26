@@ -7,6 +7,10 @@ public class ControllerManager : MonoBehaviour
     [SerializeField] GameObject homePos;
     bool isVRMode;
 
+    [Header("Position logging")]
+    [SerializeField] private float positionLogIntervalSeconds = 1f;
+    private float positionLogTimer;
+
     void OnEnable()
     {
         XRModeSwitcher.OnModeSelected += OnModeChosen;
@@ -19,6 +23,16 @@ public class ControllerManager : MonoBehaviour
     private void OnModeChosen(bool isVR)
     {
         isVRMode = isVR;
+    }
+
+    void Update()
+    {
+        positionLogTimer += Time.unscaledDeltaTime;
+        if (positionLogTimer >= positionLogIntervalSeconds)
+        {
+            positionLogTimer = 0f;
+            TelemetryLogger.Instance.LogPosition(GetPosition());
+        }
     }
 
     public float GetHeight()
@@ -59,5 +73,13 @@ public class ControllerManager : MonoBehaviour
             vr.MoveToHomePosition(homePos.transform.position);
         else
             desktop.MoveToHomePosition(homePos.transform.position);
+    }
+
+    public Vector3 GetPosition()
+    {
+        if(isVRMode)
+            return vr.GetPosition();
+        else
+            return desktop.GetPosition();
     }
 }
