@@ -5,6 +5,7 @@ using UnityEngine.UI;
 public class SnapMenuToPlayer : MonoBehaviour
 {
     public Transform xrOrigin;
+    public Transform headTransform;
 
     public float distance = 1.5f;
     public float height = 0f;
@@ -105,7 +106,10 @@ public class SnapMenuToPlayer : MonoBehaviour
             Vector3 currentWorldOffset = xrOrigin.TransformDirection(localOffset);
 
             // Optional: push the panel slightly further when walking forward
-            Vector3 flatForward = xrOrigin.forward;
+            // Vector3 flatForward = xrOrigin.forward;
+            // flatForward.y = 0f;
+            // flatForward.Normalize();
+            Vector3 flatForward = headTransform.forward;
             flatForward.y = 0f;
             flatForward.Normalize();
 
@@ -143,9 +147,19 @@ public class SnapMenuToPlayer : MonoBehaviour
     }
 
     // Sets localOffset so the panel sits directly in front at the configured distance/height
+    // private void RecalculateOffsetFromForward()
+    // {
+    //     Vector3 forward = xrOrigin.forward;
+    //     forward.y = 0f;
+    //     forward.Normalize();
+
+    //     Vector3 worldOffset = forward * distance + Vector3.up * height;
+    //     localOffset = xrOrigin.InverseTransformDirection(worldOffset);
+    // }
+
     private void RecalculateOffsetFromForward()
     {
-        Vector3 forward = xrOrigin.forward;
+        Vector3 forward = headTransform.forward;   // use head, not rig
         forward.y = 0f;
         forward.Normalize();
 
@@ -171,5 +185,11 @@ public class SnapMenuToPlayer : MonoBehaviour
     {
         menuCanvas.enabled = visible;
         this.GetComponent<SkinnedMeshRenderer>().enabled = visible;
+    }
+
+    public void UnPin()
+    {
+        if (!isPinned)
+            TogglePin();
     }
 }

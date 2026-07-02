@@ -98,6 +98,26 @@ public class UI_Manager : MonoBehaviour
         return true;
     }
 
+    /// <summary>
+    /// If the content menu is currently open/persistent in the world, tear it down
+    /// completely (deactivate panel + selector, remove from tracking) so it can be
+    /// reopened fresh in front of the player.
+    /// </summary>
+    private void ForceClosePersistentMenu(GameObject contentMenu)
+    {
+        if (persistentVRMenus.Contains(contentMenu))
+        {
+            persistentVRMenus.Remove(contentMenu);
+            contentMenu.SetActive(false);
+
+            if (contentToSelector.TryGetValue(contentMenu, out var selector))
+            {
+                selector.SetActive(false);
+                activeUIs.Remove(selector);
+            }
+        }
+    }
+
     // ── Close logic ────────────────────────────────────────────────────────────
 
     public void CloseHandMenus()
@@ -215,7 +235,17 @@ public class UI_Manager : MonoBehaviour
     {
         CloseHandMenus();
         // If already open in VR, just restore its selector
-        if (TryReopenSelector(riskMenuObj)) return;
+        //if (TryReopenSelector(riskMenuObj)) return;
+        if (isVR)
+        {
+            if (riskMenuObj.active)
+            {
+                riskMenuObj.GetComponent<SnapMenuToPlayer>().UnPin();
+            }
+            ForceClosePersistentMenu(riskMenuObj);
+            
+        }
+
         TelemetryLogger.Instance.LogUIInteraction("Open Risk Menu");
         CloseActiveUIs();
         activeUIs.Add(riskMenuObj);
@@ -237,7 +267,17 @@ public class UI_Manager : MonoBehaviour
     public void OpenZoneInfoMenu(Zone zone)
     {
         CloseHandMenus();
-        if (TryReopenSelector(zoneInfoMenuObj)) return;
+        if (isVR)
+        {
+            if (zoneInfoMenuObj.active)
+            {
+                zoneInfoMenuObj.GetComponent<SnapMenuToPlayer>().UnPin();
+            }
+            ForceClosePersistentMenu(zoneInfoMenuObj);
+            
+        }
+        //ForceClosePersistentMenu(zoneInfoMenuObj);
+        //if (TryReopenSelector(zoneInfoMenuObj)) return;
 
         TelemetryLogger.Instance.LogUIInteraction("Open Info Menu");
 
@@ -263,7 +303,18 @@ public class UI_Manager : MonoBehaviour
     public void OpenZoneInspectionMenu(Zone zone)
     {
         CloseHandMenus();
-        if (TryReopenSelector(zoneInspectionMenuObj)) return;
+
+        if (isVR)
+        {
+            if (zoneInspectionMenuObj.active)
+            {
+                zoneInspectionMenuObj.GetComponent<SnapMenuToPlayer>().UnPin();
+            }
+            ForceClosePersistentMenu(zoneInspectionMenuObj);
+            
+        }
+        //ForceClosePersistentMenu(zoneInspectionMenuObj);
+        //if (TryReopenSelector(zoneInspectionMenuObj)) return;
 
         TelemetryLogger.Instance.LogUIInteraction("Open Inspection Menu");
 

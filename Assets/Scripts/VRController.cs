@@ -70,7 +70,7 @@ public class VRController : MonoBehaviour
         yButton.Enable();
         xButton.Enable();
         //MoveToHomePosition(homePos.transform.position);
-        SetPositionDirect(homePos.transform.position, homePos.transform.rotation);
+        //SetPositionDirect(homePos.transform.position, homePos.transform.rotation);
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
