@@ -1,7 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using UnityEngine.XR.Interaction.Toolkit;
-
+using UnityEngine.UI;
 public class SnapMenuToPlayer : MonoBehaviour
 {
     public Transform xrOrigin;
@@ -18,6 +18,7 @@ public class SnapMenuToPlayer : MonoBehaviour
     public float distanceLerpSpeed = 6f;
 
     [SerializeField] GameObject grabIcon;
+    [SerializeField] private Button pinButton;
 
     private Vector3 lastPosition;
     private float currentDistance;
@@ -27,6 +28,8 @@ public class SnapMenuToPlayer : MonoBehaviour
     // Offset in XR Origin's LOCAL space, so it rotates with the player
     private Vector3 localOffset;
     private bool isGrabbed = false;
+    private ColorBlock defaultPinButtonColors;
+    private ColorBlock selectedPinButtonColors;
 
     void Start()
     {
@@ -34,20 +37,24 @@ public class SnapMenuToPlayer : MonoBehaviour
         currentDistance = distance;
         isPinned = true;
         RecalculateOffsetFromForward();
+        defaultPinButtonColors = pinButton.colors;
+        selectedPinButtonColors = pinButton.colors;
+        selectedPinButtonColors.normalColor = selectedPinButtonColors.pressedColor;
+        selectedPinButtonColors.highlightedColor = selectedPinButtonColors.pressedColor;
     }
 
     // Call this from XRGrabInteractable's OnSelectEntered event
     public void OnGrabbed()
     {
         isGrabbed = true;
-        isPinned = false; // Let the XR system move it freely while held
+        //isPinned = false; // Let the XR system move it freely while held
     }
 
     // Call this from XRGrabInteractable's OnSelectExited event
     public void OnReleased()
     {
         isGrabbed = false;
-        isPinned = true;
+        //isPinned = true;
 
         // Snapshot the object's current world position as a new local offset
         // relative to the XR Origin — this becomes the new follow anchor
@@ -60,7 +67,14 @@ public class SnapMenuToPlayer : MonoBehaviour
         isPinned = !isPinned;
 
         if (isPinned)
+        {
             RecalculateOffsetFromForward(); // Reset to front if re-pinning
+            pinButton.colors = defaultPinButtonColors;
+        }
+        else
+        {
+            pinButton.colors = selectedPinButtonColors;
+        }
     }
 
     public void OpenMenu()

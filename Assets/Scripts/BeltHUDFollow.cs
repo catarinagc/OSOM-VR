@@ -9,6 +9,8 @@ public class BeltHUDFollow : MonoBehaviour
     public float followDistance = 1.2f;
     public float verticalOffset = -0.4f;   // Below eye level = belt feel
     public float heightFromGround = 1.0f;  // Optional: fix to world height
+    public int rotation = 14;
+    public float yawOffset = 0;
 
     [Header("Smoothing")]
     public float rotationSpeed = 3f;   // How quickly it catches up
@@ -42,6 +44,6 @@ public class BeltHUDFollow : MonoBehaviour
             + Vector3.up * verticalOffset;
 
         // Rotation applies the fixed 14° tilt on top of the yaw
-        transform.rotation = Quaternion.Euler(14, _currentYaw, 0);
+        transform.rotation = Quaternion.Euler(rotation, _currentYaw + yawOffset, 0);
     }
 }

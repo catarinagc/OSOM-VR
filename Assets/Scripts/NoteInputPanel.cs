@@ -5,18 +5,7 @@ public class NoteInputPanel : MonoBehaviour
 {
     [SerializeField] ImageAnnotationManager annotationManager;
     [SerializeField] TMP_InputField noteInputField;
-
-    // public void OnConfirmNote()
-    // {
-    //     string message = noteInputField.text;
-    //     if (string.IsNullOrWhiteSpace(message)) return;
-
-    //     ImageDisplayController caller = annotationManager.GetPendingCaller();
-    //     NoteData note = annotationManager.ConfirmNote(message);
-    //     //caller.SpawnMarker(note);
-
-    //     noteInputField.text = "";
-    // }
+    [SerializeField] GameObject keyboard;
 
     public void OnConfirmNote()
     {
@@ -40,11 +29,13 @@ public class NoteInputPanel : MonoBehaviour
         noteInputField.caretPosition = noteInputField.text.Length;
         noteInputField.stringPosition = noteInputField.text.Length;
         noteInputField.ForceLabelUpdate();
+        keyboard.SetActive(true);
     }
 
     public void CancelNote()
     {
         noteInputField.text = "";
+        //keyboard.SetActive(false);
         gameObject.SetActive(false);
     }
 }

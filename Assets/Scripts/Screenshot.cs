@@ -1,119 +1,3 @@
-// using UnityEngine;
-// using System.IO;
-// using System;
-// using UnityEngine.InputSystem;
-// using UnityEngine.EventSystems;
-// using System.Collections;
-// public class Screenshot : MonoBehaviour
-// {
-//     public Camera captureCamera;
-
-//     public void TakeScreenshot()
-//     {
-//         string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-//         string directory = Path.Combine(pictures, "OSOM_Screenhots");
-
-//         if (!Directory.Exists(directory))
-//             Directory.CreateDirectory(directory);
-
-//         string filename = "screenshot_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png";
-//         string path = Path.Combine(directory, filename);
-
-//         ScreenCapture.CaptureScreenshot(path);
-//         Debug.Log("Saving to: " + path);
-//     }
-
-//     public void TakeScreenshotVR()
-//     {
-//         StartCoroutine(CaptureAndSave());
-//         // sem build
-//         // string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
-//         // string directory = Path.Combine(pictures, "OSOM_Screenhots");
-
-//         // if (!Directory.Exists(directory))
-//         //     Directory.CreateDirectory(directory);
-
-//         // string filename = "screenshot_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png";
-//         // string path = Path.Combine(directory, filename);
-
-//         // ScreenCapture.CaptureScreenshot(path);
-//         // Debug.Log("Saving to: " + path);
-//     }
-
-//     IEnumerator CaptureAndSave()
-//     {
-//         yield return new WaitForEndOfFrame();
-
-//         int width = 1024;
-//         int height = 1024;
-
-//         RenderTexture rt = new RenderTexture(width, height, 24);
-//         captureCamera.targetTexture = rt;
-
-//         Texture2D tex = new Texture2D(width, height, TextureFormat.RGB24, false);
-
-//         captureCamera.Render();
-
-//         RenderTexture.active = rt;
-//         tex.ReadPixels(new Rect(0, 0, width, height), 0, 0);
-//         tex.Apply();
-
-//         captureCamera.targetTexture = null;
-//         RenderTexture.active = null;
-//         Destroy(rt);
-
-//         byte[] bytes = tex.EncodeToPNG();
-//         Destroy(tex);
-
-//         yield return SaveToGallery(bytes);
-//     }
-
-//     IEnumerator SaveToGallery(byte[] bytes)
-//     {
-//         string filename = "screenshot_" + DateTime.Now.ToString("yyyy-MM-dd_HH-mm-ss") + ".png";
-
-//     #if UNITY_ANDROID && !UNITY_EDITOR
-//         using (AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-//         using (AndroidJavaObject context = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity"))
-//         using (AndroidJavaObject resolver = context.Call<AndroidJavaObject>("getContentResolver"))
-//         using (AndroidJavaClass mediaStore = new AndroidJavaClass("android.provider.MediaStore$Images$Media"))
-//         {
-//             AndroidJavaObject values = new AndroidJavaObject("android.content.ContentValues");
-//             values.Call("put", "_display_name", filename);
-//             values.Call("put", "mime_type", "image/png");
-//             values.Call("put", "relative_path", "Pictures/OSOM_Screenshots");
-
-//             AndroidJavaObject uri = resolver.Call<AndroidJavaObject>(
-//                 "insert",
-//                 mediaStore.GetStatic<AndroidJavaObject>("EXTERNAL_CONTENT_URI"),
-//                 values
-//             );
-
-//             using (AndroidJavaObject stream = resolver.Call<AndroidJavaObject>("openOutputStream", uri))
-//             {
-//                 stream.Call("write", bytes);
-//                 stream.Call("flush");
-//                 stream.Call("close");
-//             }
-//         }
-//     #endif
-
-//         Debug.Log("Saved to gallery: " + filename);
-//         yield return null;
-//     }
-
-//     public void ScanFile(string path)
-//     {
-//         using (AndroidJavaClass mediaScanner = new AndroidJavaClass("android.media.MediaScannerConnection"))
-//         using (AndroidJavaClass unityPlayer = new AndroidJavaClass("com.unity3d.player.UnityPlayer"))
-//         {
-//             AndroidJavaObject context = unityPlayer.GetStatic<AndroidJavaObject>("currentActivity");
-//             mediaScanner.CallStatic("scanFile", context, new string[] { path }, null, null);
-//         }
-//     }
-// }
-
-
 using UnityEngine;
 using System.IO;
 using System;
@@ -139,8 +23,13 @@ public class Screenshot : MonoBehaviour
     [Range(1, 8)]
     public int antiAliasing = 4;
 
+    [Header("Shutter Sound")]
+    public AudioSource shutterAudioSource;
+    public AudioClip shutterSound;
+
     public void TakeScreenshot()
     {
+        PlayShutterSound();
         string pictures = Environment.GetFolderPath(Environment.SpecialFolder.MyPictures);
         string directory = Path.Combine(pictures, "OSOM_Screenhots");
 
@@ -159,9 +48,17 @@ public class Screenshot : MonoBehaviour
         StartCoroutine(CaptureAndSave());
     }
 
+    private void PlayShutterSound()
+    {
+        if (shutterAudioSource && shutterSound)
+            shutterAudioSource.PlayOneShot(shutterSound);
+    }
+
     IEnumerator CaptureAndSave()
     {
         yield return new WaitForEndOfFrame();
+
+        PlayShutterSound();
 
         // --- Remember the camera's live VR state so we can put it back exactly. ---
         StereoTargetEyeMask originalStereoTarget = captureCamera.stereoTargetEye;

@@ -1,6 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
-
+using UnityEngine.UI;
 public class UI_Manager : MonoBehaviour
 {
     private List<GameObject> activeUIs;
@@ -107,6 +107,10 @@ public class UI_Manager : MonoBehaviour
             if (ui != null && ui.activeSelf)
                 ui.SetActive(false);
         }
+        if (isHotspotActive())
+        {
+            CloseActiveUIs();
+        }
     }
     
     public void CloseActiveUIs()
@@ -186,10 +190,11 @@ public class UI_Manager : MonoBehaviour
     {
         CloseHandMenus();
         CloseActiveUIs();
+        CloseActiveUIs();
         activeUIs.Add(menuObj);
         menuObj.SetActive(true);
-        if (!isVR)
-            HUD.SetActive(false);
+        // if (!isVR)
+        //     HUD.SetActive(false);
     }
 
     public void OpenZoneMenu()
@@ -202,8 +207,8 @@ public class UI_Manager : MonoBehaviour
         activeUIs.Add(zoneMenuObj);
         zoneMenuObj.SetActive(true);
         zoneMenuObj.GetComponent<zoneUIManager>().PrepareOpen(breakwaterZoneManager.GetSelectionZone());
-        if (!isVR)
-            HUD.SetActive(false);
+        // if (!isVR)
+        //     HUD.SetActive(false);
     }
 
     public void OpenRiskMenu(Zone zone)
@@ -223,10 +228,10 @@ public class UI_Manager : MonoBehaviour
             zoneRiskSelectorObj.SetActive(true);
             riskMenuObj.GetComponent<SnapMenuToPlayer>().OpenMenu();
         }
-        else
-        {
-            HUD.SetActive(false);
-        }
+        // else
+        // {
+        //     HUD.SetActive(false);
+        // }
     }
 
     public void OpenZoneInfoMenu(Zone zone)
@@ -250,10 +255,9 @@ public class UI_Manager : MonoBehaviour
             zoneInfoMenuObj.transform.localRotation = Quaternion.identity;
             zoneInfoMenuObj.GetComponent<SnapMenuToPlayer>().OpenMenu();
         }
-        else
-        {
-            HUD.SetActive(false);
-        }
+        // else {
+        //     HUD.SetActive(false);
+        // }
     }
 
     public void OpenZoneInspectionMenu(Zone zone)
@@ -274,6 +278,11 @@ public class UI_Manager : MonoBehaviour
             zoneInspectionSelectorObj.SetActive(true);
             zoneInspectionMenuObj.GetComponent<SnapMenuToPlayer>().OpenMenu();
         }
+        // else
+        // {
+        //     HUD.SetActive(false);
+        // }
+        
     }
 
     public void OpenZoneInspectionRefMenu(Zone zone)
@@ -294,10 +303,6 @@ public class UI_Manager : MonoBehaviour
             zoneInspectionSelectorObj.SetActive(true);
             zoneInspectionMenuObj.GetComponent<SnapMenuToPlayer>().OpenMenu();
         }
-        else
-        {
-            HUD.SetActive(false);
-        }
     }
 
     public void openHotspotImageUI(int hotspotID, char troco_ID, List<InspectionImage> images)
@@ -314,7 +319,10 @@ public class UI_Manager : MonoBehaviour
         CloseActiveUIs();
         HideAllPersistentSelectors();
         if (!isVR)
+        {
             HUD.SetActive(false);
+            CloseTaskMenu();
+        }
         Debug.Log($"[Loading] SetActive(true) at frame {Time.frameCount}");
         hotspotImageObj.SetActive(true);
         hotspotImageObj.GetComponent<Image_UI_Manager>().loadingImagesScreen.SetActive(true);
@@ -323,11 +331,15 @@ public class UI_Manager : MonoBehaviour
 
     public void OpenHotspotChangeMenu()
     {
-        if (!isVR)
+        if (isVR)
             CloseHandMenus();
+        else
+        {
+            CloseActiveUIs();
+            CloseActiveUIs();
+        }
 
         TelemetryLogger.Instance.LogUIInteraction("Open Hotspot Move to");
-        //HUD.SetActive(false);
         activeUIs.Add(hotspotChangeMenu);
         hotspotChangeMenu.SetActive(true);
         if (!hotspotChangeMenu.GetComponent<HotspotTeleportMenu>().isPrepared)
@@ -365,9 +377,10 @@ public class UI_Manager : MonoBehaviour
             activeUIs.Add(vrTasksMenu);
         }else
         {
-            CloseActiveUIs();
+            //CloseActiveUIs();
+            //CloseActiveUIs();
             pcTasksMenu.SetActive(true);
-            activeUIs.Add(pcTasksMenu);
+            //activeUIs.Add(pcTasksMenu);
         }
         TelemetryLogger.Instance.LogUIInteraction("Open Task Menu");
     }
@@ -378,4 +391,17 @@ public class UI_Manager : MonoBehaviour
     }
 
     public bool isHotspotActive() => hotspotImageObj.active;
+
+    public void CloseTaskMenu()
+    {
+        if (isVR)
+        {
+            CloseHandMenus();
+        }
+        else
+        {
+            if (pcTasksMenu.active)
+                pcTasksMenu.SetActive(false);
+        }
+    }
 }

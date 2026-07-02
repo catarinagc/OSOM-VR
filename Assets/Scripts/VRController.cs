@@ -46,6 +46,8 @@ public class VRController : MonoBehaviour
     [SerializeField] private float interactDistance = 10f;
     [SerializeField] private float defaultRayDistance = 0.2f;
     [SerializeField] Vector3 hotspotOffset = new Vector3(-10,0,-10);
+    private bool foundHotspotWithLeftController = false;
+    [SerializeField] GameObject homePos;
 
     public enum InteractionMode
     {
@@ -67,15 +69,17 @@ public class VRController : MonoBehaviour
         bButton.Enable();
         yButton.Enable();
         xButton.Enable();
+        //MoveToHomePosition(homePos.transform.position);
+        SetPositionDirect(homePos.transform.position, homePos.transform.rotation);
     }
     
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        moveProvider.enableFly = false;
-        currentMode = MovementMode.Walking;
+        moveProvider.enableFly = true;
+        currentMode = MovementMode.Flying;
         UI_Manager.setMovementModeIsFly(currentMode == MovementMode.Flying);
-        TelemetryLogger.Instance.LogUIInteraction("Walk");
+        TelemetryLogger.Instance.LogUIInteraction("Fly");
     }
 
     // Replace your Update() with this:
@@ -112,6 +116,11 @@ public class VRController : MonoBehaviour
         {
             if (currentHotspot && !UI_Manager.isHotspotActive())
             {
+                if (rightPress.WasPressedThisFrame() && foundHotspotWithLeftController == true)
+                    return;
+                if(leftPress.WasPressedThisFrame() && foundHotspotWithLeftController == false)
+                    return;
+                
                 currentHotspot.OnInteract();
                 currentHotspot.StopHover();
                 currentHotspot = null;
@@ -225,6 +234,7 @@ public class VRController : MonoBehaviour
                     foundHotspot = hotspot;
                     foundIndex = i;
                     foundDistance = hit.distance;
+                    foundHotspotWithLeftController = (i == 1);
                     break;
                 }
             }
@@ -274,7 +284,8 @@ public class VRController : MonoBehaviour
 
     public void MoveToHomePosition(Vector3 homePos)
     {
-        toggleFly();
+        if (currentMode == MovementMode.Walking)
+            toggleFly();
         TeleportTo(homePos);
     }
 
@@ -300,5 +311,27 @@ public class VRController : MonoBehaviour
 
 
         teleportationProvider.QueueTeleportRequest(request);
+    }
+
+    // private void SetPositionDirect(Vector3 targetPosition, Vector3? lookAtPosition = null)
+    // {
+    //     xrOrigin.position = targetPosition;
+
+    //     if (lookAtPosition.HasValue)
+    //     {
+    //         Vector3 flatDirection = lookAtPosition.Value - targetPosition;
+    //         flatDirection.y = 0f;
+
+    //         if (flatDirection.sqrMagnitude > 0.0001f)
+    //         {
+    //             xrOrigin.rotation = Quaternion.LookRotation(flatDirection.normalized, Vector3.up);
+    //         }
+    //     }
+    // }
+
+    private void SetPositionDirect(Vector3 targetPosition, Quaternion targetRotation)
+    {
+        xrOrigin.position = targetPosition;
+        xrOrigin.rotation = Quaternion.Euler(0f, targetRotation.eulerAngles.y, 0f);
     }
 }

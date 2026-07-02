@@ -5,18 +5,18 @@ public class TasksManager : MonoBehaviour
 {
     List<string> tasks = new List<string>
     {
-        "Navegue até ao Hotspot 17 e, na direção T, determine se entre 2018 e 2022, houve alguma alteração na posição dos blocos",
-        "Faça zoom numa imagem de 2018 no Hotspot 10",
-        "Determine o grau de risco global do Troço C",
-        "Identifique o grau de evolução do Manto Resistente no Troço A",
-        "Identifique se houve alguma diferença no estado do talude no Manto Resistente do Troço D entre 2023 e 2018",
-        "Crie uma anotação no hotspot 15, imagem de 2020, na direção F que diga \"rotação do bloco\"",
-        "Tire um screenshot que contenha a informação sobre o nível de opinião geral da inspeção submarina do Troço A em 2023."
+        "Navegue até ao Hotspot 17 e, na direção T, compare as imagens de 2018 e 2022 e determine se houve alguma alteração na posição dos blocos",
+        "Faça zoom na imagem de 2022 no Hotspot 24, direção T, e determine quantas fissuras verticais consegue identificar na base da estrutura do farolim",
+        "Indique o Estado de Risco do manto resistente do troço C",
+        "Compare os dados de inspeção de 2018 e 2023 quanto à degradação superficial dos materiais na Superestrutura do Troço D",
+        "Crie uma anotação no hotspot 15, imagem de 2020, na direção F que diga \"bloco rodou\"",
+        "Tire um screenshot contendo a informação geral das características do Troço",
     };
 
     private List<int> remainingIndices = new List<int>();
 
     [SerializeField] TMP_Text taskDescription;
+    [SerializeField] TMP_Text taskTitle;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -53,5 +53,6 @@ public class TasksManager : MonoBehaviour
 
         string chosenTask = tasks[index];
         taskDescription.text = chosenTask;
+        taskTitle.text = "Tarefa " + index.ToString();
     }
 }

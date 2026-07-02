@@ -56,6 +56,7 @@ public class Image_UI_Manager : MonoBehaviour
     [SerializeField] GameObject notePanelVR;
     [SerializeField] GameObject dualImageZoom;
     [SerializeField] SyncZoomVR_Manager syncZoomVRManager;
+    [SerializeField] Button syncZoomButton;
     
     [Header("Interactors")]
     [SerializeField] public UnityEngine.XR.Interaction.Toolkit.Interactors.NearFarInteractor leftInteractor;
@@ -72,7 +73,6 @@ public class Image_UI_Manager : MonoBehaviour
 
     public void OnModeChosen(bool isVR)
     {
-        Debug.Log("VR" + isVR);
         this.isVR = isVR;
     }
 
@@ -135,6 +135,13 @@ public class Image_UI_Manager : MonoBehaviour
         }
 
         useFirstSlot = !useFirstSlot;
+        if (interactedImage1 != null && interactedImage2 != null)
+        {
+            syncZoomButton.interactable = true;
+        } else
+        {
+            syncZoomButton.interactable = false;
+        }
     }
 
     public void HideItem(bool isFirstSlot)
@@ -166,12 +173,25 @@ public class Image_UI_Manager : MonoBehaviour
             if (useFirstSlot)
                 useFirstSlot = false;
         }
+        syncZoomButton.interactable = false;
     }
 
     private void clearPlaceholders()
     {
         if (!isVR)
         {
+            if (interactedImage1)
+            {
+                placeholder1.GetComponent<ImageDisplayController>().ClearNotes();
+                interactedImage1.transform.parent.GetComponent<ButtonTooltip>().isActive = true;
+                interactedImage1.color = new Color(1f, 1f, 1f, 1f);
+            }
+            if (interactedImage2)
+            {
+                placeholder2.GetComponent<ImageDisplayController>().ClearNotes();
+                interactedImage2.transform.parent.GetComponent<ButtonTooltip>().isActive = true;
+                interactedImage2.color = new Color(1f, 1f, 1f, 1f);
+            }
             textPlaceholder1.text = "";
             textPlaceholder2.text = "";
             imagePlaceholder1.sprite = UIMask;
@@ -303,12 +323,6 @@ public class Image_UI_Manager : MonoBehaviour
         
         Debug.Log($"[ImgUI] PrepareOpen called for hotspot {hotspotID} with {images.Count} images at {Time.frameCount}");
 
-        // Defensively clear any previously built gallery before adding a
-        // new batch. Without this, re-opening a hotspot without Close()
-        // having actually run first (e.g. a double-fired interact event,
-        // or the screen being hidden some other way) would leave the old
-        // image objects in place and append a duplicate set on top.
-        //testar quanto tempo demora sem isto
         foreach (var list in imagesByDirection.Values)
             list.ForEach(o => Destroy(o));
         imagesByDirection.Clear();
@@ -317,6 +331,8 @@ public class Image_UI_Manager : MonoBehaviour
         clearPlaceholders();
         this.hotspotID = hotspotID;
         this.troco_ID = troco_ID;
+        if (!isVR)
+            syncZoomButton.interactable = false;
 
         foreach (InspectionImage image in images)
         {
@@ -419,10 +435,10 @@ public class Image_UI_Manager : MonoBehaviour
         HotspotManager.Instance.AddHotspotReference(imageData.hotspotID);
 
         //Increase sharpness distance (lower mip bias = sharper farther away)
-        if (img.sprite != null && img.sprite.texture != null)
-        {
-            img.sprite.texture.mipMapBias = -1f;
-        }
+        // if (img.sprite != null && img.sprite.texture != null)
+        // {
+        //     img.sprite.texture.mipMapBias = -1f;
+        // }
         UI_Manager.CloseActiveUIs();
     }
 
@@ -444,10 +460,6 @@ public class Image_UI_Manager : MonoBehaviour
         currentDir = "";
         gameObject.SetActive(false);
 
-        // Release the reference taken out when this hotspot's gallery was
-        // opened (see HotspotScript.OnInteract -> RequestHotspotImages).
-        // Any dragged-out VR copies hold their own separate reference and
-        // are unaffected by this.
         if (hotspotID != 0)
             HotspotManager.Instance.ReleaseHotspotReference(hotspotID);
 
@@ -456,8 +468,8 @@ public class Image_UI_Manager : MonoBehaviour
             placeholder1.GetComponent<ImageDisplayController>().ClearNotes();
             placeholder2.GetComponent<ImageDisplayController>().ClearNotes();
             fullscreenPlaceholder.GetComponent<ImageDisplayController>().ClearNotes(); 
-            dualImageZoom.SetActive(false);       
+            dualImageZoom.SetActive(false);  
+            imageScreen.SetActive(false);     
         }
-        imageScreen.SetActive(false);
     }
 }

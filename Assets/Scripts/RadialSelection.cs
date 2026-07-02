@@ -18,6 +18,7 @@ public class RadialSelection : MonoBehaviour
     private List<GameObject> spawnedParts = new List<GameObject>();
     public Transform handTransform;
     private int currentSelectedRadialPart = -1;
+    private int confirmedRadialPart = -1;   
     [SerializeField] InputActionAsset inputActions;
     private InputAction triggerButton;
 
@@ -34,6 +35,27 @@ public class RadialSelection : MonoBehaviour
         triggerButton.Enable();
     }
 
+    // void Update()
+    // {
+    //     if (triggerButton.WasPressedThisFrame())
+    //     {
+    //         if (currentSelectedRadialPart < 0 ||
+    //             currentSelectedRadialPart >= spawnedParts.Count)
+    //         {
+    //             return;
+    //         }
+
+    //         string dir = spawnedParts[currentSelectedRadialPart]
+    //             .GetComponentInChildren<TMP_Text>().text;
+
+    //         TelemetryLogger.Instance.LogUIInteraction("Change Image Direction");
+            
+    //         image_UI_Manager.ShowDirection(dir);
+
+    //     }
+    //     UpdatePointerSelection();
+    // }
+
     void Update()
     {
         if (triggerButton.WasPressedThisFrame())
@@ -44,13 +66,16 @@ public class RadialSelection : MonoBehaviour
                 return;
             }
 
-            string dir = spawnedParts[currentSelectedRadialPart]
+            confirmedRadialPart = currentSelectedRadialPart;
+
+            string dir = spawnedParts[confirmedRadialPart]
                 .GetComponentInChildren<TMP_Text>().text;
 
             TelemetryLogger.Instance.LogUIInteraction("Change Image Direction");
-            
+
             image_UI_Manager.ShowDirection(dir);
 
+            UpdateVisuals();
         }
         UpdatePointerSelection();
     }
@@ -97,18 +122,48 @@ public class RadialSelection : MonoBehaviour
         }
     }
 
+    // void UpdateVisuals()
+    // {
+    //     for (int i = 0; i < spawnedParts.Count; i++)
+    //     {
+    //         if (i == currentSelectedRadialPart)
+    //         {
+    //             spawnedParts[i].GetComponent<Image>().color = Color.blue;
+    //             spawnedParts[i].transform.localScale = 1.1f * Vector3.one;
+    //         }
+    //         else
+    //         {
+    //             spawnedParts[i].GetComponent<Image>().color = Color.black;
+    //             spawnedParts[i].transform.localScale = Vector3.one;
+    //         }
+    //     }
+    // }
+
     void UpdateVisuals()
     {
         for (int i = 0; i < spawnedParts.Count; i++)
         {
-            if (i == currentSelectedRadialPart)
+            bool isConfirmed = (i == confirmedRadialPart);
+            bool isHovered = (i == currentSelectedRadialPart);
+
+            var img = spawnedParts[i].GetComponent<Image>();
+
+            if (isConfirmed)
             {
-                spawnedParts[i].GetComponent<Image>().color = Color.yellow;
+                // Selected: always blue, normal size, ignore hover growth
+                img.color = Color.blue;
+                spawnedParts[i].transform.localScale = Vector3.one;
+            }
+            else if (isHovered)
+            {
+                // Hovered but not selected: black, slightly bigger
+                img.color = Color.black;
                 spawnedParts[i].transform.localScale = 1.1f * Vector3.one;
             }
             else
             {
-                spawnedParts[i].GetComponent<Image>().color = Color.black;
+                // Neither: default
+                img.color = Color.black;
                 spawnedParts[i].transform.localScale = Vector3.one;
             }
         }
@@ -164,6 +219,14 @@ public class RadialSelection : MonoBehaviour
             }
 
             spawnedParts.Add(spawnRadialPart);
+
+            int defaultIndex = System.Array.IndexOf(view_directions, "T");
+            confirmedRadialPart = (defaultIndex >= 0 && defaultIndex < spawnedParts.Count)
+                ? defaultIndex
+                : 0;
+            currentSelectedRadialPart = confirmedRadialPart; // hover starts on the same slice too
+
+            UpdateVisuals();
         }
     }
 

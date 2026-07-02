@@ -191,6 +191,14 @@ public class HotspotManager : MonoBehaviour
 
             spriteHandles.Add(spriteHandle);
 
+            if (spriteHandle.Result.texture != null)
+            {
+                spriteHandle.Result.texture.mipMapBias = -1f;
+                Debug.Log($"Bias right after set: {spriteHandle.Result.texture.mipMapBias}");
+                StartCoroutine(LogBiasNextFrame(spriteHandle.Result.texture));
+                Debug.Log($"Mip count: {spriteHandle.Result.texture.mipmapCount}");
+            }
+
             // The year-folder is still part of the asset's path even though
             // we no longer load by a year Label, so we recover it from there.
             string folderName = Path.GetFileName(Path.GetDirectoryName(loc.PrimaryKey));
@@ -227,6 +235,13 @@ public class HotspotManager : MonoBehaviour
 
         Debug.Log($"[HM] Loaded {images.Count} images for hotspot {hotspotID}");
         FlushPending(hotspotID, images);
+    }
+
+    IEnumerator LogBiasNextFrame(Texture tex)
+    {
+        yield return null;
+        yield return new WaitForSeconds(1f);
+        Debug.Log($"Bias after a second: {tex.mipMapBias}");
     }
 
     private void FlushPending(int hotspotID, List<InspectionImage> images)

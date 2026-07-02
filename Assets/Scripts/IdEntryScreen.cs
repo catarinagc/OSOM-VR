@@ -2,10 +2,17 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using System.Collections;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 public class IdEntryScreen : MonoBehaviour
 {
     [SerializeField] private TMP_InputField idInputField;
+
+    public void Update()
+    {
+        if(Keyboard.current.enterKey.wasPressedThisFrame)
+            OnSubmitClicked();
+    }
 
     public void OnSubmitClicked()
     {

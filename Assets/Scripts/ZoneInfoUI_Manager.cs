@@ -72,7 +72,8 @@ public class ZoneInfoUI_Manager : MonoBehaviour
 
     public void PrepareOpen(Zone zone)
     {
-        title_text.text = default_title_text + "(" + zone.name + ")";
+        //title_text.text = default_title_text + "(" + zone.name + ")";
+        title_text.text = "Informação sobre o Troço";
 
         BindObjectToUI(zone.Caracteristics.General, generalFields, infoGeral);
         BindObjectToUI(zone.Caracteristics.Superstructure, superstructureFields, infoC);

@@ -24,6 +24,25 @@ public class HotspotTeleportMenu : MonoBehaviour
         }
         isPrepared = true;
     }
+    // public void PrepareMenu(List<HotspotScript> hotspots)
+    // {
+    //     hotspotMap.Clear();
+    //     dropdown.ClearOptions();
+
+    //     List<TMP_Dropdown.OptionData> newOptions = new() 
+    //     { 
+    //         new TMP_Dropdown.OptionData("Nenhum") 
+    //     };
+
+    //     foreach (HotspotScript hotspot in hotspots)
+    //     {
+    //         hotspotMap[hotspot.hotspotID] = hotspot;
+    //         newOptions.Add(new TMP_Dropdown.OptionData(hotspot.hotspotID.ToString()));
+    //     }
+
+    //     dropdown.AddOptions(newOptions);
+    //     isPrepared = true;
+    // }
 
     public void OnClick()
     {

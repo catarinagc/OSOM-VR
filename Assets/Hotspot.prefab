@@ -59,7 +59,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -299,7 +299,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Unity.TextMeshPro::TMPro.TextMeshProUGUI
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -464,6 +464,8 @@ MonoBehaviour:
   mesh: {fileID: 8369649081145610947}
   selectedMaterial: {fileID: 2100000, guid: e6a24bb830666d147a3bc7b839862f52, type: 2}
   unselectedMaterial: {fileID: 2100000, guid: e940653a8af873d4eb5492904c233b97, type: 2}
+  startPosition: {x: 0, y: 0, z: 0}
+  currentGlobalPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &8369649081145610947
 GameObject:
   m_ObjectHideFlags: 0

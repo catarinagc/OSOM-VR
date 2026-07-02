@@ -67,7 +67,7 @@ public class DesktopController : MonoBehaviour
 
         UI_Manager.setMovementModeIsFly(currentMode == MovementMode.Flying);
         
-        TelemetryLogger.Instance.LogUIInteraction("Walk");
+        TelemetryLogger.Instance.LogUIInteraction("Fly");
     }
 
     void Update()
@@ -99,7 +99,9 @@ public class DesktopController : MonoBehaviour
 
         if (Mouse.current.leftButton.wasPressedThisFrame)
         {
-            if (currentHotspot != null)
+            bool overUI = EventSystem.current != null && EventSystem.current.IsPointerOverGameObject();
+
+            if (!overUI && currentHotspot != null)
             {
                 currentHotspot.OnInteract();
                 Cursor.lockState = CursorLockMode.None;
@@ -194,6 +196,16 @@ public class DesktopController : MonoBehaviour
 
     private void HandleHotspotLook()
     {
+        if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+        {
+            if (currentHotspot != null)
+            {
+                currentHotspot.StopHover();
+                currentHotspot = null;
+            }
+            return;
+        }
+
         Vector2 screenCenter = new Vector2(Screen.width / 2f, Screen.height / 2f);
         Ray ray = camera.ScreenPointToRay(screenCenter);
         RaycastHit hit;
@@ -218,11 +230,11 @@ public class DesktopController : MonoBehaviour
         }
 
         // If we are not looking at any hotspot
-        if (currentHotspot != null)
-        {
-            currentHotspot.StopHover();
-            currentHotspot = null;
-        }
+        // if (currentHotspot != null)
+        // {
+        //     currentHotspot.StopHover();
+        //     currentHotspot = null;
+        // }
     }
 
     [SerializeField] private float groundSnapRayOriginHeight = 2f;
@@ -393,10 +405,16 @@ public class DesktopController : MonoBehaviour
     {
         if (_autoMoveCoroutine != null)
             StopCoroutine(_autoMoveCoroutine);
-
-        ChangeMovementMode();
+        bool modeWasChanged = false;
+        if(currentMode == MovementMode.Walking)
+        {
+            ChangeMovementMode();
+            modeWasChanged = true;
+        }
         // currentMode = MovementMode.Flying;
         // verticalVelocity = 0;
         _autoMoveCoroutine = StartCoroutine(AutoMoveCoroutine(homePos));
+        // if (modeWasChanged)
+        //     ChangeMovementMode();
     }
 }

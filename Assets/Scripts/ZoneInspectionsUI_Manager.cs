@@ -75,7 +75,8 @@ public class ZoneInspectionsUI_Manager : MonoBehaviour
 
     public void PrepareOpen(Zone zone, int year)
     {
-        title_text.text = default_title_text + "(" + zone.name + ")";
+        //title_text.text = default_title_text + "(" + zone.name + ")";
+        title_text.text = "Inspeção Troço";
         currentZone = zone;
         yearSelected = year;
         PrepareDropdown();

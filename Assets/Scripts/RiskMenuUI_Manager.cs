@@ -42,8 +42,8 @@ public class RiskMenuUI_Manager : MonoBehaviour
     
     public void PrepareOpen(Zone zone)
     {
-        title_text.text = $"{default_title_text} ({zone.name})";
         last_state_text.text = "Estado em " + zone.lastInspection.Year;
+        title_text.text = last_state_text.text;
         ref_state_text.text = "Estado em " + zone.referenceInspection.Year;
         evol_text.text = "Evolução de " + zone.referenceInspection.Year + " a " + zone.lastInspection.Year;
         risk_text.text = "Risco em " + zone.lastInspection.Year;

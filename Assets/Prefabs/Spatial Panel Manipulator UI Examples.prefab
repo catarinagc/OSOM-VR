@@ -461,7 +461,7 @@ MonoBehaviour:
   zoomSpeed: 5
   minZoom: 1
   maxZoom: 10
-  panSpeed: 1000
+  panSpeed: 1100
   leftGripAction: {fileID: 0}
   rightGripAction: {fileID: 0}
   leftControllerTransform: {fileID: 0}
@@ -2306,41 +2306,19 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 3052109201295664413, guid: fa5ef3b56cfeb4f4ba855cdf2610a578, type: 3}
       insertIndex: -1
       addedObject: {fileID: 8264942258939426634}
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 4494524748444649001, guid: fa5ef3b56cfeb4f4ba855cdf2610a578, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 6031767883286307801}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fa5ef3b56cfeb4f4ba855cdf2610a578, type: 3}
 --- !u!114 &3546031753102030234 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7753147258609537286, guid: fa5ef3b56cfeb4f4ba855cdf2610a578, type: 3}
   m_PrefabInstance: {fileID: 6534370450776122524}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7273732586817397429}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &7273732586817397429 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4494524748444649001, guid: fa5ef3b56cfeb4f4ba855cdf2610a578, type: 3}
-  m_PrefabInstance: {fileID: 6534370450776122524}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &6031767883286307801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7273732586817397429}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b28cf68661ecd9a4c8240ed4b2b3cc08, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CloseImageVR
-  rootObj: {fileID: 6889118990999187934}
-  VRZoomImage: {fileID: 0}
 --- !u!224 &8139687227127759233 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3052109201295664413, guid: fa5ef3b56cfeb4f4ba855cdf2610a578, type: 3}
